@@ -4,7 +4,7 @@
 #include "BMPFile.h"
 
 
-void invertColors(std::vector<uint8_t>& imageData) {
+void InvertColors(std::vector<uint8_t>& imageData) {
     for (size_t i = 0; i < imageData.size(); ++i) {
         //反
         imageData[i] = 255 - imageData[i];
@@ -12,14 +12,12 @@ void invertColors(std::vector<uint8_t>& imageData) {
 }
 
 int main() {
-
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open it!" << std::endl;
         return 1;
     }
 
-    BMP bmp;
     inputFile.read(reinterpret_cast<char*>(&bmp), sizeof(BMP));
 
     if (bmp.fileType != 0x4D42) { // BM ASCII
@@ -28,26 +26,24 @@ int main() {
     }
 
     // read header
-    BMPInfo bmpInfo;
     inputFile.read(reinterpret_cast<char*>(&bmpInfo), sizeof(BMPInfo));
 
     // offset
     int imageDataOffset = bmp.dataOffset;
-
-    // size
+    //set imageSize
     int imageDataSize = bmpInfo.imageSize;
-
-    // read data of image
+    //move to image data
     std::vector<uint8_t> imageData(imageDataSize);
     inputFile.seekg(imageDataOffset);
+    //read
     inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
 
     // close
     inputFile.close();
-
+    ImgInfo();
     // fuction
-    invertColors(imageData);
-
+    InvertColors(imageData);
+    ImgInfo();
     // create file
     std::ofstream outputFile("outColorReverse.bmp", std::ios::binary);
     if (!outputFile.is_open()) {
@@ -66,4 +62,6 @@ int main() {
     std::cout << "success！" << std::endl;
 
     return 0;
+
 }
+

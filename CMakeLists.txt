@@ -9,6 +9,7 @@ set(SOURCE_FILES
         ColorReverse.cpp
         Gray.cpp
         ImageScale.cpp
+        Brightness.cpp
         # 列出所有其他的 .cpp 文件
 )
 
