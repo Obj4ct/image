@@ -5,10 +5,14 @@
 
 
 void InvertColors(std::vector<uint8_t>& imageData) {
-    for (size_t i = 0; i < imageData.size(); ++i) {
+    OutPutToFile(imageData,"before");
+    for (unsigned char & i : imageData) {
         //反
-        imageData[i] = 255 - imageData[i];
+        i = 255 - i;
     }
+    // 假设已经读取了文件头（bmp）和信息头（bmpInfo）
+    bmp.fileSize = sizeof(BMP) + sizeof(BMPInfo) + (bmpInfo.width * bmpInfo.height * (bmpInfo.bitsPerPixel / 8));
+    OutPutToFile(imageData,"after");
 }
 
 int main() {
@@ -29,9 +33,9 @@ int main() {
     inputFile.read(reinterpret_cast<char*>(&bmpInfo), sizeof(BMPInfo));
 
     // offset
-    int imageDataOffset = bmp.dataOffset;
+    uint32_t imageDataOffset = bmp.dataOffset;
     //set imageSize
-    int imageDataSize = bmpInfo.imageSize;
+    uint32_t imageDataSize = bmpInfo.imageSize;
     //move to image data
     std::vector<uint8_t> imageData(imageDataSize);
     inputFile.seekg(imageDataOffset);
@@ -43,6 +47,7 @@ int main() {
     ImgInfo();
     // fuction
     InvertColors(imageData);
+
     ImgInfo();
     // create file
     std::ofstream outputFile("outColorReverse.bmp", std::ios::binary);

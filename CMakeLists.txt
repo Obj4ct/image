@@ -3,15 +3,18 @@ project(CLion)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# 列出所有源文件
+#list all cpp file
 set(SOURCE_FILES
         Tailor.cpp
         ColorReverse.cpp
         Gray.cpp
         ImageScale.cpp
         Brightness.cpp
-        # 列出所有其他的 .cpp 文件
 )
+#set default
+set(MAIN_FILE Gray.cpp)
 
-# 创建可执行文件并关联源文件
-add_executable(CLion ${SOURCE_FILES})
+add_executable(CLion ${MAIN_FILE})
+
+
+
