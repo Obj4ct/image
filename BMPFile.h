@@ -25,7 +25,7 @@ struct BMP {
     uint16_t reserved1;
     uint16_t reserved2;
     uint32_t dataOffset;//表示图像数据相对于文件起始位置的偏移量，单位是字节
-}bmp;
+}bmp,newBmp;
 #pragma pack(pop)
 
 
@@ -49,36 +49,45 @@ struct BMPInfo {
     //下面这两个参数是 32 位的整数，通常不太影响非索引颜色的 BMP 图像。它们在索引颜色的 BMP 图像中用于指定调色板中的颜色数量和重要颜色数量。
     uint32_t colorsUsed;
     uint32_t colorsImportant;
-}bmpInfo;
+}bmpInfo,newBmpInfo;
 #pragma pack(pop)
 
 
-void ImgInfo()
+void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
 {
     std::cout<<"this is a BMP file"<<std::endl
     <<"BMPHeader info:"<<std::endl
     <<"---------------"<<std::endl
-    <<"fileType文件类型: "<<bmp.fileType<<std::endl
-    <<"fileSize文件大小: "<<bmp.fileSize<<std::endl
-    <<"reserved1保留字段1: "<<bmp.reserved1<<std::endl
-    <<"reserved2保留字段2: "<<bmp.reserved2<<std::endl
-    <<"dataOffset数据偏移量: "<<bmp.dataOffset<<std::endl
+    <<"fileType文件类型: "<<inBmp.fileType<<std::endl
+    <<"fileSize文件大小: "<<inBmp.fileSize<<std::endl
+    <<"reserved1保留字段1: "<<inBmp.reserved1<<std::endl
+    <<"reserved2保留字段2: "<<inBmp.reserved2<<std::endl
+    <<"dataOffset数据偏移量: "<<inBmp.dataOffset<<std::endl
     <<"---------------"<<std::endl
-    <<"headerSize信息头大小: "<<bmpInfo.headerSize<<std::endl
-    <<"width图像宽度: "<<bmpInfo.width<<std::endl
-    <<"height图像高度: "<<bmpInfo.height<<std::endl
-    <<"planes颜色平面数: "<<bmpInfo.planes<<std::endl
-    <<"bitsPerPixel每像素位数: "<<bmpInfo.bitsPerPixel<<std::endl
-    <<"compression压缩方式: "<<bmpInfo.compression<<std::endl
-    <<"imageSize图像数据大小: "<<bmpInfo.imageSize<<std::endl
-    <<"xPixelsPerMeter水平像素每米数: "<<bmpInfo.xPixelsPerMeter<<std::endl
-    <<"yPixelsPerMeter垂直像素每米数: "<<bmpInfo.yPixelsPerMeter<<std::endl
-    <<"colorsUsed实际使用的颜色数: "<<bmpInfo.colorsUsed<<std::endl
-    <<"colorsImportant重要颜色数: "<<bmpInfo.colorsImportant<<std::endl
+    <<"BMPInfo:"<<std::endl
+    <<"headerSize信息头大小: "<<inBmpInfo.headerSize<<std::endl
+    <<"width图像宽度: "<<inBmpInfo.width<<std::endl
+    <<"height图像高度: "<<inBmpInfo.height<<std::endl
+    <<"planes颜色平面数: "<<inBmpInfo.planes<<std::endl
+    <<"bitsPerPixel每像素位数: "<<inBmpInfo.bitsPerPixel<<std::endl
+    <<"compression压缩方式: "<<inBmpInfo.compression<<std::endl
+    <<"imageSize图像数据大小: "<<inBmpInfo.imageSize<<std::endl
+    <<"xPixelsPerMeter水平像素每米数: "<<inBmpInfo.xPixelsPerMeter<<std::endl
+    <<"yPixelsPerMeter垂直像素每米数: "<<inBmpInfo.yPixelsPerMeter<<std::endl
+    <<"colorsUsed实际使用的颜色数: "<<inBmpInfo.colorsUsed<<std::endl
+    <<"colorsImportant重要颜色数: "<<inBmpInfo.colorsImportant<<std::endl
     <<"-----------------"<<std::endl;
 
 }
-int OutPutToFile(std::vector<uint8_t>& imageData,std::string name)
+
+void CreateNewBmp()
+{
+    newBmp=bmp;
+    newBmpInfo=bmpInfo;
+
+}
+
+int OutputToFile(std::vector<uint8_t>& imageData,std::string name)
 {
 
     // open output file
@@ -102,6 +111,26 @@ int OutPutToFile(std::vector<uint8_t>& imageData,std::string name)
     std::cout << "-----------" << std::endl;
     std::cout << "-----------" << std::endl;
 
+}
+
+void OutputImage(std::vector<uint8_t>& imageData,uint32_t imageDataSize,std::string fileName)
+{
+    std::ofstream outputFile(fileName, std::ios::binary);
+    if (!outputFile.is_open())
+    {
+        std::cout << "unable to create this file!" << std::endl;
+        exit(0);
+    }
+
+    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+    //write file
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()),imageDataSize );
+
+    // close file
+    outputFile.close();
+
+    std::cout << "success！" << std::endl;
 }
 
 

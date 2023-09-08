@@ -5,7 +5,7 @@
 
 // Gray
 void ConvertToGray(std::vector<uint8_t>& imageData) {
-    OutPutToFile(imageData, "GrayBefore");
+    OutputToFile(imageData, "GrayBefore");
     for (size_t i = 0; i < imageData.size(); i++) {
 
         if (imageData[i] >= 127) {
@@ -14,7 +14,7 @@ void ConvertToGray(std::vector<uint8_t>& imageData) {
             imageData[i] = 255;
         }
     }
-    OutPutToFile(imageData, "GrayAfter");
+    OutputToFile(imageData, "GrayAfter");
 }
 
 //

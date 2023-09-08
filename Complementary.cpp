@@ -4,31 +4,34 @@
 #include "BMPFile.h"
 
 
-void InvertColors(std::vector<uint8_t>& imageData) {
+void Complementary(std::vector<uint8_t>& imageData) {
+    OutputToFile(imageData,"C111om");
     for (size_t i = 0; i < imageData.size(); i += 3) {
-        imageData[i] = 255 - imageData[i];
-        imageData[i + 1] = 255 - imageData[i + 1];
-        imageData[i + 2] = 255 - imageData[i + 2];
+        size_t r=imageData[i];
+        size_t g=imageData[i+1];
+        size_t b=imageData[i+2];
+        size_t maxRgb=std::max(std::max(r,g),b);
+        size_t minRgb=std::min(std::min(r,g),b);
+        imageData[i]=maxRgb+minRgb-r;
+        imageData[i+1]=maxRgb+minRgb-g;
+        imageData[i+2]=maxRgb+minRgb-b;
     }
-}
 
+    OutputToFile(imageData,"Com");
+}
 int main() {
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open it!" << std::endl;
         return 1;
     }
-
     inputFile.read(reinterpret_cast<char*>(&bmp), sizeof(BMP));
-
     if (bmp.fileType != 0x4D42) { // BM ASCII
         std::cout << "file is not invalid!" << std::endl;
         return 1;
     }
-
     // read header
     inputFile.read(reinterpret_cast<char*>(&bmpInfo), sizeof(BMPInfo));
-
     // offset
     uint32_t imageDataOffset = bmp.dataOffset;
     //set imageSize
@@ -38,16 +41,14 @@ int main() {
     inputFile.seekg(imageDataOffset);
     //read
     inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
-
     // close
     inputFile.close();
-    //ImgInfo();
-    // fuction
-    InvertColors(imageData);
 
-    //ImgInfo();
+    // fuction
+    Complementary(imageData);
+
     // create file
-    OutputImage(imageData,imageDataSize,"outColorReverse.bmp");
+    OutputImage(imageData,imageDataSize,"outColorComplementary.bmp");
 
     return 0;
 

@@ -10,11 +10,11 @@ set(SOURCE_FILES
         Gray.cpp
         ImageScale.cpp
         Brightness.cpp
+        Complementary.cpp
 )
 #set default
-set(MAIN_FILE Gray.cpp)
+set(MAIN_FILE Tailor.cpp)
 
 add_executable(CLion ${MAIN_FILE})
-
 
 
