@@ -12,7 +12,7 @@
 #include <cmath>
 #include <cstring>
 
-#define FILENAME "../Dinosaur.bmp"
+#define FILENAME "../test.bmp"
 
 
 
@@ -80,15 +80,39 @@ void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
 
 }
 
-void CreateNewBmp()
+//void CreateNewBmp()
+//{
+//    newBmp=bmp;
+//    newBmpInfo=bmpInfo;
+//
+//}
+void  ReadBinTxt(std::string inName,std::string outName)
 {
-    newBmp=bmp;
-    newBmpInfo=bmpInfo;
+    std::ifstream inputFile(inName, std::ios::binary);
 
+    if (!inputFile.is_open()) {
+        std::cerr << "无法打开输入文件!" << std::endl;;
+    }
+
+    std::ofstream outputFile(outName);
+
+    if (!outputFile.is_open()) {
+        std::cerr << "无法创建输出文件!" << std::endl;
+        inputFile.close();
+    }
+
+    char byte;
+    while (inputFile.get(byte)) {
+        // 将每个字节的十进制值输出到文本文件
+        outputFile << static_cast<int>(byte) << " ";
+    }
+
+    inputFile.close();
+    outputFile.close();
+
+    std::cout << "转换完成!" << std::endl;
 }
-
-int OutputToFile(std::vector<uint8_t>& imageData,std::string name)
-{
+int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
 
     // open output file
     std::ofstream outputFile(name);
@@ -100,7 +124,7 @@ int OutputToFile(std::vector<uint8_t>& imageData,std::string name)
     }
 
     // foreach imageData
-    for (uint8_t byte : imageData) {
+    for (uint8_t byte: imageData) {
         outputFile << static_cast<int>(byte) << " ";
     }
 
@@ -113,25 +137,6 @@ int OutputToFile(std::vector<uint8_t>& imageData,std::string name)
 
 }
 
-void OutputImage(std::vector<uint8_t>& imageData,uint32_t imageDataSize,std::string fileName)
-{
-    std::ofstream outputFile(fileName, std::ios::binary);
-    if (!outputFile.is_open())
-    {
-        std::cout << "unable to create this file!" << std::endl;
-        exit(0);
-    }
-
-    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
-    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
-    //write file
-    outputFile.write(reinterpret_cast<const char*>(imageData.data()),imageDataSize );
-
-    // close file
-    outputFile.close();
-
-    std::cout << "success！" << std::endl;
-}
 
 
 #endif //CLION_BMPFILE_H

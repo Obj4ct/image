@@ -1,12 +1,12 @@
 //
 // Created by ztheng on 2023/9/5.
-//
+// done
 #include "BMPFile.h"
 
-int Brightness(std::vector<uint8_t>& imageData, double_t brightnessValue) {
+int Brightness(std::vector<uint8_t>& newImageData, double_t brightnessValue) {
     if(brightnessValue>=-150&&brightnessValue<=150)
     {
-        for (unsigned char & i : imageData) {
+        for (unsigned char & i : newImageData) {
             double_t newValue = static_cast<double_t>(i) + brightnessValue;
             if (newValue < 0)
             {
@@ -25,28 +25,26 @@ int Brightness(std::vector<uint8_t>& imageData, double_t brightnessValue) {
     }
 
 }
-//
-//int Contrast(std::vector<uint8_t>& imageData,double_t contrastValue)
-//{
-//    std::cout<<"entering fuction"<<std::endl;
-//    if (contrastValue>=-50&&contrastValue<=100)
-//    {
-//        double_t factor = (100.0 + contrastValue) / 100.0;
-//        for (size_t i = 0; i < imageData.size(); i += 3) {
-//
-//            imageData[i] = std::max(0, std::min(255, static_cast<int>(factor * (imageData[i] - 128) + 128)));
-//            imageData[i + 1] = std::max(0, std::min(255, static_cast<int>(factor * (imageData[i + 1] - 128) + 128)));
-//            imageData[i + 2] = std::max(0, std::min(255, static_cast<int>(factor * (imageData[i + 2] - 128) + 128)));
-//        }
-//        std::cout<<"out fuction"<<std::endl;
-//        return 0;
-//    }
-//    else
-//    {
-//        std::cout<<"out of range,contrastValue is between -50 to 100, please try again!"<<std::endl;
-//        return 1;
-//    }
-//}
+
+int Contrast(std::vector<uint8_t>& newImageData,double_t contrastValue)
+{
+    if (contrastValue>=-50&&contrastValue<=100)
+    {
+        double_t factor = (100.0 + contrastValue) / 100.0;
+        for (size_t i = 0; i < newImageData.size(); i += 3) {
+
+            newImageData[i] = std::max(0, std::min(255, static_cast<int>(factor * (newImageData[i] - 128) + 128)));
+            newImageData[i + 1] = std::max(0, std::min(255, static_cast<int>(factor * (newImageData[i + 1] - 128) + 128)));
+            newImageData[i + 2] = std::max(0, std::min(255, static_cast<int>(factor * (newImageData[i + 2] - 128) + 128)));
+        }
+        return 0;
+    }
+    else
+    {
+        std::cout<<"out of range,contrastValue is between -50 to 100, please try again!"<<std::endl;
+        return 1;
+    }
+}
 
 int main() {
     std::ifstream inputFile(FILENAME, std::ios::binary);
@@ -78,18 +76,20 @@ int main() {
     inputFile.seekg(imageDataOffset);
     //read
     inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
-
+    std::vector<uint8_t> newImageData;
+    newImageData=imageData;
     // close
     inputFile.close();
     bool isLoop=true;
     while(isLoop)
     {
         int choice=1;
-//        std::cout<<"select a fuction:"<<std::endl
-//                 <<"1.brightness"<<std::endl
-//                 <<"2.contrast"<<std::endl
-//                 <<"input:";
-//        std::cin>>choice;
+        std::cout<<"select a fuction:"<<std::endl
+                 <<"1.brightness"<<std::endl
+                 <<"2.contrast"<<std::endl
+                 <<"3.exit"<<std::endl
+                 <<"input:";
+        std::cin>>choice;
 
         switch (choice) {
             case 1:
@@ -101,7 +101,7 @@ int main() {
                 double_t brightnessValue;
                 std::cin>>brightnessValue;
                 //OutputToFile(imageData,"beforeBrightness");
-                int result=Brightness(imageData,brightnessValue);
+                int result=Brightness(newImageData,brightnessValue);
                 //OutputToFile(imageData,"afterBrightness");
 
                 if (result==1)
@@ -110,9 +110,25 @@ int main() {
                 }
                 else
                 {
-                    OutputImage(imageData,imageDataSize,"outPutBrightness.bmp");
+                    std::ofstream outputFile("outputBrightness.bmp", std::ios::binary);
+                    if (!outputFile.is_open()) {
+                        std::cout << "unable to create this file" << std::endl;
+                        return 1;
+                    }
+                    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+
+                    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+                    outputFile.seekp(bmp.dataOffset);
+
+                    // write
+                    outputFile.write(reinterpret_cast<const char*>(newImageData.data()),imageDataSize);
+
+                    // close file
+                    outputFile.close();
+
+                    std::cout << "success" << std::endl;
                 }
-                isLoop=false;
+                isLoop=true;
                 break;
             }
             case 2:
@@ -122,34 +138,38 @@ int main() {
                          <<"please input:";
                 double_t  contrastValue;
                 std::cin>>contrastValue;
-                // Brightness fuction
-//                int result=Contrast(imageData,contrastValue);
-//                if(result==1)
-//                {
-//                    goto inputContrastValue;
-//                }
-//                else
-//                {
-//                    std::ofstream outputFile("outputContrastValue.bmp", std::ios::binary);
-//                    if (!outputFile.is_open())
-//                    {
-//                        std::cout << "unable to create this file!" << std::endl;
-//                        exit(0);
-//                    }
-//
-//                    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
-//                    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
-//                    //write file
-//                    outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageDataSize);
-//
-//                    // close file
-//                    outputFile.close();
-//
-//                    std::cout << "success！" << std::endl;
-//                }
-//                isLoop=false;
-//                break;
+                 //Contrast fuction
+                int result=Contrast(newImageData,contrastValue);
+                if(result==1)
+                {
+                    goto inputContrastValue;
+                }
+                else
+                {
+                    std::ofstream outputFile("outputContrast.bmp", std::ios::binary);
+                    if (!outputFile.is_open())
+                    {
+                        std::cout << "unable to create this file!" << std::endl;
+                        exit(0);
+                    }
+
+                    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+                    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+                    //write file
+                    outputFile.seekp(bmp.dataOffset);
+
+                    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), imageDataSize);
+
+                    // close file
+                    outputFile.close();
+
+                    std::cout << "success！" << std::endl;
+                }
+                isLoop=true;
+                break;
             }
+            case 3:
+                exit(0);
             default:
             {
                 std::cout<<"input error! try again!"<<std::endl;

@@ -13,7 +13,7 @@ set(SOURCE_FILES
         Complementary.cpp
 )
 #set default
-set(MAIN_FILE Tailor.cpp)
+set(MAIN_FILE Brightness.cpp)
 
 add_executable(CLion ${MAIN_FILE})
 

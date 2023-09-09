@@ -2,22 +2,20 @@
 // Created by ztheng on 2023/9/5.
 //
 #include "BMPFile.h"
-
-
-void Complementary(std::vector<uint8_t>& imageData) {
-    OutputToFile(imageData,"C111om");
-    for (size_t i = 0; i < imageData.size(); i += 3) {
-        size_t r=imageData[i];
-        size_t g=imageData[i+1];
-        size_t b=imageData[i+2];
+void Complementary(std::vector<uint8_t>& newImageData) {
+//    OutputToFile(newImageData,"C111om");
+    for (size_t i = 0; i < newImageData.size(); i += 3) {
+        size_t r=newImageData[i];
+        size_t g=newImageData[i+1];
+        size_t b=newImageData[i+2];
         size_t maxRgb=std::max(std::max(r,g),b);
         size_t minRgb=std::min(std::min(r,g),b);
-        imageData[i]=maxRgb+minRgb-r;
-        imageData[i+1]=maxRgb+minRgb-g;
-        imageData[i+2]=maxRgb+minRgb-b;
+        newImageData[i]=maxRgb+minRgb-r;
+        newImageData[i+1]=maxRgb+minRgb-g;
+        newImageData[i+2]=maxRgb+minRgb-b;
     }
 
-    OutputToFile(imageData,"Com");
+//    OutputToFile(newImageData,"Com");
 }
 int main() {
     std::ifstream inputFile(FILENAME, std::ios::binary);
@@ -43,14 +41,32 @@ int main() {
     inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
     // close
     inputFile.close();
-
+    std::vector<uint8_t> newImageData;
+    newImageData=imageData;
     // fuction
-    Complementary(imageData);
+    Complementary(newImageData);
 
     // create file
-    OutputImage(imageData,imageDataSize,"outColorComplementary.bmp");
+    std::ofstream outputFile("outColorComplementary.bmp", std::ios::binary);
+    if (!outputFile.is_open()) {
+        std::cout << "unable to create this file!" << std::endl;
+        return 1;
+    }
+
+    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+    outputFile.seekp(bmp.dataOffset);
+
+    //write file
+    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), imageDataSize);
+
+    // close file
+    outputFile.close();
+
+    std::cout << "success！" << std::endl;
 
     return 0;
+
 
 }
 

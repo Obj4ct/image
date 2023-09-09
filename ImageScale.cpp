@@ -5,7 +5,7 @@
 
 
 // RotateImage
-void RotateImage(std::vector<uint8_t>& imageData, int width, int height, double angle) {
+void RotateImage(std::vector<uint8_t>& newImageData, int width, int height, double angle) {
     // angle to radian
     double radians = angle * M_PI / 180.0;
 
@@ -35,9 +35,9 @@ void RotateImage(std::vector<uint8_t>& imageData, int width, int height, double 
                 int originalIndex = static_cast<int>(rotatedY) * width * 3 +
                                     static_cast<int>(rotatedX) * 3;
                 int newIndex = y * newWidth * 3 + x * 3;
-                rotatedImageData[newIndex] = imageData[originalIndex];
-                rotatedImageData[newIndex + 1] = imageData[originalIndex + 1];
-                rotatedImageData[newIndex + 2] = imageData[originalIndex + 2];
+                rotatedImageData[newIndex] = newImageData[originalIndex];
+                rotatedImageData[newIndex + 1] = newImageData[originalIndex + 1];
+                rotatedImageData[newIndex + 2] = newImageData[originalIndex + 2];
                 std::cout<<"ok"<<std::endl;
             }
         }
@@ -49,7 +49,7 @@ void RotateImage(std::vector<uint8_t>& imageData, int width, int height, double 
     bmpInfo.imageSize = newWidth * newHeight * 3;
     bmp.fileSize = bmp.dataOffset + bmpInfo.imageSize;
 
-    imageData = rotatedImageData;
+    newImageData = rotatedImageData;
 }
 
 int main() {
@@ -76,7 +76,6 @@ int main() {
     //set imageSize imageSize=width*height*字节
     int imageDataSize = bmpInfo.imageSize;
 
-    ImgInfo();
 
     //move to image data
     std::vector<uint8_t> imageData(imageDataSize);
@@ -87,10 +86,12 @@ int main() {
     // close
     inputFile.close();
     // RotateImage Function
+    std::vector<uint8_t> newImageData;
+    newImageData=imageData;
     double angle;
     std::cout<<"input rotate angle:"<<std::endl;
     std::cin>>angle;
-    RotateImage(imageData, bmpInfo.width, bmpInfo.height, angle);
+    RotateImage(newImageData, bmpInfo.width, bmpInfo.height, angle);
 
     // create file
     std::ofstream outputFile("outputRotate.bmp", std::ios::binary);
@@ -102,6 +103,8 @@ int main() {
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
     //write file
+    outputFile.seekp(bmp.dataOffset);
+
     outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageDataSize);
 
     // close file

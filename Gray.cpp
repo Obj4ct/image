@@ -1,42 +1,26 @@
 //
 // Created by ztheng on 2023/9/5.
-//
+// done
 #include "BMPFile.h"
+void ConvertToGray(std::vector<uint8_t>& newImageData) {
+    //OutputToFile(imageData, "GrayBefore");
 
-// Gray
-void ConvertToGray(std::vector<uint8_t>& imageData) {
-    OutputToFile(imageData, "GrayBefore");
-    for (size_t i = 0; i < imageData.size(); i++) {
+    for (size_t i = 0; i < newImageData.size(); i += 3) {
+        uint8_t R = newImageData[i];
+        uint8_t G = newImageData[i + 1];
+        uint8_t B = newImageData[i + 2];
 
-        if (imageData[i] >= 127) {
-            imageData[i] = 0;
-        } else if (imageData[i] < 127) {
-            imageData[i] = 255;
-        }
+        // cal gray
+        auto grayValue = static_cast<uint8_t>((R + G + B) / 3);
+
+        // gary to every chanel
+        newImageData[i] = grayValue;
+        newImageData[i + 1] = grayValue;
+        newImageData[i + 2] = grayValue;
     }
-    OutputToFile(imageData, "GrayAfter");
-}
 
-//
-//void ConvertToGray(std::vector<uint8_t>& imageData) {
-//    OutPutToFile(imageData, "GrayBefore");
-//
-//    for (size_t i = 0; i < imageData.size(); i += 3) {
-//        uint8_t R = imageData[i];
-//        uint8_t G = imageData[i + 1];
-//        uint8_t B = imageData[i + 2];
-//
-//        // 计算灰度值
-//        auto grayValue = static_cast<uint8_t>((R + G + B) / 3);
-//
-//        // 将灰度值赋值给每个通道
-//        imageData[i] = grayValue;
-//        imageData[i + 1] = grayValue;
-//        imageData[i + 2] = grayValue;
-//    }
-//
-//    OutPutToFile(imageData, "GrayAfter");
-//}
+    //OutputToFile(imageData, "GrayAfter");
+}
 
 int main() {
 
@@ -62,7 +46,7 @@ int main() {
 
     //size
     uint32_t imageDataSize = bmpInfo.imageSize;
-    ImgInfo();
+    //ImgInfo();
     //read data of image
     std::vector<uint8_t> imageData(imageDataSize);
     inputFile.seekg(imageDataOffset);
@@ -74,10 +58,11 @@ int main() {
 
     // close
     inputFile.close();
-
+    //CreateNewBmp();
+    std::vector<uint8_t> newImageData;
+    newImageData=imageData;
     // function
-    ConvertToGray(imageData);
-    bmp.dataOffset+=1;
+    ConvertToGray(newImageData);
 
     //create file
     std::ofstream outputFile("outputGray.bmp", std::ios::binary);
@@ -86,11 +71,16 @@ int main() {
         return 1;
     }
 
+
+
+
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+    outputFile.seekp(bmp.dataOffset);
 
     // write
-    outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageDataSize);
+    outputFile.write(reinterpret_cast<const char*>(newImageData.data()),imageDataSize);
 
     // close file
     outputFile.close();
