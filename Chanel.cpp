@@ -25,7 +25,7 @@ int Brightness(std::vector<uint8_t>& newImageData, double_t brightnessValue) {
     }
 
 }
-
+//对比度
 int Contrast(std::vector<uint8_t>& newImageData,double_t contrastValue)
 {
     if (contrastValue>=-50&&contrastValue<=100)
@@ -45,8 +45,56 @@ int Contrast(std::vector<uint8_t>& newImageData,double_t contrastValue)
         return 1;
     }
 }
+//饱和度
+void Saturation(std::vector<uint8_t>& newImageData,int32_t width, int32_t height, double_t saturationValue)
+{
+    if(saturationValue==0)
+    {
+        //gray
+        for (size_t i = 0; i < newImageData.size(); i += 3) {
+            uint8_t R = newImageData[i];
+            uint8_t G = newImageData[i + 1];
+            uint8_t B = newImageData[i + 2];
 
+            // cal gray
+            auto grayValue = static_cast<uint8_t>((R + G + B) / 3);
+
+            // gary to every chanel
+            newImageData[i] = grayValue;
+            newImageData[i + 1] = grayValue;
+            newImageData[i + 2] = grayValue;
+        }
+    }
+    else
+    {
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                int index = (i * width + j) * 3;
+                uint8_t r = newImageData[index];
+                uint8_t g = newImageData[index + 1];
+                uint8_t b = newImageData[index + 2];
+
+                // calc gray
+                uint8_t gray = static_cast<uint8_t>(0.299 * r + 0.587 * g + 0.114 * b);
+
+                // calc color
+                r = static_cast<uint8_t>((1 - saturationValue) * gray + saturationValue * r);
+                g = static_cast<uint8_t>((1 - saturationValue) * gray + saturationValue * g);
+                b = static_cast<uint8_t>((1 - saturationValue) * gray + saturationValue * b);
+
+                // update
+                newImageData[index] = r;
+                newImageData[index + 1] = g;
+                newImageData[index + 2] = b;
+            }
+        }
+    }
+
+}
 int main() {
+
+    BMP bmp;
+    BMPInfo bmpInfo;
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open it!" << std::endl;
@@ -84,10 +132,11 @@ int main() {
     while(isLoop)
     {
         int choice=1;
-        std::cout<<"select a fuction:"<<std::endl
+        std::cout<<"select a function:"<<std::endl
                  <<"1.brightness"<<std::endl
                  <<"2.contrast"<<std::endl
-                 <<"3.exit"<<std::endl
+                 <<"3.Saturation"<<std::endl
+                 <<"4.exit"<<std::endl
                  <<"input:";
         std::cin>>choice;
 
@@ -97,7 +146,7 @@ int main() {
                 inputBrightness:
                 std::cout<<"How much brightness do you want to increase or decrease?"<<std::endl
                          <<"please input:";
-                // Brightness fuction
+                // Brightness function
                 double_t brightnessValue;
                 std::cin>>brightnessValue;
                 //OutputToFile(imageData,"beforeBrightness");
@@ -121,7 +170,7 @@ int main() {
                     outputFile.seekp(bmp.dataOffset);
 
                     // write
-                    outputFile.write(reinterpret_cast<const char*>(newImageData.data()),imageDataSize);
+                    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
 
                     // close file
                     outputFile.close();
@@ -138,7 +187,7 @@ int main() {
                          <<"please input:";
                 double_t  contrastValue;
                 std::cin>>contrastValue;
-                 //Contrast fuction
+                 //Contrast function
                 int result=Contrast(newImageData,contrastValue);
                 if(result==1)
                 {
@@ -158,7 +207,7 @@ int main() {
                     //write file
                     outputFile.seekp(bmp.dataOffset);
 
-                    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), imageDataSize);
+                    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
 
                     // close file
                     outputFile.close();
@@ -169,6 +218,35 @@ int main() {
                 break;
             }
             case 3:
+            {
+                std::cout<<"please input saturation value:"<<std::endl;
+                double_t  saturationValue;
+                std::cin>>saturationValue;
+                //Saturation function
+                Saturation(newImageData,bmpInfo.width,bmpInfo.height,saturationValue);
+                std::ofstream outputFile("outputSaturation.bmp", std::ios::binary);
+                if (!outputFile.is_open())
+                {
+                    std::cout << "unable to create this file!" << std::endl;
+                    exit(0);
+                }
+
+                outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+                outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+                //write file
+                outputFile.seekp(bmp.dataOffset);
+
+                outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
+
+                // close file
+                outputFile.close();
+
+                std::cout << "success！" << std::endl;
+
+                isLoop=true;
+                break;
+            }
+            case 4:
                 exit(0);
             default:
             {

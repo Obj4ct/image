@@ -13,6 +13,8 @@ void InvertColors(std::vector<uint8_t>& newImageData) {
 }
 
 int main() {
+    BMP bmp;
+    BMPInfo bmpInfo;
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open it!" << std::endl;
@@ -61,7 +63,7 @@ int main() {
     outputFile.seekp(bmp.dataOffset);
 
     //write file
-    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), imageDataSize);
+    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
 
     // close file
     outputFile.close();

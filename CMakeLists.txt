@@ -9,11 +9,11 @@ set(SOURCE_FILES
         ColorReverse.cpp
         Gray.cpp
         ImageScale.cpp
-        Brightness.cpp
+        Chanel.cpp
         Complementary.cpp
 )
 #set default
-set(MAIN_FILE Brightness.cpp)
+set(MAIN_FILE Chanel.cpp)
 
 add_executable(CLion ${MAIN_FILE})
 

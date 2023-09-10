@@ -12,7 +12,7 @@
 #include <cmath>
 #include <cstring>
 
-#define FILENAME "../test.bmp"
+#define FILENAME "../Dinosaur.bmp"
 
 
 
@@ -25,7 +25,7 @@ struct BMP {
     uint16_t reserved1;
     uint16_t reserved2;
     uint32_t dataOffset;//表示图像数据相对于文件起始位置的偏移量，单位是字节
-}bmp,newBmp;
+};
 #pragma pack(pop)
 
 
@@ -49,7 +49,7 @@ struct BMPInfo {
     //下面这两个参数是 32 位的整数，通常不太影响非索引颜色的 BMP 图像。它们在索引颜色的 BMP 图像中用于指定调色板中的颜色数量和重要颜色数量。
     uint32_t colorsUsed;
     uint32_t colorsImportant;
-}bmpInfo,newBmpInfo;
+};
 #pragma pack(pop)
 
 
@@ -80,12 +80,6 @@ void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
 
 }
 
-//void CreateNewBmp()
-//{
-//    newBmp=bmp;
-//    newBmpInfo=bmpInfo;
-//
-//}
 void  ReadBinTxt(std::string inName,std::string outName)
 {
     std::ifstream inputFile(inName, std::ios::binary);

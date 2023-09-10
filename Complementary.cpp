@@ -1,6 +1,6 @@
 //
 // Created by ztheng on 2023/9/5.
-//
+//done
 #include "BMPFile.h"
 void Complementary(std::vector<uint8_t>& newImageData) {
 //    OutputToFile(newImageData,"C111om");
@@ -18,6 +18,8 @@ void Complementary(std::vector<uint8_t>& newImageData) {
 //    OutputToFile(newImageData,"Com");
 }
 int main() {
+    BMP bmp;
+    BMPInfo bmpInfo;
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open it!" << std::endl;
@@ -56,9 +58,8 @@ int main() {
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
     outputFile.seekp(bmp.dataOffset);
-
     //write file
-    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), imageDataSize);
+    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
 
     // close file
     outputFile.close();
