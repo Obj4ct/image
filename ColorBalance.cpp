@@ -6,9 +6,9 @@
 //done
 void ColorBalance(std::vector<uint8_t> &newImageData, int32_t width, int32_t height) {
     // count
-    double totalRed = 0.0;
-    double totalGreen = 0.0;
-    double totalBlue = 0.0;
+    double_t totalRed = 0.0;
+    double_t totalGreen = 0.0;
+    double_t totalBlue = 0.0;
 
     // for_each pix
     for (int i = 0; i < height; ++i)
@@ -19,21 +19,21 @@ void ColorBalance(std::vector<uint8_t> &newImageData, int32_t width, int32_t hei
             uint8_t r = newImageData[index];
             uint8_t g = newImageData[index + 1];
             uint8_t b = newImageData[index + 2];
-            totalRed += static_cast<double>(r);
-            totalGreen += static_cast<double>(g);
-            totalBlue += static_cast<double>(b);
+            totalRed += static_cast<double_t>(r);
+            totalGreen += static_cast<double_t>(g);
+            totalBlue += static_cast<double_t>(b);
         }
     }
 
     // avg
-    double avgRed = totalRed / (width * height);
-    double avgGreen = totalGreen / (width * height);
-    double avgBlue = totalBlue / (width * height);
+    double_t avgRed = totalRed / (width * height);
+    double_t avgGreen = totalGreen / (width * height);
+    double_t avgBlue = totalBlue / (width * height);
 
     // factor
-    double redFactor = avgRed > 0.0 ? avgRed / 255.0 : 1.0;
-    double greenFactor = avgGreen > 0.0 ? avgGreen / 255.0 : 1.0;
-    double blueFactor = avgBlue > 0.0 ? avgBlue / 255.0 : 1.0;
+    double_t redFactor = avgRed > 0.0 ? avgRed / 255.0 : 1.0;
+    double_t greenFactor = avgGreen > 0.0 ? avgGreen / 255.0 : 1.0;
+    double_t blueFactor = avgBlue > 0.0 ? avgBlue / 255.0 : 1.0;
 
     // adjust
     for (int i = 0; i < height; ++i)

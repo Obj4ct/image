@@ -10,10 +10,10 @@ void TailorImg(int32_t cropX, int32_t cropY, int32_t cropHeight, int32_t cropWid
     newBmp.fileSize=newBmp.dataOffset+newBmpInfo.imageSize;
     for (int y = cropY; y < cropY + cropHeight; y++) {
         for (int x = cropX; x < cropX + cropWidth; x++) {
-            int index = y * newBmpInfo.width + x;
-            newImageData.push_back(imageData[index+3]);     // Red
-            newImageData.push_back(imageData[index +3 + 1]); // Green
-            newImageData.push_back(imageData[index + 3 + 2]); // Blue
+            int index = (y * newBmpInfo.width + x) * 3;
+            newImageData.push_back(imageData[index]);     // Red
+            newImageData.push_back(imageData[index+1]); // Green
+            newImageData.push_back(imageData[index+2]); // Blue
         }
     }
 }
