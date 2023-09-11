@@ -89,6 +89,7 @@ int main() {
     double angle;
 //    std::cout<<"input rotate angle:"<<std::endl;
 //    std::cin>>angle;
+    TempImage(newImageData,"ScaleTemp.bmp",newBmp,newBmpInfo);
     RotateImage(newImageData, bmpInfo.width, bmpInfo.height, 45,newBmpInfo,newBmp);
 
     // create file

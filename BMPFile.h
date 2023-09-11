@@ -11,6 +11,8 @@
 #include <vector>
 #include <cmath>
 #include <cstring>
+//windows
+#include <cstdint>
 
 #define FILENAME "../Dinosaur.bmp"
 
@@ -114,7 +116,7 @@ int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
 
     if (!outputFile.is_open()) {
         std::cerr << "无法打开文件!" << std::endl;
-        return 1;
+        exit(0);
     }
 
     // foreach imageData
@@ -131,6 +133,33 @@ int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
 
 }
 
+//temp image for debug
+void TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPInfo& bmpInfo)
+{
+    // open output file
+    std::ofstream outputFile(name);
+
+
+    if (!outputFile.is_open()) {
+        std::cout << "unable to create this file" << std::endl;
+        exit(0);
+    }
+    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+
+    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+    outputFile.seekp(bmp.dataOffset);
+
+    // write
+    outputFile.write(reinterpret_cast<const char*>(newImageData.data()),newImageData.size());
+
+    // close file
+    outputFile.close();
+
+    std::cout << "temp image already generated!" << std::endl;
+    std::cout << "-----------" << std::endl;
+    std::cout << "-----------" << std::endl;
+    std::cout << "-----------" << std::endl;
+}
 
 
 #endif //CLION_BMPFILE_H
