@@ -54,7 +54,6 @@ int main() {
         std::cout << "unable to create this file!" << std::endl;
         return 1;
     }
-
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
     outputFile.seekp(bmp.dataOffset);
@@ -67,7 +66,5 @@ int main() {
     std::cout << "success！" << std::endl;
 
     return 0;
-
-
 }
 

@@ -6,20 +6,18 @@ void ConvertToGray(std::vector<uint8_t>& newImageData) {
     //OutputToFile(imageData, "GrayBefore");
 
     for (size_t i = 0; i < newImageData.size(); i += 3) {
-        uint8_t R = newImageData[i];
-        uint8_t G = newImageData[i + 1];
-        uint8_t B = newImageData[i + 2];
+        uint8_t r = newImageData[i];
+        uint8_t g = newImageData[i + 1];
+        uint8_t b = newImageData[i + 2];
 
         // cal gray
-        auto grayValue = static_cast<uint8_t>((R + G + B) / 3);
+        uint8_t gray = static_cast<uint8_t>(0.299 * r + 0.587 * g + 0.114 * b);
 
         // gary to every chanel
-        newImageData[i] = grayValue;
-        newImageData[i + 1] = grayValue;
-        newImageData[i + 2] = grayValue;
+        newImageData[i] = gray;
+        newImageData[i + 1] = gray;
+        newImageData[i + 2] = gray;
     }
-
-    //OutputToFile(imageData, "GrayAfter");
 }
 
 int main() {

@@ -40,10 +40,7 @@ int main() {
     // Offset
     uint32_t imageDataOffset = bmp.dataOffset;
     uint32_t imageDataSize = bmpInfo.imageSize;
-
-
     std::vector<uint8_t> imageData(imageDataSize);
-
     // No need to change position
     inputFile.seekg(imageDataOffset);
 
@@ -65,13 +62,6 @@ int main() {
     BMPInfo newBmpInfo;
     newBmp=bmp;
     newBmpInfo=bmpInfo;
-    newBmpInfo.height = cropHeight;
-    newBmpInfo.width = cropWidth;
-    newBmpInfo.imageSize = newBmpInfo.width * newBmpInfo.height * (newBmpInfo.bitsPerPixel / 8);
-    uint32_t newBmpSize=sizeof(newBmp);
-    uint32_t newBmpInfoSize=sizeof(newBmpInfo);
-    newBmp.dataOffset=newBmpSize+newBmpInfoSize;
-    newBmp.fileSize=newBmp.dataOffset+newBmpInfo.imageSize;
     TailorImg(cropX, cropY, cropHeight, cropWidth, imageData, newImageData, newBmpInfo,newBmp);
     //newImageData=imageData;
     // Create output file

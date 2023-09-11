@@ -48,25 +48,7 @@ int Contrast(std::vector<uint8_t>& newImageData,double_t contrastValue)
 //饱和度
 void Saturation(std::vector<uint8_t>& newImageData,int32_t width, int32_t height, double_t saturationValue)
 {
-    if(saturationValue==0)
-    {
-        //gray
-        for (size_t i = 0; i < newImageData.size(); i += 3) {
-            uint8_t R = newImageData[i];
-            uint8_t G = newImageData[i + 1];
-            uint8_t B = newImageData[i + 2];
 
-            // cal gray
-            auto grayValue = static_cast<uint8_t>((R + G + B) / 3);
-
-            // gary to every chanel
-            newImageData[i] = grayValue;
-            newImageData[i + 1] = grayValue;
-            newImageData[i + 2] = grayValue;
-        }
-    }
-    else
-    {
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
                 int index = (i * width + j) * 3;
@@ -88,7 +70,6 @@ void Saturation(std::vector<uint8_t>& newImageData,int32_t width, int32_t height
                 newImageData[index + 2] = b;
             }
         }
-    }
 
 }
 int main() {
@@ -159,7 +140,7 @@ int main() {
                 }
                 else
                 {
-                    std::ofstream outputFile("outputBrightness.bmp", std::ios::binary);
+                    std::ofstream outputFile("../Image/outputBrightness.bmp", std::ios::binary);
                     if (!outputFile.is_open()) {
                         std::cout << "unable to create this file" << std::endl;
                         return 1;
@@ -252,7 +233,6 @@ int main() {
             {
                 std::cout<<"input error! try again!"<<std::endl;
             }
-
         }
     }
 

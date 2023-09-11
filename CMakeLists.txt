@@ -11,9 +11,11 @@ set(SOURCE_FILES
         ImageScale.cpp
         Chanel.cpp
         Complementary.cpp
+        ColorBalance.cpp
+        ColorLevel.cpp
 )
 #set default
-set(MAIN_FILE Chanel.cpp)
+set(MAIN_FILE Tailor.cpp)
 
 add_executable(CLion ${MAIN_FILE})
 
