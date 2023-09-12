@@ -5,53 +5,36 @@
 //a little bit of bugs
 
 // RotateImage
-void RotateImage(std::vector<uint8_t> &newImageData, int32_t width, int32_t height, double angle, BMPInfo &newBmpInfo,
-                 BMP &newBmp) {
-    double radians = angle * M_PI / 180.0;
+void RotateImage(std::vector<uint8_t> &imageData, int32_t width, int32_t height, double_t angle) {
+    double_t radians = angle * M_PI / 180.0;
+    std::vector<uint8_t> rotatedImageData(width * height * 3);
 
 
-    int newWidth = static_cast<int>(std::abs(width * std::cos(radians)) +
-                                    std::abs(height * std::sin(radians)));
-    int newHeight = static_cast<int>(std::abs(height * std::cos(radians)) +
-                                     std::abs(width * std::sin(radians)));
-    std::vector<uint8_t> rotatedImageData(newWidth * newHeight * 3);
+    int32_t centerX =  width / 2;
+    int32_t centerY =  height / 2;
 
-
-    int centerX =  width / 2;
-    int centerY =  height / 2;
-
-    for (int y = 0; y < newHeight; ++y) {
-        for (int x = 0; x < newWidth; ++x) {
-            double rotatedX = std::cos(radians) * (x - centerX) -
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            double_t rotatedX = std::cos(radians) * (x - centerX) -
                               std::sin(radians) * (y - centerY) + centerX;
-            double rotatedY = std::sin(radians) * (x - centerX) +
+            double_t rotatedY = std::sin(radians) * (x - centerX) +
                               std::cos(radians) * (y - centerY) + centerY;
 
-//            if (rotatedX >= 0 && rotatedX < width && rotatedY >= 0 && rotatedY < height)
-//            {
+            if (rotatedX >= 0 && rotatedX < width && rotatedY >= 0 && rotatedY < height)
+            {
                 int originalIndex = static_cast<int>(std::round(rotatedY)) * width * 3 +
                                     static_cast<int>(std::round(rotatedX)) * 3;
-                int newIndex = y * newWidth * 3 + x * 3;
-//                rotatedImageData[newIndex] = newImageData[originalIndex];
-//                rotatedImageData[newIndex + 1] = newImageData[originalIndex + 1];
-//                rotatedImageData[newIndex + 2] = newImageData[originalIndex + 2];
-                rotatedImageData[newIndex]=0;
-                rotatedImageData[newIndex+1]=0;
-                rotatedImageData[newIndex+2]=newImageData[originalIndex + 2];
-//            }
+                int newIndex = y * width * 3 + x * 3;
+                rotatedImageData[newIndex] = imageData[originalIndex];
+                rotatedImageData[newIndex + 1] = imageData[originalIndex + 1];
+                rotatedImageData[newIndex + 2] = imageData[originalIndex + 2];
+
+            }
        }
     }
-    newBmpInfo.width = newBmpInfo.width;
-    TempImage(newImageData, "1.bmp", newBmp, newBmpInfo);
-    newBmpInfo.height = newHeight;
-    TempImage(newImageData, "2.bmp", newBmp, newBmpInfo);
-    newBmpInfo.imageSize = newWidth * newHeight * 3;
-    TempImage(newImageData, "3.bmp", newBmp, newBmpInfo);
-    newBmp.fileSize = newBmp.dataOffset + newBmpInfo.imageSize;
-    TempImage(newImageData, "4.bmp", newBmp, newBmpInfo);
 
-    newImageData = rotatedImageData;
-    TempImage(newImageData, "5.bmp", newBmp, newBmpInfo);
+
+    imageData = rotatedImageData;
 }
 
 int main()
@@ -91,17 +74,11 @@ int main()
     // close
     inputFile.close();
     // RotateImage Function
-    BMP newBmp;
-    BMPInfo newBmpInfo;
-    std::vector<uint8_t> newImageData;
-    newImageData = imageData;
-    newBmp = bmp;
-    newBmpInfo = bmpInfo;
-    double angle;
-//    std::cout<<"input rotate angle:"<<std::endl;
-//    std::cin>>angle;
+    double_t angle;
+    std::cout<<"input rotate angle:"<<std::endl;
+    std::cin>>angle;
     //normal
-    RotateImage(newImageData, bmpInfo.width, bmpInfo.height, 45, newBmpInfo, newBmp);
+    RotateImage(imageData, bmpInfo.width, bmpInfo.height, angle);
 
 
     // create file
@@ -111,12 +88,12 @@ int main()
         return 1;
     }
 
-    outputFile.write(reinterpret_cast<const char *>(&newBmp), sizeof(newBmp));
-    outputFile.write(reinterpret_cast<const char *>(&newBmpInfo), sizeof(newBmpInfo));
+    outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
+    outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
     //write file
-    outputFile.seekp(newBmp.dataOffset);
+    outputFile.seekp(bmp.dataOffset);
 
-    outputFile.write(reinterpret_cast<const char *>(newImageData.data()), newImageData.size());
+    outputFile.write(reinterpret_cast<const char *>(imageData.data()), imageDataSize);
 
     // close file
     outputFile.close();
