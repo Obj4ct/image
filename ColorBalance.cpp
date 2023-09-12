@@ -4,7 +4,7 @@
 #include "BMPFile.h"
 
 //done
-void ColorBalance(std::vector<uint8_t> &newImageData, int32_t width, int32_t height) {
+void ColorBalance(std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     // count
     double_t totalRed = 0.0;
     double_t totalGreen = 0.0;
@@ -16,9 +16,9 @@ void ColorBalance(std::vector<uint8_t> &newImageData, int32_t width, int32_t hei
         for (int j = 0; j < width; ++j)
         {
             int index = (i * width + j) * 3;
-            uint8_t r = newImageData[index];
-            uint8_t g = newImageData[index + 1];
-            uint8_t b = newImageData[index + 2];
+            uint8_t r = imageData[index];
+            uint8_t g = imageData[index + 1];
+            uint8_t b = imageData[index + 2];
             totalRed += static_cast<double_t>(r);
             totalGreen += static_cast<double_t>(g);
             totalBlue += static_cast<double_t>(b);
@@ -41,9 +41,9 @@ void ColorBalance(std::vector<uint8_t> &newImageData, int32_t width, int32_t hei
         for (int j = 0; j < width; ++j)
         {
             int index = (i * width + j) * 3;
-            uint8_t r = newImageData[index];
-            uint8_t g = newImageData[index + 1];
-            uint8_t b = newImageData[index + 2];
+            uint8_t r = imageData[index];
+            uint8_t g = imageData[index + 1];
+            uint8_t b = imageData[index + 2];
 
             // adjust new pix by factor
             r = static_cast<uint8_t>(r * redFactor);
@@ -51,9 +51,9 @@ void ColorBalance(std::vector<uint8_t> &newImageData, int32_t width, int32_t hei
             b = static_cast<uint8_t>(b * blueFactor);
 
             //update pix
-            newImageData[index] = r;
-            newImageData[index + 1] = g;
-            newImageData[index + 2] = b;
+            imageData[index] = r;
+            imageData[index + 1] = g;
+            imageData[index + 2] = b;
         }
     }
 }
@@ -90,11 +90,9 @@ int main() {
 
     // close
     inputFile.close();
-    //ImgInfo();
-    std::vector<uint8_t> newImageData;
-    newImageData=imageData;
+
     // fuction
-    ColorBalance(newImageData,bmpInfo.width,bmpInfo.height);
+    ColorBalance(imageData,bmpInfo.width,bmpInfo.height);
 
 
     //ImgInfo();
@@ -111,7 +109,7 @@ int main() {
     outputFile.seekp(bmp.dataOffset);
 
     //write file
-    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageDataSize);
 
     // close file
     outputFile.close();

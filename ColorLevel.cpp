@@ -4,64 +4,64 @@
 // 色阶调整分输入色阶调整和输出色阶调整，其中输入色阶调整有3个调整点，即通常所说的黑场、白场及灰场调整
 #include "BMPFile.h"
 
-int ColorLevelChanel_R(std::vector<uint8_t>& newImageData,int32_t width,int32_t height,double_t brightness, double_t contrast) {
+int ColorLevelChanel_R(std::vector<uint8_t>& rImageData,int32_t width,int32_t height,double_t brightness, double_t contrast) {
 
-        for (int i = 0; i < newImageData.size(); i+=3)
+        for (int i = 0; i < rImageData.size(); i+=3)
         {
-            uint8_t r = newImageData[i];
+            uint8_t r = rImageData[i];
 
             // brightness
             r = std::min(255, std::max(0, static_cast<int>(r + brightness)));
             // contrast
             //128：midGray
             r = std::min(255, std::max(0, static_cast<int>((r - 128) * contrast + 128)));
-            newImageData[i] = r;
+            rImageData[i] = r;
         }
         return 0;
 
 }
-int ColorLevelChanel_G(std::vector<uint8_t>& newImageData,int32_t width,int32_t height,double_t brightness, double_t contrast) {
+int ColorLevelChanel_G(std::vector<uint8_t>& gImageData,int32_t width,int32_t height,double_t brightness, double_t contrast) {
 
-    for (int i = 0; i < newImageData.size(); i+=3)
+    for (int i = 0; i < gImageData.size(); i+=3)
     {
-        uint8_t G = newImageData[i+1];
+        uint8_t G = gImageData[i+1];
 
         // brightness
         G = std::min(255, std::max(0, static_cast<int>(G + brightness)));
         // contrast
         //128：midGray
         G = std::min(255, std::max(0, static_cast<int>((G - 128) * contrast + 128)));
-        newImageData[i+1] = G;
+        gImageData[i+1] = G;
     }
     return 0;
 
 }
 
-int ColorLevelChanel_B(std::vector<uint8_t>& newImageData,int32_t width,int32_t height,double_t brightness, double_t contrast) {
+int ColorLevelChanel_B(std::vector<uint8_t>& bImageData,int32_t width,int32_t height,double_t brightness, double_t contrast) {
 
-    for (int i = 0; i < newImageData.size(); i+=3)
+    for (int i = 0; i < bImageData.size(); i+=3)
     {
-        uint8_t B = newImageData[i+2];
+        uint8_t B = bImageData[i+2];
 
         // brightness
         B = std::min(255, std::max(0, static_cast<int>(B+ brightness)));
         // contrast
         //128：midGray
         B = std::min(255, std::max(0, static_cast<int>((B - 128) * contrast + 128)));
-        newImageData[i+2] = B;
+        bImageData[i+2] = B;
     }
     return 0;
 
 }
 
-int ColorLevelChanel_RGB(std::vector<uint8_t> &newImageData, int32_t width, int32_t height, double_t brightness, double_t contrast)
+int ColorLevelChanel_RGB(std::vector<uint8_t> &rgbImageData, int32_t width, int32_t height, double_t brightness, double_t contrast)
 {
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             int index = (i * width + j) * 3;
-            uint8_t r = newImageData[index];
-            uint8_t g = newImageData[index + 1];
-            uint8_t b = newImageData[index + 2];
+            uint8_t r = rgbImageData[index];
+            uint8_t g = rgbImageData[index + 1];
+            uint8_t b = rgbImageData[index + 2];
             //brightness
             r = std::min(255, std::max(0, static_cast<int>(r + brightness)));
             g = std::min(255, std::max(0, static_cast<int>(g + brightness)));
@@ -72,9 +72,9 @@ int ColorLevelChanel_RGB(std::vector<uint8_t> &newImageData, int32_t width, int3
             b = std::min(255, std::max(0, static_cast<int>((b - 128) * contrast + 128)));
 
             // update
-            newImageData[index] = r;
-            newImageData[index + 1] = g;
-            newImageData[index + 2] = b;
+            rgbImageData[index] = r;
+            rgbImageData[index + 1] = g;
+            rgbImageData[index + 2] = b;
         }
     }
     return 0;
@@ -113,8 +113,15 @@ int main() {
     // close
     inputFile.close();
     //CreateNewBmp();
-    std::vector<uint8_t> newImageData;
-    newImageData=imageData;
+    std::vector<uint8_t> rImageData(imageDataSize);
+    rImageData=imageData;
+    std::vector<uint8_t> gImageData(imageDataSize);
+    gImageData=imageData;
+    std::vector<uint8_t> bImageData(imageDataSize);
+    bImageData=imageData;
+    std::vector<uint8_t> rgbImageData(imageDataSize);
+    rgbImageData=imageData;
+
     double_t brightness,contrast;
     bool isLoop=true;
     while(isLoop)
@@ -137,7 +144,7 @@ int main() {
                 std::cin >> brightness;
                 std::cout<< "please input contrast:"<<std::endl;
                 std::cin>>contrast;
-                ColorLevelChanel_R(newImageData,bmpInfo.width,bmpInfo.height,brightness,contrast);
+                ColorLevelChanel_R(rImageData,bmpInfo.width,bmpInfo.height,brightness,contrast);
                 std::ofstream outputFile("changeColorLever_R.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {
                     std::cout << "unable to create this file" << std::endl;
@@ -147,7 +154,7 @@ int main() {
                 outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
                 outputFile.seekp(bmp.dataOffset);
                 // write
-                outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
+                outputFile.write(reinterpret_cast<const char*>(rImageData.data()), rImageData.size());
                 // close file
                 outputFile.close();
                 std::cout << "success" << std::endl;
@@ -162,7 +169,7 @@ int main() {
                 std::cin >> brightness;
                 std::cout<< "please input contrast:"<<std::endl;
                 std::cin>>contrast;
-                ColorLevelChanel_G(newImageData,bmpInfo.width,bmpInfo.height,brightness,contrast);
+                ColorLevelChanel_G(gImageData,bmpInfo.width,bmpInfo.height,brightness,contrast);
                 std::ofstream outputFile("changeColorLever_G.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {
                     std::cout << "unable to create this file" << std::endl;
@@ -172,7 +179,7 @@ int main() {
                 outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
                 outputFile.seekp(bmp.dataOffset);
                 // write
-                outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
+                outputFile.write(reinterpret_cast<const char*>(gImageData.data()), gImageData.size());
                 // close file
                 outputFile.close();
                 std::cout << "success" << std::endl;
@@ -187,7 +194,7 @@ int main() {
                 std::cin >> brightness;
                 std::cout<< "please input contrast:"<<std::endl;
                 std::cin>>contrast;
-                ColorLevelChanel_B(newImageData,bmpInfo.width,bmpInfo.height,brightness,contrast);
+                ColorLevelChanel_B(bImageData,bmpInfo.width,bmpInfo.height,brightness,contrast);
                 std::ofstream outputFile("changeColorLever_B.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {
                     std::cout << "unable to create this file" << std::endl;
@@ -197,7 +204,7 @@ int main() {
                 outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
                 outputFile.seekp(bmp.dataOffset);
                 // write
-                outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
+                outputFile.write(reinterpret_cast<const char*>(bImageData.data()), bImageData.size());
                 // close file
                 outputFile.close();
                 std::cout << "success" << std::endl;
@@ -216,7 +223,7 @@ int main() {
                 std::cout<< "please input contrast:"<<std::endl;
                 std::cin>>contrast;
                 // RGB function
-                int result = ColorLevelChanel_RGB(newImageData, bmpInfo.width, bmpInfo.height,brightness,contrast);
+                int result = ColorLevelChanel_RGB(rgbImageData, bmpInfo.width, bmpInfo.height,brightness,contrast);
                 if (result == 1)
                 {
                     goto inputRGB;
@@ -235,7 +242,7 @@ int main() {
                     outputFile.seekp(bmp.dataOffset);
 
                     // write
-                    outputFile.write(reinterpret_cast<const char *>(newImageData.data()), newImageData.size());
+                    outputFile.write(reinterpret_cast<const char *>(rgbImageData.data()), rgbImageData.size());
 
                     // close file
                     outputFile.close();

@@ -14,7 +14,7 @@
 //windows
 #include <cstdint>
 
-#define FILENAME "../Dinosaur.bmp"
+#define FILENAME "Dinosaur.bmp"
 
 
 
@@ -82,19 +82,23 @@ void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
 
 }
 
-void  ReadBinTxt(std::string inName,std::string outName)
+int  ReadBinTxt(std::string inName,std::string outName)
 {
     std::ifstream inputFile(inName, std::ios::binary);
 
     if (!inputFile.is_open()) {
         std::cerr << "无法打开输入文件!" << std::endl;;
+        inputFile.close();
+        return 1;
     }
+
 
     std::ofstream outputFile(outName);
 
     if (!outputFile.is_open()) {
         std::cerr << "无法创建输出文件!" << std::endl;
-        inputFile.close();
+        outputFile.close();
+        return 1;
     }
 
     char byte;
@@ -107,6 +111,8 @@ void  ReadBinTxt(std::string inName,std::string outName)
     outputFile.close();
 
     std::cout << "转换完成!" << std::endl;
+    return 0;
+
 }
 int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
 
@@ -116,7 +122,7 @@ int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
 
     if (!outputFile.is_open()) {
         std::cerr << "无法打开文件!" << std::endl;
-        exit(0);
+        return 1;
     }
 
     // foreach imageData
@@ -130,11 +136,12 @@ int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
     std::cout << "-----------" << std::endl;
     std::cout << "-----------" << std::endl;
     std::cout << "-----------" << std::endl;
+    return 0;
 
 }
 
 //temp image for debug
-void TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPInfo& bmpInfo)
+int TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPInfo& bmpInfo)
 {
     // open output file
     std::ofstream outputFile(name);
@@ -142,11 +149,11 @@ void TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPI
 
     if (!outputFile.is_open()) {
         std::cout << "unable to create this file" << std::endl;
-        exit(0);
+        return 1;
     }
-    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(bmp));
 
-    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(bmpInfo));
     outputFile.seekp(bmp.dataOffset);
 
     // write
@@ -159,6 +166,8 @@ void TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPI
     std::cout << "-----------" << std::endl;
     std::cout << "-----------" << std::endl;
     std::cout << "-----------" << std::endl;
+    return 0;
+
 }
 
 

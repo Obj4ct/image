@@ -4,11 +4,11 @@
 #include "BMPFile.h"
 
 
-void InvertColors(std::vector<uint8_t>& newImageData) {
-    for (size_t i = 0; i < newImageData.size(); i +=3) {
-        newImageData[i] = 255 - newImageData[i];
-        newImageData[i + 1] = 255 - newImageData[i+1];
-        newImageData[i + 2] = 255 - newImageData[i+2];
+void InvertColors(std::vector<uint8_t>& imageData) {
+    for (size_t i = 0; i < imageData.size(); i +=3) {
+        imageData[i] = 255 - imageData[i];
+        imageData[i + 1] = 255 - imageData[i+1];
+        imageData[i + 2] = 255 - imageData[i+2];
     }
 }
 
@@ -44,10 +44,9 @@ int main() {
     // close
     inputFile.close();
     //ImgInfo();
-    std::vector<uint8_t> newImageData;
-    newImageData=imageData;
+
     // fuction
-    InvertColors(newImageData);
+    InvertColors(imageData);
 
 
     //ImgInfo();
@@ -63,7 +62,7 @@ int main() {
     outputFile.seekp(bmp.dataOffset);
 
     //write file
-    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageDataSize);
 
     // close file
     outputFile.close();

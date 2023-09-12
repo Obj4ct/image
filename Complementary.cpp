@@ -2,17 +2,17 @@
 // Created by ztheng on 2023/9/5.
 //done
 #include "BMPFile.h"
-void Complementary(std::vector<uint8_t>& newImageData) {
+void Complementary(std::vector<uint8_t>& imageData) {
 //    OutputToFile(newImageData,"C111om");
-    for (size_t i = 0; i < newImageData.size(); i += 3) {
-        size_t r=newImageData[i];
-        size_t g=newImageData[i+1];
-        size_t b=newImageData[i+2];
+    for (size_t i = 0; i < imageData.size(); i += 3) {
+        size_t r=imageData[i];
+        size_t g=imageData[i+1];
+        size_t b=imageData[i+2];
         size_t maxRgb=std::max(std::max(r,g),b);
         size_t minRgb=std::min(std::min(r,g),b);
-        newImageData[i]=maxRgb+minRgb-r;
-        newImageData[i+1]=maxRgb+minRgb-g;
-        newImageData[i+2]=maxRgb+minRgb-b;
+        imageData[i]=maxRgb+minRgb-r;
+        imageData[i+1]=maxRgb+minRgb-g;
+        imageData[i+2]=maxRgb+minRgb-b;
     }
 
 //    OutputToFile(newImageData,"Com");
@@ -43,10 +43,9 @@ int main() {
     inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
     // close
     inputFile.close();
-    std::vector<uint8_t> newImageData;
-    newImageData=imageData;
-    // fuction
-    Complementary(newImageData);
+
+    // function
+    Complementary(imageData);
 
     // create file
     std::ofstream outputFile("outColorComplementary.bmp", std::ios::binary);
@@ -58,7 +57,7 @@ int main() {
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
     outputFile.seekp(bmp.dataOffset);
     //write file
-    outputFile.write(reinterpret_cast<const char*>(newImageData.data()), newImageData.size());
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageDataSize);
 
     // close file
     outputFile.close();

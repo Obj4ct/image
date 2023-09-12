@@ -2,21 +2,21 @@
 // Created by ztheng on 2023/9/5.
 // done
 #include "BMPFile.h"
-void ConvertToGray(std::vector<uint8_t>& newImageData) {
+void ConvertToGray(std::vector<uint8_t>& imageData) {
     //OutputToFile(imageData, "GrayBefore");
 
-    for (size_t i = 0; i < newImageData.size(); i += 3) {
-        uint8_t r = newImageData[i];
-        uint8_t g = newImageData[i + 1];
-        uint8_t b = newImageData[i + 2];
+    for (size_t i = 0; i < imageData.size(); i += 3) {
+        uint8_t r = imageData[i];
+        uint8_t g = imageData[i + 1];
+        uint8_t b = imageData[i + 2];
 
         // cal gray
         uint8_t gray = static_cast<uint8_t>(0.299 * r + 0.587 * g + 0.114 * b);
 
         // gary to every chanel
-        newImageData[i] = gray;
-        newImageData[i + 1] = gray;
-        newImageData[i + 2] = gray;
+        imageData[i] = gray;
+        imageData[i + 1] = gray;
+        imageData[i + 2] = gray;
     }
 }
 
@@ -57,11 +57,8 @@ int main() {
 
     // close
     inputFile.close();
-    //CreateNewBmp();
-    std::vector<uint8_t> newImageData;
-    newImageData=imageData;
     // function
-    ConvertToGray(newImageData);
+    ConvertToGray(imageData);
 
     //create file
     std::ofstream outputFile("outputGray.bmp", std::ios::binary);
@@ -79,7 +76,7 @@ int main() {
     outputFile.seekp(bmp.dataOffset);
 
     // write
-    outputFile.write(reinterpret_cast<const char*>(newImageData.data()),newImageData.size());
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()),imageDataSize);
 
     // close file
     outputFile.close();

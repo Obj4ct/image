@@ -1,22 +1,10 @@
 cmake_minimum_required(VERSION 3.26)
-project(CLion)
+project(image)
 
 set(CMAKE_CXX_STANDARD 17)
-
-#list all cpp file
-set(SOURCE_FILES
-        Tailor.cpp
-        ColorReverse.cpp
-        Gray.cpp
-        ImageScale.cpp
-        Chanel.cpp
-        Complementary.cpp
-        ColorBalance.cpp
-        ColorLevel.cpp
-)
-#set default
-set(MAIN_FILE SwapColorSpace.cpp)
-
-add_executable(CLion ${MAIN_FILE})
-
-
+# get cmake file path
+file (GLOB files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
+foreach (file ${files})
+    string(REGEX REPLACE "(.+).cpp$" "\\1" exe ${file})
+    add_executable (${exe} ${file})
+endforeach ()
