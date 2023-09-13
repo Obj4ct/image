@@ -27,21 +27,15 @@ int RGB2YUV(std::vector<uint8_t> &YUVImageData, int32_t width, int32_t height) {
             totalRed += static_cast<double_t>(r);
             totalGreen += static_cast<double_t>(g);
             totalBlue += static_cast<double_t>(b);
-            y = 0.299 * totalRed + 0.587 * totalGreen + 0.114 * totalBlue;
-            u = -0.169 * totalRed - 0.331 * totalGreen + 0.5 * totalBlue;
-            v = 0.5 * totalRed - 0.419 * totalGreen - 0.081 * totalBlue;
+            y = (0.257 * totalRed) + (0.504 * totalGreen) + (0.098 * totalBlue) + 16;
+            u = (0.439 * totalRed) - (0.368 * totalGreen) - (0.071 * totalBlue) + 128;
+            v = -( 0.148 * totalRed)-(0.291 * totalGreen) + (0.439 * totalBlue) + 128;
             YUVImageData[index] = y;
             YUVImageData[index + 1] = u;
             YUVImageData[index + 2] = v;
+
         }
     }
-    std::cout << std::endl
-              << std::endl
-              << std::endl
-              << std::endl
-              << "change RGB to YUV....." << std::endl;
-
-
     return 0;
 
 }
@@ -77,38 +71,7 @@ int RGB2YIQ(std::vector<uint8_t> &YIQImageData, int32_t width, int32_t height) {
     return 0;
 
 }
-
 int RGB2LAB(std::vector<uint8_t> &LABImageData, int32_t width, int32_t height) {
-    // count
-    double_t totalRed = 0.0;
-    double_t totalGreen = 0.0;
-    double_t totalBlue = 0.0;
-    double_t l = 0;
-    double_t a = 0;
-    double_t b = 0;
-    // for_each pix
-    for (int j = 0; j < height; ++j) {
-        for (int k = 0; k < width; ++k) {
-            int index = (j * width + k) * 3;
-            uint8_t r = LABImageData[index];
-            uint8_t g = LABImageData[index + 1];
-            uint8_t bChannel = LABImageData[index + 2];
-            totalRed += static_cast<double_t>(r);
-            totalGreen += static_cast<double_t>(g);
-            totalBlue += static_cast<double_t>(bChannel);
-            l = 0.256789 * totalRed + 0.504129 * totalGreen + 0.097906 * totalBlue + 16;
-            a = -0.148223 * totalRed - 0.290992 * totalGreen + 0.439215 * totalBlue + 128;
-            b = 0.439215 * totalRed - 0.367789 * totalGreen - 0.071426 * totalBlue + 128;
-            LABImageData[index] = l;
-            LABImageData[index + 1] = a;
-            LABImageData[index + 2] = b;
-        }
-    }
-    return 0;
-
-}
-
-int RGB2XYZ(std::vector<uint8_t> &LABImageData, int32_t width, int32_t height) {
     // count
     double_t totalRed = 0.0;
     double_t totalGreen = 0.0;
@@ -180,7 +143,63 @@ int YUV2RGB(std::vector<uint8_t> &YUV2RGBImageData, int32_t width, int32_t heigh
     return 0;
 
 }
+int YIQ2RGB(std::vector<uint8_t> &YUV2RGBImageData, int32_t width, int32_t height) {
+    // count
+    double_t totalRed = 0.0;
+    double_t totalGreen = 0.0;
+    double_t totalBlue = 0.0;
+    double_t l = 0;
+    double_t a = 0;
+    double_t b = 0;
+    // for_each pix
+    for (int j = 0; j < height; ++j) {
+        for (int k = 0; k < width; ++k) {
+            int index = (j * width + k) * 3;
+            uint8_t r = YUV2RGBImageData[index];
+            uint8_t g = YUV2RGBImageData[index + 1];
+            uint8_t bChannel = YUV2RGBImageData[index + 2];
+            totalRed += static_cast<double_t>(r);
+            totalGreen += static_cast<double_t>(g);
+            totalBlue += static_cast<double_t>(bChannel);
+            l = 0.256789 * totalRed + 0.504129 * totalGreen + 0.097906 * totalBlue + 16;
+            a = -0.148223 * totalRed - 0.290992 * totalGreen + 0.439215 * totalBlue + 128;
+            b = 0.439215 * totalRed - 0.367789 * totalGreen - 0.071426 * totalBlue + 128;
+            YUV2RGBImageData[index] = l;
+            YUV2RGBImageData[index + 1] = a;
+            YUV2RGBImageData[index + 2] = b;
+        }
+    }
+    return 0;
 
+}int LAB2RGB(std::vector<uint8_t> &YUV2RGBImageData, int32_t width, int32_t height) {
+    // count
+    double_t totalRed = 0.0;
+    double_t totalGreen = 0.0;
+    double_t totalBlue = 0.0;
+    double_t l = 0;
+    double_t a = 0;
+    double_t b = 0;
+    // for_each pix
+    for (int j = 0; j < height; ++j) {
+        for (int k = 0; k < width; ++k) {
+            int index = (j * width + k) * 3;
+            uint8_t r = YUV2RGBImageData[index];
+            uint8_t g = YUV2RGBImageData[index + 1];
+            uint8_t bChannel = YUV2RGBImageData[index + 2];
+            totalRed += static_cast<double_t>(r);
+            totalGreen += static_cast<double_t>(g);
+            totalBlue += static_cast<double_t>(bChannel);
+            l = 0.256789 * totalRed + 0.504129 * totalGreen + 0.097906 * totalBlue + 16;
+            a = -0.148223 * totalRed - 0.290992 * totalGreen + 0.439215 * totalBlue + 128;
+            b = 0.439215 * totalRed - 0.367789 * totalGreen - 0.071426 * totalBlue + 128;
+            YUV2RGBImageData[index] = l;
+            YUV2RGBImageData[index + 1] = a;
+            YUV2RGBImageData[index + 2] = b;
+        }
+    }
+    return 0;
+
+}
 int main() {
     BMP bmp;
     BMPInfo bmpInfo;
@@ -211,6 +230,7 @@ int main() {
     std::vector<uint8_t> imageData(imageDataSize);
     inputFile.seekg(imageDataOffset);
     inputFile.read(reinterpret_cast<char *>(imageData.data()), imageDataSize);
+    outputBinToFile(imageData,"put1");
 
     // close
     inputFile.close();
@@ -250,9 +270,13 @@ int main() {
             case 1: {
                 std::cout << "just a moment..." << std::endl;
                 //unix
-                sleep(2);
+                //sleep(2);
+                outputBinToFile(imageData,"RGBBin");
+
                 RGB2YUV(YUVImageData, bmpInfo.width, bmpInfo.height);
+                outputBinToFile(YUVImageData,"YUVBin");
                 std::ofstream outputFile("RGB_TO_YUV.bmp", std::ios::binary);
+
                 if (!outputFile.is_open()) {
                     std::cout << "unable to create this file" << std::endl;
                     return 1;
@@ -317,7 +341,7 @@ int main() {
                 std::cout << "just a moment..." << std::endl;
                 //unix
                 sleep(2);
-                RGB2LAB(YUV2RGBImageData, bmpInfo.width, bmpInfo.height);
+                YUV2RGB(YUV2RGBImageData, bmpInfo.width, bmpInfo.height);
                 std::ofstream outputFile("YUV_TO_RGB.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {
                     std::cout << "unable to create this file" << std::endl;
@@ -339,8 +363,8 @@ int main() {
                 std::cout << "just a moment..." << std::endl;
                 //unix
                 sleep(2);
-                RGB2LAB(LABImageData, bmpInfo.width, bmpInfo.height);
-                std::ofstream outputFile("RGB_TO_LAB.bmp", std::ios::binary);
+                YIQ2RGB(YIQImageData, bmpInfo.width, bmpInfo.height);
+                std::ofstream outputFile("YIQ_TO_RGB.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {
                     std::cout << "unable to create this file" << std::endl;
                     return 1;
@@ -361,8 +385,8 @@ int main() {
                 std::cout << "just a moment..." << std::endl;
                 //unix
                 sleep(2);
-                RGB2LAB(LABImageData, bmpInfo.width, bmpInfo.height);
-                std::ofstream outputFile("RGB_TO_LAB.bmp", std::ios::binary);
+                LAB2RGB(LABImageData, bmpInfo.width, bmpInfo.height);
+                std::ofstream outputFile("LAB_TO_RGB.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {
                     std::cout << "unable to create this file" << std::endl;
                     return 1;

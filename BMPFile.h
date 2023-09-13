@@ -14,7 +14,7 @@
 //windows
 #include <cstdint>
 
-#define FILENAME "Dinosaur.bmp"
+#define FILENAME "../Dinosaur.bmp"
 
 
 
@@ -91,8 +91,6 @@ int  ReadBinTxt(std::string inName,std::string outName)
         inputFile.close();
         return 1;
     }
-
-
     std::ofstream outputFile(outName);
 
     if (!outputFile.is_open()) {
@@ -103,7 +101,6 @@ int  ReadBinTxt(std::string inName,std::string outName)
 
     char byte;
     while (inputFile.get(byte)) {
-        // 将每个字节的十进制值输出到文本文件
         outputFile << static_cast<int>(byte) << " ";
     }
 
@@ -114,7 +111,26 @@ int  ReadBinTxt(std::string inName,std::string outName)
     return 0;
 
 }
-int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
+//保存二进制
+int outputBinToFile(std::vector<uint8_t>& imageData,std::string name)
+{
+    // open output file
+    std::ofstream outputFile(name,std::ios::binary);
+    if (!outputFile.is_open()) {
+        std::cerr << "无法打开文件!" << std::endl;
+        return 1;
+    }
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()), static_cast<std::streamsize>(imageData.size()));
+    outputFile.close();
+    std::cout << "-----------" << std::endl;
+    std::cout << "二进制生成！!" << std::endl;
+    std::cout << "-----------" << std::endl;
+
+    return 0;
+
+}
+//保存像素
+int OutputPixToFile(std::vector<uint8_t>& imageData,std::string name) {
 
     // open output file
     std::ofstream outputFile(name);
@@ -129,12 +145,9 @@ int OutputToFile(std::vector<uint8_t>& imageData,std::string name) {
     for (uint8_t byte: imageData) {
         outputFile << static_cast<int>(byte) << " ";
     }
-
     outputFile.close();
-
-    std::cout << "write done!" << std::endl;
     std::cout << "-----------" << std::endl;
-    std::cout << "-----------" << std::endl;
+    std::cout << "像素信息生成！" << std::endl;
     std::cout << "-----------" << std::endl;
     return 0;
 
@@ -161,11 +174,10 @@ int TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPIn
 
     // close file
     outputFile.close();
+    std::cout << "-----------" << std::endl;
+    std::cout << "中间图像生成！" << std::endl;
+    std::cout << "-----------" << std::endl;
 
-    std::cout << "temp image already generated!" << std::endl;
-    std::cout << "-----------" << std::endl;
-    std::cout << "-----------" << std::endl;
-    std::cout << "-----------" << std::endl;
     return 0;
 
 }
