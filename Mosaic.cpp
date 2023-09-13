@@ -1,10 +1,10 @@
 //
 // Created by ztheng on 2023/9/5.
-// done
+
 #include "BMPFile.h"
 
 
-void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height, int32_t degree) {
+void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height, uint32_t degree) {
     // foreach pix 加上步长应该是移动像素方便处理下一个像素
     for (uint32_t y = 0; y < height; y += degree) {
         for (uint32_t x = 0; x < width; x += degree) {
@@ -26,6 +26,8 @@ void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height
             auto averageG = totalG / mosaic;
             auto averageB = totalB / mosaic;
             // set each pix
+
+
             for (uint32_t dy = 0; dy < degree && y + dy < height; dy++) {
                 for (uint32_t dx = 0; dx < degree && x + dx < width; dx++) {
                     uint32_t index = ((y + dy) * width + (x + dx)) * 3;
@@ -38,20 +40,24 @@ void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height
     }
 }
 
-void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t beginX, uint32_t beginY, int32_t degree) {
-
-    // 坐标终点
-    uint32_t endX = beginX + degree;
-    uint32_t endY = beginY + degree;
+void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height, uint32_t beginX, uint32_t beginY,
+                uint32_t blockWidth, uint32_t blockHeight, uint32_t degree, BMPInfo &bmpInfo, BMP &bmp) {
+    uint32_t endX = beginX + blockWidth;
+    uint32_t endY = beginY + blockHeight;
+    if (endX > width) {
+        endX = width;
+    }
+    if (endY > height) {
+        endY = height;
+    }
     uint32_t totalR = 0;
     uint32_t totalG = 0;
     uint32_t totalB = 0;
     int mosaic = 0;
-    // foreach pix 加上步长应该是移动像素方便处理下一个像素
-    for (uint32_t y = beginY; y < endY; y ++) {
-        for (uint32_t x = beginX; x < endX; x ++) {
-
-            uint32_t index = y * width * 3 + x * 3;
+    for (uint32_t y = beginY; y < endY; y += degree) {
+        for (uint32_t x = beginX; x < endX; x += degree) {
+            // avg
+            uint32_t index = (y * blockWidth + x) * 3;
             totalR += imageData[index];
             totalG += imageData[index + 1];
             totalB += imageData[index + 2];
@@ -62,15 +68,55 @@ void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t beginX
     auto averageG = totalG / mosaic;
     auto averageB = totalB / mosaic;
     // set each pix
-    for (uint32_t y = beginY; y < endY; y ++) {
-        for (uint32_t x = beginX; x < endX; x ++) {
-            uint32_t index = y * width * 3 + x * 3;;
+    for (uint32_t y = beginY; y < endY; y++) {
+        for (uint32_t x = beginX; x < endX; x++) {
+            uint32_t index = (y * blockWidth + x) * 3;
             imageData[index] = averageR;
             imageData[index + 1] = averageG;
             imageData[index + 2] = averageB;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//total
+//    for (uint32_t y = beginY; y < endY; y++) {
+//        for (uint32_t x = beginX; x < endX; x++) {
+//            uint32_t index = (y * width + x) * 3;
+//            totalR += imageData[index];
+//            totalG += imageData[index + 1];
+//            totalB += imageData[index + 2];
+//            mosaic++;
+//        }
+//    }
+//    // get aver
+//    auto averageR = totalR / mosaic;
+//    auto averageG = totalG / mosaic;
+//    auto averageB = totalB / mosaic;
+//
+//    // set aver
+//    for (uint32_t y = beginY; y < endY; y++) {
+//        for (uint32_t x = beginX; x < endX; x++) {
+//            uint32_t index = (y * width + x) * 3;
+//            imageData[index] = averageR;
+//            imageData[index + 1] = averageG;
+//            imageData[index + 2] = averageB;
+//        }
+//    }
+
 
 
 int main() {
@@ -103,8 +149,6 @@ int main() {
     std::vector<uint8_t> imageData(imageDataSize);
     inputFile.seekg(imageDataOffset);
     inputFile.read(reinterpret_cast<char *>(imageData.data()), imageDataSize);
-
-
     // close
     inputFile.close();
 
@@ -120,10 +164,9 @@ int main() {
 
         switch (choice) {
             case 1: {
-                inputBrightness:
                 std::cout << "please input mosaic degree:" << std::endl;
                 // Brightness function
-                int32_t degree;
+                uint32_t degree;
                 std::cin >> degree;
                 //OutputToFile(imageData,"beforeBrightness");
                 FullMosaic(imageData, bmpInfo.width, bmpInfo.height, degree);
@@ -150,8 +193,10 @@ int main() {
                 break;
             }
             case 2: {
-                uint32_t beginX = 200;
-                uint32_t beginY = 200;
+                uint32_t beginX = 100;
+                uint32_t beginY = 100;
+                uint32_t blockWidth = 300;
+                uint32_t blockHeight = 300;
 
 //                std::cout<<"你要从哪里开始打码呢？请输入你要开始的X坐标和Y坐标"<<std::endl;
 //                std::cout<<"x:"<<std::endl;
@@ -166,10 +211,12 @@ int main() {
 //                std::cin>>targetWidth;
 //                std::cout << "please input mosaic degree:" << std::endl;
                 // Brightness function
-                int32_t degree = 100;
+                uint32_t degree = 100;
 //                std::cin >> degree;
                 //OutputToFile(imageData,"beforeBrightness");
-                AreaMosaic(imageData, 100,beginX, beginY,degree);
+
+                AreaMosaic(imageData, bmpInfo.width, bmpInfo.height, beginX, beginY, blockWidth, blockHeight, degree,
+                           bmpInfo, bmp);
                 //OutputToFile(imageData,"afterBrightness");
                 std::ofstream outputFile("outputAreaMosaic.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {

@@ -11,7 +11,7 @@ void ConvertToGray(std::vector<uint8_t>& imageData) {
         uint8_t b = imageData[i + 2];
 
         // cal gray
-        uint8_t gray = static_cast<uint8_t>(0.299 * r + 0.587 * g + 0.114 * b);
+        auto gray = static_cast<uint8_t>(0.299 * r + 0.587 * g + 0.114 * b);
 
         // gary to every chanel
         imageData[i] = gray;
@@ -21,8 +21,8 @@ void ConvertToGray(std::vector<uint8_t>& imageData) {
 }
 
 int main() {
-    BMP bmp;
-    BMPInfo bmpInfo;
+    BMP bmp{};
+    BMPInfo bmpInfo{};
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open this file" << std::endl;
@@ -58,8 +58,8 @@ int main() {
     // close
     inputFile.close();
     // function
-    ConvertToGray(imageData);
 
+    ConvertToGray(imageData);
     //create file
     std::ofstream outputFile("outputGray.bmp", std::ios::binary);
     if (!outputFile.is_open()) {

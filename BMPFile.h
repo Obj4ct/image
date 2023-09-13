@@ -13,9 +13,10 @@
 #include <cstring>
 //windows
 #include <cstdint>
-
-#define FILENAME "../Dinosaur.bmp"
-
+//unix
+//#define FILENAME "../Dinosaur.bmp"
+//Windows
+#define FILENAME "Dinosaur.bmp"
 
 
 
@@ -82,7 +83,7 @@ void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
 
 }
 
-int  ReadBinTxt(std::string inName,std::string outName)
+int  ReadBinTxt(const std::string& inName,const std::string& outName)
 {
     std::ifstream inputFile(inName, std::ios::binary);
 
@@ -112,7 +113,7 @@ int  ReadBinTxt(std::string inName,std::string outName)
 
 }
 //保存二进制
-int outputBinToFile(std::vector<uint8_t>& imageData,std::string name)
+int outputBinToFile(std::vector<uint8_t>& imageData,const std::string& name)
 {
     // open output file
     std::ofstream outputFile(name,std::ios::binary);
@@ -130,7 +131,7 @@ int outputBinToFile(std::vector<uint8_t>& imageData,std::string name)
 
 }
 //保存像素
-int OutputPixToFile(std::vector<uint8_t>& imageData,std::string name) {
+int OutputPixToFile(std::vector<uint8_t>& imageData,const std::string& name) {
 
     // open output file
     std::ofstream outputFile(name);
@@ -154,7 +155,7 @@ int OutputPixToFile(std::vector<uint8_t>& imageData,std::string name) {
 }
 
 //temp image for debug
-int TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPInfo& bmpInfo)
+int TempImage(std::vector<uint8_t>& newImageData,const std::string& name,BMP& bmp,BMPInfo& bmpInfo)
 {
     // open output file
     std::ofstream outputFile(name);
@@ -167,13 +168,15 @@ int TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPIn
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(bmp));
 
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(bmpInfo));
-    outputFile.seekp(bmp.dataOffset);
+  //  outputFile.seekp(bmp.dataOffset);
 
     // write
-    outputFile.write(reinterpret_cast<const char*>(newImageData.data()),newImageData.size());
+    outputFile.write(reinterpret_cast<const char*>(newImageData.data()),static_cast<std::streamsize>(newImageData.size()));
 
     // close file
     outputFile.close();
+
+
     std::cout << "-----------" << std::endl;
     std::cout << "中间图像生成！" << std::endl;
     std::cout << "-----------" << std::endl;
@@ -181,6 +184,8 @@ int TempImage(std::vector<uint8_t>& newImageData,std::string name,BMP& bmp,BMPIn
     return 0;
 
 }
+
+
 
 
 #endif //CLION_BMPFILE_H
