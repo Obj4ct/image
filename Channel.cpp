@@ -1,6 +1,7 @@
 //
 // Created by ztheng on 2023/9/5.
 // done
+
 #include "BMPFile.h"
 
 int Brightness(std::vector<uint8_t>& brightnessImageData, double_t brightnessValue) {

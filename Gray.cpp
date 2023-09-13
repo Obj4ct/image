@@ -1,7 +1,9 @@
 //
 // Created by ztheng on 2023/9/5.
 // done
+
 #include "BMPFile.h"
+#include "Debug.h"
 void ConvertToGray(std::vector<uint8_t>& imageData) {
     //OutputToFile(imageData, "GrayBefore");
 
@@ -58,7 +60,6 @@ int main() {
     // close
     inputFile.close();
     // function
-
     ConvertToGray(imageData);
     //create file
     std::ofstream outputFile("outputGray.bmp", std::ios::binary);

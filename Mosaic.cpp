@@ -2,6 +2,7 @@
 // Created by ztheng on 2023/9/5.
 
 #include "BMPFile.h"
+#include "Debug.h"
 
 
 void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height, uint32_t degree) {
@@ -42,55 +43,47 @@ void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height
 
 void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height, uint32_t beginX, uint32_t beginY,
                 uint32_t blockWidth, uint32_t blockHeight, uint32_t degree, BMPInfo &bmpInfo, BMP &bmp) {
+
     uint32_t endX = beginX + blockWidth;
     uint32_t endY = beginY + blockHeight;
     if (endX > width) {
         endX = width;
     }
-    if (endY > height) {
-        endY = height;
+    if (endY > imageData.size()/(width*3)) {
+        endY = imageData.size()/(width*3);
     }
     uint32_t totalR = 0;
     uint32_t totalG = 0;
     uint32_t totalB = 0;
     int mosaic = 0;
-    for (uint32_t y = beginY; y < endY; y += degree) {
-        for (uint32_t x = beginX; x < endX; x += degree) {
+    for (uint32_t y = beginY; y < endY; y ++) {
+        for (uint32_t x = beginX; x < endX; x ++) {
             // avg
-            uint32_t index = (y * blockWidth + x) * 3;
+
+            uint32_t index = (y * width + x) * 3;
             totalR += imageData[index];
             totalG += imageData[index + 1];
             totalB += imageData[index + 2];
             mosaic++;
+
         }
     }
+
     auto averageR = totalR / mosaic;
     auto averageG = totalG / mosaic;
     auto averageB = totalB / mosaic;
+
+
     // set each pix
     for (uint32_t y = beginY; y < endY; y++) {
         for (uint32_t x = beginX; x < endX; x++) {
-            uint32_t index = (y * blockWidth + x) * 3;
+            uint32_t index = (y * width + x) * 3;
             imageData[index] = averageR;
             imageData[index + 1] = averageG;
             imageData[index + 2] = averageB;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //total
 //    for (uint32_t y = beginY; y < endY; y++) {
@@ -120,8 +113,8 @@ void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height
 
 
 int main() {
-    BMP bmp;
-    BMPInfo bmpInfo;
+    BMP bmp{};
+    BMPInfo bmpInfo{};
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open this file" << std::endl;
@@ -193,10 +186,10 @@ int main() {
                 break;
             }
             case 2: {
-                uint32_t beginX = 100;
-                uint32_t beginY = 100;
-                uint32_t blockWidth = 300;
-                uint32_t blockHeight = 300;
+                uint32_t beginX = bmpInfo.width/4;
+                uint32_t beginY = bmpInfo.height/4;
+                uint32_t blockWidth = 200;
+                uint32_t blockHeight = 200;
 
 //                std::cout<<"你要从哪里开始打码呢？请输入你要开始的X坐标和Y坐标"<<std::endl;
 //                std::cout<<"x:"<<std::endl;
