@@ -42,15 +42,15 @@ void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height
 }
 
 void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height, uint32_t beginX, uint32_t beginY,
-                uint32_t blockWidth, uint32_t blockHeight, uint32_t degree, BMPInfo &bmpInfo, BMP &bmp) {
+                uint32_t blockWidth, uint32_t blockHeight) {
 
     uint32_t endX = beginX + blockWidth;
     uint32_t endY = beginY + blockHeight;
-    if (endX > width) {
-        endX = width;
+    if (endX > height) {
+        endX = height;
     }
-    if (endY > imageData.size()/(width*3)) {
-        endY = imageData.size()/(width*3);
+    if (endY > width) {
+        endY = width;
     }
     uint32_t totalR = 0;
     uint32_t totalG = 0;
@@ -72,8 +72,6 @@ void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height
     auto averageR = totalR / mosaic;
     auto averageG = totalG / mosaic;
     auto averageB = totalB / mosaic;
-
-
     // set each pix
     for (uint32_t y = beginY; y < endY; y++) {
         for (uint32_t x = beginX; x < endX; x++) {
@@ -188,8 +186,8 @@ int main() {
             case 2: {
                 uint32_t beginX = bmpInfo.width/4;
                 uint32_t beginY = bmpInfo.height/4;
-                uint32_t blockWidth = 200;
-                uint32_t blockHeight = 200;
+                uint32_t blockWidth = 10;
+                uint32_t blockHeight = 10;
 
 //                std::cout<<"你要从哪里开始打码呢？请输入你要开始的X坐标和Y坐标"<<std::endl;
 //                std::cout<<"x:"<<std::endl;
@@ -208,8 +206,7 @@ int main() {
 //                std::cin >> degree;
                 //OutputToFile(imageData,"beforeBrightness");
 
-                AreaMosaic(imageData, bmpInfo.width, bmpInfo.height, beginX, beginY, blockWidth, blockHeight, degree,
-                           bmpInfo, bmp);
+                AreaMosaic(imageData, bmpInfo.width, bmpInfo.height, beginX, beginY, blockWidth, blockHeight);
                 //OutputToFile(imageData,"afterBrightness");
                 std::ofstream outputFile("outputAreaMosaic.bmp", std::ios::binary);
                 if (!outputFile.is_open()) {
