@@ -13,7 +13,7 @@
 #include <cstring>
 //windows
 #include <cstdint>
-//unix
+////unix
 //#define FILENAME "../Dinosaur.bmp"
 //Windows
 #define FILENAME "Dinosaur.bmp"

@@ -4,6 +4,7 @@
 
 #include "BMPFile.h"
 #include "Debug.h"
+
 void ConvertToGray(std::vector<uint8_t>& imageData) {
     //OutputToFile(imageData, "GrayBefore");
 
@@ -23,8 +24,8 @@ void ConvertToGray(std::vector<uint8_t>& imageData) {
 }
 
 int main() {
-    BMP bmp{};
-    BMPInfo bmpInfo{};
+    BMP bmp;
+    BMPInfo bmpInfo;
     std::ifstream inputFile(FILENAME, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "unable to open this file" << std::endl;
@@ -60,6 +61,7 @@ int main() {
     // close
     inputFile.close();
     // function
+    TempImage(imageData,"1111.bmp",bmp,bmpInfo);
     ConvertToGray(imageData);
     //create file
     std::ofstream outputFile("outputGray.bmp", std::ios::binary);

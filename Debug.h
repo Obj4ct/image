@@ -118,7 +118,7 @@ int TempImage(std::vector<uint8_t>& imageData,const std::string& name,BMP& bmp,B
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(bmp));
 
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(bmpInfo));
-    //  outputFile.seekp(bmp.dataOffset);
+    outputFile.seekp(bmp.dataOffset);
 
     // write
     outputFile.write(reinterpret_cast<const char*>(imageData.data()),static_cast<std::streamsize>(imageData.size()));
