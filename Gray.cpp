@@ -60,6 +60,8 @@ int main() {
 
     // close
     inputFile.close();
+    WriteBMPHexToFile(FILENAME,"iNhexGray.txt");
+
     // function
     TempImage(imageData,"1111.bmp",bmp,bmpInfo);
     ConvertToGray(imageData);
@@ -85,6 +87,8 @@ int main() {
     outputFile.close();
 
     std::cout << "success" << std::endl;
+    WriteBMPHexToFile("outputGray.bmp","outhexGray.txt");
+
 
     return 0;
 }

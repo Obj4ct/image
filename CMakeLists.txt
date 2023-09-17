@@ -6,6 +6,5 @@ set(CMAKE_CXX_STANDARD 17)
 file (GLOB files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 foreach (file ${files})
     string(REGEX REPLACE "(.+).cpp$" "\\1" exe ${file})
-    add_executable (${exe} ${file}
-            Mosaic.cpp)
+    add_executable (${exe} ${file})
 endforeach ()

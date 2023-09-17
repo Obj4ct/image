@@ -4,6 +4,8 @@
 
 #ifndef IMAGE_DEBUG_H
 #define IMAGE_DEBUG_H
+
+#include <iomanip>
 #include "BMPFile.h"
 
 void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
@@ -105,7 +107,7 @@ int OutputPixToFile(std::vector<uint8_t>& imageData,const std::string& name) {
 }
 
 //temp image for debug
-int TempImage(std::vector<uint8_t>& imageData,const std::string& name,BMP& bmp,BMPInfo& bmpInfo)
+void TempImage(std::vector<uint8_t>& imageData,const std::string& name,BMP& bmp,BMPInfo& bmpInfo)
 {
     // open output file
     std::ofstream outputFile(name);
@@ -113,28 +115,54 @@ int TempImage(std::vector<uint8_t>& imageData,const std::string& name,BMP& bmp,B
 
     if (!outputFile.is_open()) {
         std::cout << "unable to create this file" << std::endl;
-        return 1;
+        exit(0);
     }
-    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(bmp));
+    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
 
-    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(bmpInfo));
+    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
     outputFile.seekp(bmp.dataOffset);
 
     // write
-    outputFile.write(reinterpret_cast<const char*>(imageData.data()),static_cast<std::streamsize>(imageData.size()));
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()),imageData.size());
 
     // close file
     outputFile.close();
 
-
+    std::cout << "temp image already generated!" << std::endl;
     std::cout << "-----------" << std::endl;
-    std::cout << "中间图像生成！" << std::endl;
     std::cout << "-----------" << std::endl;
-
-    return 0;
+    std::cout << "-----------" << std::endl;
 
 }
+//十六进制
+void WriteBMPHexToFile(const std::string& inputFileName, const std::string& outputFileName) {
 
+    std::ifstream inputFile(inputFileName, std::ios::binary);
+    if (!inputFile.is_open()) {
+        std::cout << "Unable to open input BMP file: " << inputFileName << std::endl;
+        return;
+    }
+
+
+    std::ofstream outputFile(outputFileName);
+    if (!outputFile.is_open()) {
+        std::cout << "Unable to create output file: " << outputFileName << std::endl;
+        return;
+    }
+
+
+    char byte;
+    while (inputFile.get(byte)) {
+        // 将字节以十六进制格式写入输出文件
+        outputFile << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(byte)) << " ";
+    }
+
+    // 关闭文件
+    inputFile.close();
+    outputFile.close();
+
+    std::cout << "Hex data from BMP file saved to " << outputFileName << std::endl;
+}
 
 
 
