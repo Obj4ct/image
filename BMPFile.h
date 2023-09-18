@@ -28,7 +28,7 @@ struct BMP {
     uint16_t reserved1;
     uint16_t reserved2;
     uint32_t dataOffset;//表示图像数据相对于文件起始位置的偏移量，单位是字节
-};
+}bmp;
 #pragma pack(pop)
 
 
@@ -52,64 +52,73 @@ struct BMPInfo {
     //下面这两个参数是 32 位的整数，通常不太影响非索引颜色的 BMP 图像。它们在索引颜色的 BMP 图像中用于指定调色板中的颜色数量和重要颜色数量。
     uint32_t colorsUsed;
     uint32_t colorsImportant;
-};
+}bmpInfo;
 #pragma pack(pop)
 
-//std::vector<uint8_t> ReadBMPFile()
-//{
-//    BMP bmp;
-//    BMPInfo bmpInfo;
-//    std::ifstream inputFile(FILENAME, std::ios::binary);
-//    if (!inputFile.is_open()) {
-//        std::cout << "Unable to open input file!" << std::endl;
-////        exit(0);
-//    }
-//    inputFile.read(reinterpret_cast<char *>(&bmp), sizeof(BMP));
-//    if (bmp.fileType != 0x4D42) { // BM ASCII
-//        std::cout << "File is not a valid BMP!" << std::endl;
-//        inputFile.close();
-//    }
-//
-//    // Read header
-//    inputFile.read(reinterpret_cast<char *>(&bmpInfo), sizeof(BMPInfo));
-//
-//    // Offset
-//    uint32_t imageDataOffset = bmp.dataOffset;
-//    uint32_t imageDataSize = bmpInfo.imageSize;
-//    std::vector<uint8_t> imageData(imageDataSize);
-//    // No need to change position
-//    inputFile.seekg(imageDataOffset);
-//    // Read image data
-//    inputFile.read(reinterpret_cast<char *>(imageData.data()), imageDataSize);
-//    // Close input file
-//    inputFile.close();
-//    return imageData;
-//}
-//void WriteBMPFile(std::vector<uint8_t> imageData,std::string &fileName)
-//{
-//
-//    //create file
-//    std::ofstream outputFile(fileName, std::ios::binary);
-//    if (!outputFile.is_open()) {
-//        std::cout << "unable to create this file" << std::endl;
-////        exit(0);
-//    }
-//
-//
-//
-//
-//    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
-//
-//    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
-//    outputFile.seekp(bmp.dataOffset);
-//
-//    // write
-//    outputFile.write(reinterpret_cast<const char*>(imageData.data()),imageDataSize);
-//
-//    // close file
-//    outputFile.close();
-//    std::cout << "success" << std::endl;
-//}
+
+std::vector<uint8_t> ReadBMPFile(const std::string& fileName) {
+    std::ifstream inputFile(fileName, std::ios::binary);
+    if (!inputFile.is_open()) {
+        std::cout << "Unable to open input file!" << std::endl;
+        // 可以抛出异常或进行其他错误处理
+        return std::vector<uint8_t>(); // 返回空向量表示出错
+    }
+
+    inputFile.read(reinterpret_cast<char*>(&bmp), sizeof(BMP));
+    if (bmp.fileType != 0x4D42) { // BM ASCII
+        std::cout << "File is not a valid BMP!" << std::endl;
+        inputFile.close();
+        return std::vector<uint8_t>(); // 返回空向量表示出错
+    }
+
+    inputFile.read(reinterpret_cast<char*>(&bmpInfo), sizeof(BMPInfo));
+    uint32_t imageDataOffset = bmp.dataOffset;
+    uint32_t imageDataSize = bmpInfo.imageSize;
+    std::vector<uint8_t> imageData(imageDataSize);
+    inputFile.seekg(imageDataOffset);
+    inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
+    inputFile.close();
+    return imageData;
+}
+
+bool WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData, const BMP& bmp, const BMPInfo& bmpInfo) {
+    std::ofstream outputFile(fileName, std::ios::binary);
+    if (!outputFile.is_open()) {
+        std::cout << "Unable to create output file!" << std::endl;
+        return false;
+    }
+
+    outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
+    outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
+    outputFile.seekp(bmp.dataOffset);
+    outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageData.size());
+    outputFile.close();
+    std::cout<<"success"<<std::endl;
+    return true;
+}
+
+void SetBMPHeaderValues(BMP& bmp, BMPInfo& bmpInfo, int width, int height, uint16_t bitsPerPixel) {
+    // 设置 BMP 文件头信息
+    bmp.fileType = 0x4D42; // BMP 文件类型标识 "BM"
+    bmp.fileSize = sizeof(BMP) + sizeof(BMPInfo) + (width * height * (bitsPerPixel / 8)); // 文件总大小
+    bmp.reserved1 = 0; // 保留字段1，通常设置为0
+    bmp.reserved2 = 0; // 保留字段2，通常设置为0
+    bmp.dataOffset = sizeof(BMP) + sizeof(BMPInfo); // 图像数据在文件中的偏移量
+
+    // 设置 BMP 信息头信息
+    bmpInfo.headerSize = sizeof(BMPInfo); // BMP 文件头大小
+    bmpInfo.width = width; // 图像宽度
+    bmpInfo.height = height; // 图像高度
+    bmpInfo.planes = 1; // 位图平面数，通常为1
+    bmpInfo.bitsPerPixel = bitsPerPixel; // 每像素位数
+    bmpInfo.compression = 0; // 压缩方式，通常不压缩
+    bmpInfo.imageSize = bmp.fileSize - bmp.dataOffset; // 图像数据大小
+    bmpInfo.xPixelsPerMeter = 0; // 水平像素密度
+    bmpInfo.yPixelsPerMeter = 0; // 垂直像素密度
+    bmpInfo.colorsUsed = 0; // 使用的颜色数，通常不使用调色板
+    bmpInfo.colorsImportant = 0; // 重要颜色数，通常不指定
+}
+
 
 
 #endif //CLION_BMPFILE_H
