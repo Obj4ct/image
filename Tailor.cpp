@@ -1,7 +1,7 @@
 #include "BMPFile.h"
 #include "Debug.h"
 
-//not yet
+//something have done.
 //图像信息
 void WriteToBMPInfo(std::vector<uint8_t> &imageData, int32_t cropHeight, int32_t cropWidth, BMPInfo &newBmpInfo){
     newBmpInfo.height = cropHeight;
