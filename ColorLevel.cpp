@@ -4,7 +4,7 @@
 
 // 色阶调整分输入色阶调整和输出色阶调整，其中输入色阶调整有3个调整点，即通常所说的黑场、白场及灰场调整
 #include "BMPFile.h"
-
+#include "BMPFile.cpp"
 void ColorLevelChanel_R(std::vector<uint8_t> &rImageData, int32_t width, int32_t height, double_t brightness,
                         double_t contrast) {
 
@@ -80,7 +80,7 @@ void ColorLevelChanel_RGB(std::vector<uint8_t> &rgbImageData, int32_t width, int
 }
 
 int main() {
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
     //CreateNewBmp();
     std::vector<uint8_t> rImageData(imageData.size());
     rImageData = imageData;
@@ -112,7 +112,7 @@ int main() {
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
                 ColorLevelChanel_R(rImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                WriteBMPFile("changeColorLever_R.bmp", rImageData, bmp, bmpInfo);
+                myFunction.WriteBMPFile("changeColorLever_R.bmp", rImageData);
 
                 isLoop = true;
                 break;
@@ -124,7 +124,7 @@ int main() {
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
                 ColorLevelChanel_G(gImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                WriteBMPFile("changeColorLever_G.bmp", gImageData, bmp, bmpInfo);
+                myFunction.WriteBMPFile("changeColorLever_G.bmp", gImageData);
                 isLoop = true;
                 break;
             }
@@ -135,7 +135,7 @@ int main() {
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
                 ColorLevelChanel_B(bImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                WriteBMPFile("changeColorLever_B.bmp", bImageData, bmp, bmpInfo);
+                myFunction.WriteBMPFile("changeColorLever_B.bmp", bImageData);
 
                 isLoop = true;
                 break;
@@ -149,7 +149,7 @@ int main() {
                 // RGB function
                 ColorLevelChanel_RGB(rgbImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
                 std::ofstream outputFile("changeColorLever_RGB.bmp", std::ios::binary);
-                WriteBMPFile("changeColorLever_RGB.bmp", rgbImageData, bmp, bmpInfo);
+                myFunction.WriteBMPFile("changeColorLever_RGB.bmp", rgbImageData);
                 isLoop = true;
                 break;
             }

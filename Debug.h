@@ -76,7 +76,7 @@ int outputBinToFile(std::vector<uint8_t>& imageData,const std::string& name)
     outputFile.write(reinterpret_cast<const char*>(imageData.data()), static_cast<std::streamsize>(imageData.size()));
     outputFile.close();
     std::cout << "-----------" << std::endl;
-    std::cout << "binary generate！!" << std::endl;
+    std::cout << "binary generate!" << std::endl;
     std::cout<<"file called "<<name<<std::endl;
     std::cout << "-----------" << std::endl;
 

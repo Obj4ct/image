@@ -3,8 +3,8 @@
 // done
 
 #include "BMPFile.h"
+#include "BMPFile.cpp"
 #include "Debug.h"
-
 void ConvertToGray(std::vector<uint8_t>& imageData) {
     //OutputToFile(imageData, "GrayBefore");
 
@@ -26,6 +26,6 @@ int main() {
 
     ConvertToGray(imageData);
     //create file
-    WriteBMPFile("outColorGray.bmp", imageData, bmp, bmpInfo);
+    myFunction.WriteBMPFile("outColorGray.bmp", imageData);
 
 }

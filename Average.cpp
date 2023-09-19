@@ -4,7 +4,7 @@
 
 #include "BMPFile.h"
 #include "Debug.h"
-
+#include "BMPFile.cpp"
 void AverageBlur(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height) {
     std::vector<uint8_t> blurImage(imageData);
     for (uint32_t y = 0; y < height; y++) {
@@ -32,12 +32,12 @@ void AverageBlur(std::vector<uint8_t> &imageData, uint32_t width, uint32_t heigh
 
 
 int main() {
-    std::vector<uint8_t>imageData=ReadBMPFile(FILENAME);
+    std::vector<uint8_t>imageData=myFunction.ReadBMPFile(FILENAME);
     // function
 //    int32_t radius = 1;
 
     AverageBlur(imageData, bmpInfo.width, bmpInfo.height);
-    WriteBMPFile("outputAverBlur.bmp", imageData, bmp, bmpInfo);
+    myFunction.WriteBMPFile("outputAverBlur.bmp", imageData);
 
     return 0;
 }

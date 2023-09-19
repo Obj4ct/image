@@ -3,7 +3,7 @@
 // done
 
 #include "BMPFile.h"
-
+#include "BMPFile.cpp"
 //done
 void ColorBalance(std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     // count
@@ -61,7 +61,7 @@ void ColorBalance(std::vector<uint8_t> &imageData, int32_t width, int32_t height
 
 
 int main() {
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
 
     // fuction
     ColorBalance(imageData,bmpInfo.width,bmpInfo.height);
@@ -69,7 +69,7 @@ int main() {
 
     //ImgInfo();
     // create file
-    WriteBMPFile("outColorBalance.bmp", imageData, bmp, bmpInfo);
+    myFunction.WriteBMPFile("outColorBalance.bmp", imageData);
 
 
     return 0;

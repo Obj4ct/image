@@ -4,6 +4,8 @@
 
 #include "BMPFile.h"
 #include "Debug.h"
+
+#include "BMPFile.cpp"
 int Brightness(std::vector<uint8_t> &brightnessImageData, double_t brightnessValue) {
     if (brightnessValue >= -150 && brightnessValue <= 150) {
         for (unsigned char &i: brightnessImageData) {
@@ -36,7 +38,7 @@ int Contrast(std::vector<uint8_t> &contrastImageData, double_t contrastValue) {
                                                                              128)));
             contrastImageData[i + 2] = std::max(0, std::min(255,
                                                             static_cast<int>(factor * (contrastImageData[i + 2] - 128) +
-                                                                             128)));
+                                                                    128)));
         }
         return 0;
     } else {
@@ -73,7 +75,7 @@ void Saturation(std::vector<uint8_t> &saturationImageData, int32_t width, int32_
 }
 
 int main() {
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
 
     std::vector<uint8_t> brightnessImageData(imageData.size());
     brightnessImageData = imageData;
@@ -107,7 +109,7 @@ int main() {
                 if (result == 1) {
                     goto inputBrightness;
                 } else {
-                    WriteBMPFile("outColorBrightness.bmp", brightnessImageData, bmp, bmpInfo);
+                    myFunction.WriteBMPFile("outColorBrightness.bmp", brightnessImageData);
                 }
                 isLoop = true;
                 break;
@@ -123,7 +125,7 @@ int main() {
                 if (result == 1) {
                     goto inputContrastValue;
                 } else {
-                    WriteBMPFile("outColorContrastValue.bmp", contrastImageData, bmp, bmpInfo);
+                    myFunction.WriteBMPFile("outColorContrastValue.bmp", contrastImageData);
 
                 }
                 isLoop = true;
@@ -136,7 +138,7 @@ int main() {
                 //Saturation function
 
                 Saturation(saturationImageData, bmpInfo.width, bmpInfo.height, saturationValue);
-                WriteBMPFile("outColorSaturation.bmp", saturationImageData, bmp, bmpInfo);
+                myFunction.WriteBMPFile("outColorSaturation.bmp", saturationImageData);
                 isLoop = true;
                 break;
             }

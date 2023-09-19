@@ -3,7 +3,7 @@
 // done
 
 #include "BMPFile.h"
-
+#include "BMPFile.cpp"
 
 void InvertColors(std::vector<uint8_t>& imageData) {
     for (size_t i = 0; i < imageData.size(); i +=3) {
@@ -15,7 +15,7 @@ void InvertColors(std::vector<uint8_t>& imageData) {
 
 int main() {
 
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
 
     // fuction
     InvertColors(imageData);
@@ -24,7 +24,7 @@ int main() {
     //ImgInfo();
     // create file
 
-    WriteBMPFile("outColorReverse.bmp", imageData, bmp, bmpInfo);
+    myFunction.WriteBMPFile("outColorReverse.bmp", imageData);
 
 
 }

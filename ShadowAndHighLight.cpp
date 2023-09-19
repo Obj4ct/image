@@ -4,6 +4,7 @@
 #include "Debug.h"
 //just a simple shadow
 #include "BMPFile.h"
+#include "BMPFile.cpp"
 void MakeShadow(std::vector<uint8_t>& imageData,std::vector<uint8_t> &shadowImageData,uint32_t shadowValue)
 {
     for (size_t i=0; i < imageData.size(); i += 3) {
@@ -19,9 +20,9 @@ void MakeShadow(std::vector<uint8_t>& imageData,std::vector<uint8_t> &shadowImag
 //亮的地方变暗
 void HighLight(std::vector<uint8_t> &imageData,std::vector<uint8_t> &highLightImageData,uint32_t pixel)
 {
-    for (size_t i = 0; i < highLightImageData.size(); ++i)
+    for (size_t i = 0; i < imageData.size(); ++i)
     {
-        if(highLightImageData[i]>pixel)
+        if(imageData[i]>pixel)
         {
             highLightImageData[i]-=100;
         }
@@ -30,7 +31,7 @@ void HighLight(std::vector<uint8_t> &imageData,std::vector<uint8_t> &highLightIm
 }
 int main() {
 
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
     std::vector<uint8_t>  shadowImageData(imageData.size());
     shadowImageData=imageData;
     std::vector<uint8_t> highLightImageData(imageData.size());
@@ -38,7 +39,7 @@ int main() {
     bool isLoop = true;
     while (isLoop) {
         int choice = 1;
-        std::cout << "输入你要到操作:" << std::endl
+        std::cout << "input:" << std::endl
                   << "1。阴影" << std::endl
                   << "2.高光" << std::endl
                   << "3.exit" << std::endl
@@ -51,7 +52,7 @@ int main() {
                 std::cout<<"input shadow:"<<std::endl;
                 std::cin>>shadow;
                 MakeShadow(imageData,shadowImageData,shadow);
-                WriteBMPFile("outputShadow.bmp",shadowImageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("outputShadow.bmp",shadowImageData);
                 isLoop = true;
                 break;
             }
@@ -60,7 +61,7 @@ int main() {
                 std::cout<<"输入像素值，在此像素值之上的像素将被降低值："<<std::endl;
                 std::cin>>pixel;
                 HighLight(imageData,highLightImageData,pixel);
-                WriteBMPFile("outputHighLight.bmp",highLightImageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("outputHighLight.bmp",highLightImageData);
                 isLoop = true;
                 break;
             }

@@ -27,7 +27,7 @@ void TailorImg(int32_t cropX, int32_t cropY, int32_t cropHeight, int32_t cropWid
 }
 
 int main() {
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData =myFunction.ReadBMPFile(FILENAME);
 
 
     int32_t cropX = 0;  // Begin X
@@ -45,7 +45,7 @@ int main() {
     TailorImg(cropX, cropY, cropHeight, cropWidth, imageData,bmpInfo, bmpInfo.width);
     // Create output file
     //success write
-    WriteBMPFile("outColorTailor.bmp", imageData, bmp, bmpInfo);
+    myFunction.WriteBMPFile("outColorTailor.bmp", imageData, bmp, bmpInfo);
 
 
     return 0;

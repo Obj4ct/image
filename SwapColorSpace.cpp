@@ -10,6 +10,7 @@
 //#include <windows.h>
 //unix
 #include <unistd.h>
+#include "BMPFile.cpp"
 
 
 int RGB2YUV(std::vector<uint8_t> &YUVImageData,std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
@@ -146,7 +147,7 @@ int LAB2RGB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t>&imageData,i
 }
 
 int main() {
-    std::vector<uint8_t> imageData=ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData=myFunction.ReadBMPFile(FILENAME);
     std::vector<uint8_t> YUVImageData(imageData.size());
     YUVImageData = imageData;
     std::vector<uint8_t> YIQImageData(imageData.size());
@@ -180,7 +181,7 @@ int main() {
 
                 RGB2YUV(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
                // outputBinToFile(YUVImageData,"YUVBin")
-                WriteBMPFile("RGB_TO_YUV.bmp",YUVImageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("RGB_TO_YUV.bmp",YUVImageData);
                 outputBinToFile(YUVImageData,"YUVImage.txt");
 
                 isLoop = true;
@@ -189,7 +190,7 @@ int main() {
             case 2: {
 
                 RGB2YIQ(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
-                WriteBMPFile("RGB_TO_YIQ.bmp",YIQImageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("RGB_TO_YIQ.bmp",YIQImageData);
                 outputBinToFile(YIQImageData,"YIQImageData.txt");
 
                 isLoop = true;
@@ -198,7 +199,7 @@ int main() {
             case 3: {
 
                 RGB2LAB(LABImageData, imageData,bmpInfo.width, bmpInfo.height);
-                WriteBMPFile("RGB_TO_LAB.bmp",LABImageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("RGB_TO_LAB.bmp",LABImageData);
                 outputBinToFile(LABImageData,"LABImageData.txt");
 
                 isLoop = true;
@@ -207,7 +208,7 @@ int main() {
             case 4: {
 
                 YUV2RGB(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
-                WriteBMPFile("YUV_TO_RGB.bmp",imageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("YUV_TO_RGB.bmp",imageData);
                 outputBinToFile(imageData,"YUV_TO_RGB.txt");
 
 
@@ -217,7 +218,7 @@ int main() {
             case 5: {
 
                 YIQ2RGB(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
-                WriteBMPFile("YIQ_TO_RGB.bmp",imageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("YIQ_TO_RGB.bmp",imageData);
                 outputBinToFile(imageData,"YIQ_TO_RGB.txt");
 
 
@@ -227,7 +228,7 @@ int main() {
             case 6: {
 
                 LAB2RGB(LABImageData,imageData, bmpInfo.width, bmpInfo.height);
-                WriteBMPFile("LAB_TO_RGB.bmp",imageData,bmp,bmpInfo);
+                myFunction.WriteBMPFile("LAB_TO_RGB.bmp",imageData);
                 outputBinToFile(YUVImageData,"YUVImage.bmp");
 
 

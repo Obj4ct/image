@@ -3,6 +3,7 @@
 //done
 
 #include "BMPFile.h"
+#include "BMPFile.cpp"
 void Complementary(std::vector<uint8_t>& imageData) {
 //    OutputToFile(newImageData,"C111om");
     for (size_t i = 0; i < imageData.size(); i += 3) {
@@ -20,13 +21,13 @@ void Complementary(std::vector<uint8_t>& imageData) {
 }
 int main() {
 
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData =myFunction.ReadBMPFile(FILENAME);
 
     // function
     Complementary(imageData);
 
     // create file
-    WriteBMPFile("outColorComplementary.bmp", imageData, bmp, bmpInfo);
+    myFunction.WriteBMPFile("outColorComplementary.bmp", imageData);
 
 }
 

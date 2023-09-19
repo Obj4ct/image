@@ -3,7 +3,7 @@
 //
 
 #include "BMPFile.h"
-
+#include "BMPFile.cpp"
 uint32_t CalSquareSum(std::vector<uint8_t> imageData) {
     uint32_t sum = 0;
 
@@ -73,11 +73,11 @@ void Save(const std::vector<int> &histogram, const std::string &filename) {
 }
 
 int main() {
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
     bool isLoop = true;
     while (isLoop) {
         int choice = 1;
-        std::cout << "输入你要到操作::" << std::endl
+        std::cout << "输入你要的操作::" << std::endl
                   << "1.平方和" << std::endl
                   << "2.方差" << std::endl
                   << "3.标准差" << std::endl
