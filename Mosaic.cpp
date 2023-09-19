@@ -117,37 +117,8 @@ void AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height
 
 
 int main() {
-    BMP bmp;
-    BMPInfo bmpInfo;
-    std::ifstream inputFile(FILENAME, std::ios::binary);
-    if (!inputFile.is_open()) {
-        std::cout << "unable to open this file" << std::endl;
-        return 1;
-    }
 
-
-    inputFile.read(reinterpret_cast<char *>(&bmp), sizeof(BMP));
-
-    if (bmp.fileType != 0x4D42) { // BM ASCII
-        std::cout << "file is not invalid!" << std::endl;
-        return 1;
-    }
-
-
-    inputFile.read(reinterpret_cast<char *>(&bmpInfo), sizeof(BMPInfo));
-
-    //offset
-    uint32_t imageDataOffset = bmp.dataOffset;
-
-    //size
-    uint32_t imageDataSize = bmpInfo.imageSize;
-    //ImgInfo();
-    //read data of image
-    std::vector<uint8_t> imageData(imageDataSize);
-    inputFile.seekg(imageDataOffset);
-    inputFile.read(reinterpret_cast<char *>(imageData.data()), imageDataSize);
-    // close
-    inputFile.close();
+    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
 
     bool isLoop = true;
     while (isLoop) {
@@ -168,23 +139,7 @@ int main() {
                 //OutputToFile(imageData,"beforeBrightness");
                 FullMosaic(imageData, bmpInfo.width, bmpInfo.height, degree);
                 //OutputToFile(imageData,"afterBrightness");
-                std::ofstream outputFile("outputFullMosaic.bmp", std::ios::binary);
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
-
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
-
-                // write
-                outputFile.write(reinterpret_cast<const char *>(imageData.data()), imageDataSize);
-
-                // close file
-                outputFile.close();
-
-                std::cout << "success" << std::endl;
+                WriteBMPFile("outputFullMosaic.bmp", imageData, bmp, bmpInfo);
 
                 isLoop = true;
                 break;
@@ -214,23 +169,9 @@ int main() {
 
                 AreaMosaic(imageData, bmpInfo.width, bmpInfo.height, beginX, beginY, blockWidth, blockHeight,degree);
                 //OutputToFile(imageData,"afterBrightness");
-                std::ofstream outputFile("outputAreaMosaic.bmp", std::ios::binary);
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
 
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
+                WriteBMPFile("outputAreaMosaic.bmp", imageData, bmp, bmpInfo);
 
-                // write
-                outputFile.write(reinterpret_cast<const char *>(imageData.data()), imageDataSize);
-
-                // close file
-                outputFile.close();
-
-                std::cout << "success" << std::endl;
 
                 isLoop = true;
                 break;

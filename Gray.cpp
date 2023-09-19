@@ -24,25 +24,9 @@ void ConvertToGray(std::vector<uint8_t>& imageData) {
 int main() {
 
     std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
-    if (imageData.empty()) {
-        std::cout << "Failed to read BMP file." << std::endl;
-        return 1;
-    }
-
-
-    BMP newBmp;
-    BMPInfo newBmpInfo;
-    newBmp=bmp;
-    newBmpInfo=bmpInfo;
-
 
     ConvertToGray(imageData);
     //create file
-    if (WriteBMPFile("output.bmp", imageData, bmp, bmpInfo)) {
-        std::cout << "写入成功" << std::endl;
-    } else {
-        std::cout << "写入失败" << std::endl;
-        return 1;
-    }
-    return 0;
+    WriteBMPFile("outColorGray.bmp", imageData, bmp, bmpInfo);
+
 }

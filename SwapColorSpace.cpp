@@ -11,13 +11,13 @@
 #include <unistd.h>
 
 
-int RGB2YUV(std::vector<uint8_t> &YUVImageData, int32_t width, int32_t height) {
+int RGB2YUV(std::vector<uint8_t> &YUVImageData,std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             int index = (i * width + j) * 3;
-            uint8_t r = YUVImageData[index];
-            uint8_t g = YUVImageData[index + 1];
-            uint8_t b = YUVImageData[index + 2];
+            uint8_t r = imageData[index];
+            uint8_t g = imageData[index + 1];
+            uint8_t b = imageData[index + 2];
             double_t y = (0.257 * r) + (0.504 * g) + (0.098 * b) + 16;
             double_t u = (0.439 * r) - (0.368 * g) - (0.071 * b) + 128;
             double_t v = -(0.148 * r) - (0.291 * g) + (0.439 * b) + 128;
@@ -29,13 +29,13 @@ int RGB2YUV(std::vector<uint8_t> &YUVImageData, int32_t width, int32_t height) {
     return 0;
 }
 
-int RGB2YIQ(std::vector<uint8_t> &YIQImageData, int32_t width, int32_t height) {
+int RGB2YIQ(std::vector<uint8_t> &YIQImageData,std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
-            uint8_t r = YIQImageData[index];
-            uint8_t g = YIQImageData[index + 1];
-            uint8_t b = YIQImageData[index + 2];
+            uint8_t r = imageData[index];
+            uint8_t g = imageData[index + 1];
+            uint8_t b = imageData[index + 2];
             double_t y = 0.299 * r + 0.587 * g + 0.114 * b;
             double_t i = 0.596 * r - 0.275 * g - 0.321 * b;
             double_t q = 0.212 * r - 0.523 * g + 0.311 * b;
@@ -47,13 +47,13 @@ int RGB2YIQ(std::vector<uint8_t> &YIQImageData, int32_t width, int32_t height) {
     return 0;
 }
 
-int RGB2LAB(std::vector<uint8_t> &LABImageData, int32_t width, int32_t height) {
+int RGB2LAB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
-            uint8_t r = LABImageData[index];
-            uint8_t g = LABImageData[index + 1];
-            uint8_t b = LABImageData[index + 2];
+            uint8_t r = imageData[index];
+            uint8_t g = imageData[index + 1];
+            uint8_t b = imageData[index + 2];
             //RGB to XYZ
             double_t x = r * 0.4124 + g * 0.3576 + b * 0.1805;
             double_t y = r * 0.2126 + g * 0.7152 + b * 0.0722;
@@ -73,54 +73,54 @@ int RGB2LAB(std::vector<uint8_t> &LABImageData, int32_t width, int32_t height) {
     return 0;
 }
 
-int YUV2RGB(std::vector<uint8_t> &YUV2RGBImageData, int32_t width, int32_t height) {
+int YUV2RGB(std::vector<uint8_t> &YUVImageData, std::vector<uint8_t>&imageData,int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
-            uint8_t y = YUV2RGBImageData[index];
-            uint8_t u = YUV2RGBImageData[index + 1];
-            uint8_t v = YUV2RGBImageData[index + 2];
+            uint8_t y = YUVImageData[index];
+            uint8_t u = YUVImageData[index + 1];
+            uint8_t v = YUVImageData[index + 2];
             double_t r = y + 1.13983 * v;
             double_t g = y - 0.39465 * u - 0.58060 * v;
             double_t b = y + 2.03211 * u;
             r = std::min(255.0, std::max(0.0, r));
             g = std::min(255.0, std::max(0.0, g));
             b = std::min(255.0, std::max(0.0, b));
-            YUV2RGBImageData[index] = static_cast<uint8_t>(r);
-            YUV2RGBImageData[index + 1] = static_cast<uint8_t>(g);
-            YUV2RGBImageData[index + 2] = static_cast<uint8_t>(b);
+            imageData[index] = static_cast<uint8_t>(r);
+            imageData[index + 1] = static_cast<uint8_t>(g);
+            imageData[index + 2] = static_cast<uint8_t>(b);
         }
     }
     return 0;
 }
-int YIQ2RGB(std::vector<uint8_t> &YIQ2RGBImageData, int32_t width, int32_t height) {
+int YIQ2RGB(std::vector<uint8_t> &YIQImageData, std::vector<uint8_t>&imageData,int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
-            uint8_t y = YIQ2RGBImageData[index];
-            uint8_t i = YIQ2RGBImageData[index + 1];
-            uint8_t q = YIQ2RGBImageData[index + 2];
+            uint8_t y = YIQImageData[index];
+            uint8_t i = YIQImageData[index + 1];
+            uint8_t q = YIQImageData[index + 2];
             double_t r = y + 0.956 * i + 0.621 * q;
             double_t g = y - 0.272 * i - 0.647 * q;
             double_t b = y - 1.106 * i + 1.703 * q;
             r = std::min(255.0, std::max(0.0, r));
             g = std::min(255.0, std::max(0.0, g));
             b = std::min(255.0, std::max(0.0, b));
-            YIQ2RGBImageData[index] = static_cast<uint8_t>(r);
-            YIQ2RGBImageData[index + 1] = static_cast<uint8_t>(g);
-            YIQ2RGBImageData[index + 2] = static_cast<uint8_t>(b);
+            imageData[index] = static_cast<uint8_t>(r);
+            imageData[index + 1] = static_cast<uint8_t>(g);
+            imageData[index + 2] = static_cast<uint8_t>(b);
         }
     }
     return 0;
 }
 
-int LAB2RGB(std::vector<uint8_t> &LAB2RGBImageData, int32_t width, int32_t height) {
+int LAB2RGB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t>&imageData,int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
-            double_t x = LAB2RGBImageData[index];
-            double_t y = LAB2RGBImageData[index + 1];
-            double_t z = LAB2RGBImageData[index + 2];
+            double_t x = LABImageData[index];
+            double_t y = LABImageData[index + 1];
+            double_t z = LABImageData[index + 2];
             // LAB to XYZ
             y = (y + 16.0) / 116.0;
             x = (x / 500.0) + y;
@@ -132,60 +132,22 @@ int LAB2RGB(std::vector<uint8_t> &LAB2RGBImageData, int32_t width, int32_t heigh
             g = std::min(255.0, std::max(0.0, g));
             b = std::min(255.0, std::max(0.0, b));
 
-            LAB2RGBImageData[index] = static_cast<uint8_t>(r);
-            LAB2RGBImageData[index + 1] = static_cast<uint8_t>(g);
-            LAB2RGBImageData[index + 2] = static_cast<uint8_t>(b);
+            imageData[index] = static_cast<uint8_t>(r);
+            imageData[index + 1] = static_cast<uint8_t>(g);
+            imageData[index + 2] = static_cast<uint8_t>(b);
         }
     }
     return 0;
 }
 
 int main() {
-    BMP bmp;
-    BMPInfo bmpInfo;
-    std::ifstream inputFile(FILENAME, std::ios::binary);
-    if (!inputFile.is_open()) {
-        std::cout << "unable to open this file" << std::endl;
-        return 1;
-    }
-
-
-    inputFile.read(reinterpret_cast<char *>(&bmp), sizeof(BMP));
-
-    if (bmp.fileType != 0x4D42) { // BM ASCII
-        std::cout << "file is not invalid!" << std::endl;
-        return 1;
-    }
-
-
-    inputFile.read(reinterpret_cast<char *>(&bmpInfo), sizeof(BMPInfo));
-
-    //offset
-    uint32_t imageDataOffset = bmp.dataOffset;
-
-    //size
-    uint32_t imageDataSize = bmpInfo.imageSize;
-    //ImgInfo();
-    //read data of image
-    std::vector<uint8_t> imageData(imageDataSize);
-    inputFile.seekg(imageDataOffset);
-    inputFile.read(reinterpret_cast<char *>(imageData.data()), imageDataSize);
-    //outputBinToFile(imageData,"put1");
-
-    // close
-    inputFile.close();
-    std::vector<uint8_t> YUVImageData(imageDataSize);
+    std::vector<uint8_t> imageData=ReadBMPFile(FILENAME);
+    std::vector<uint8_t> YUVImageData(imageData.size());
     YUVImageData = imageData;
-    std::vector<uint8_t> YIQImageData(imageDataSize);
+    std::vector<uint8_t> YIQImageData(imageData.size());
     YIQImageData = imageData;
-    std::vector<uint8_t> LABImageData(imageDataSize);
+    std::vector<uint8_t> LABImageData(imageData.size());
     LABImageData = imageData;
-    std::vector<uint8_t> YUV2RGBImageData(imageDataSize);
-    YUV2RGBImageData=imageData;
-    std::vector<uint8_t> YIQ2RGBImageData(imageDataSize);
-    YIQ2RGBImageData=imageData;
-    std::vector<uint8_t> LAB2RGBImageData(imageDataSize);
-    LAB2RGBImageData=imageData;
 
 
     bool isLoop = true;
@@ -208,138 +170,51 @@ int main() {
 
         switch (choice) {
             case 1: {
-                std::cout << "just a moment..." << std::endl;
-                //unix
-                //sleep(2);
+
                 //outputBinToFile(imageData,"RGBBin");
 
-                RGB2YUV(YUVImageData, bmpInfo.width, bmpInfo.height);
-               // outputBinToFile(YUVImageData,"YUVBin");
-                std::ofstream outputFile("RGB_TO_YUV.bmp", std::ios::binary);
+                RGB2YUV(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
+               // outputBinToFile(YUVImageData,"YUVBin")
+                WriteBMPFile("RGB_TO_YUV.bmp",YUVImageData,bmp,bmpInfo);
 
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
-                // write
-                outputFile.write(reinterpret_cast<const char *>(YUVImageData.data()), YUVImageData.size());
-                // close file
-                outputFile.close();
-                std::cout << "success" << std::endl;
-                std::cout << std::endl;
                 isLoop = true;
                 break;
             }
             case 2: {
-                std::cout << "just a moment..." << std::endl;
-                //unix
-                sleep(2);
-                RGB2YIQ(YIQImageData, bmpInfo.width, bmpInfo.height);
-                std::ofstream outputFile("RGB_TO_YIQ.bmp", std::ios::binary);
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
-                // write
-                outputFile.write(reinterpret_cast<const char *>(YIQImageData.data()), YIQImageData.size());
-                // close file
-                outputFile.close();
-                std::cout << "success" << std::endl;
-                std::cout << std::endl;
+
+                RGB2YIQ(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
+                WriteBMPFile("RGB_TO_YIQ.bmp",YIQImageData,bmp,bmpInfo);
                 isLoop = true;
                 break;
             }
             case 3: {
-                std::cout << "just a moment..." << std::endl;
-                //unix
-                sleep(2);
-                RGB2LAB(LABImageData, bmpInfo.width, bmpInfo.height);
-                std::ofstream outputFile("RGB_TO_LAB.bmp", std::ios::binary);
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
-                // write
-                outputFile.write(reinterpret_cast<const char *>(LABImageData.data()), LABImageData.size());
-                // close file
-                outputFile.close();
-                std::cout << "success" << std::endl;
-                std::cout << std::endl;
+
+                RGB2LAB(LABImageData, imageData,bmpInfo.width, bmpInfo.height);
+                WriteBMPFile("RGB_TO_LAB.bmp",LABImageData,bmp,bmpInfo);
                 isLoop = true;
                 break;
             }
             case 4: {
-                std::cout << "just a moment..." << std::endl;
-                //unix
-                sleep(2);
-                YUV2RGB(YUV2RGBImageData, bmpInfo.width, bmpInfo.height);
-                std::ofstream outputFile("YUV_TO_RGB.bmp", std::ios::binary);
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
-                // write
-                outputFile.write(reinterpret_cast<const char *>(YUV2RGBImageData.data()), YUV2RGBImageData.size());
-                // close file
-                outputFile.close();
-                std::cout << "success" << std::endl;
-                std::cout << std::endl;
+
+                YUV2RGB(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
+                WriteBMPFile("YUV_TO_RGB.bmp",imageData,bmp,bmpInfo);
+
                 isLoop = true;
                 break;
             }
             case 5: {
-                std::cout << "just a moment..." << std::endl;
-                //unix
-                sleep(2);
-                YIQ2RGB(YIQImageData, bmpInfo.width, bmpInfo.height);
-                std::ofstream outputFile("YIQ_TO_RGB.bmp", std::ios::binary);
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
-                // write
-                outputFile.write(reinterpret_cast<const char *>(LABImageData.data()), LABImageData.size());
-                // close file
-                outputFile.close();
-                std::cout << "success" << std::endl;
-                std::cout << std::endl;
+
+                YIQ2RGB(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
+                WriteBMPFile("YIQ_TO_RGB.bmp",imageData,bmp,bmpInfo);
+
                 isLoop = true;
                 break;
             }
             case 6: {
-                std::cout << "just a moment..." << std::endl;
-                //unix
-                sleep(2);
-                LAB2RGB(LABImageData, bmpInfo.width, bmpInfo.height);
-                std::ofstream outputFile("LAB_TO_RGB.bmp", std::ios::binary);
-                if (!outputFile.is_open()) {
-                    std::cout << "unable to create this file" << std::endl;
-                    return 1;
-                }
-                outputFile.write(reinterpret_cast<const char *>(&bmp), sizeof(BMP));
-                outputFile.write(reinterpret_cast<const char *>(&bmpInfo), sizeof(BMPInfo));
-                outputFile.seekp(bmp.dataOffset);
-                // write
-                outputFile.write(reinterpret_cast<const char *>(LABImageData.data()), LABImageData.size());
-                // close file
-                outputFile.close();
-                std::cout << "success" << std::endl;
-                std::cout << std::endl;
+
+                LAB2RGB(LABImageData,imageData, bmpInfo.width, bmpInfo.height);
+                WriteBMPFile("LAB_TO_RGB.bmp",imageData,bmp,bmpInfo);
+
                 isLoop = true;
                 break;
             }

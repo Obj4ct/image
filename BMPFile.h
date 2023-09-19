@@ -60,15 +60,15 @@ std::vector<uint8_t> ReadBMPFile(const std::string& fileName) {
     std::ifstream inputFile(fileName, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "Unable to open input file!" << std::endl;
-        // 可以抛出异常或进行其他错误处理
-        return std::vector<uint8_t>(); // 返回空向量表示出错
+        exit(0);
+
     }
 
     inputFile.read(reinterpret_cast<char*>(&bmp), sizeof(BMP));
     if (bmp.fileType != 0x4D42) { // BM ASCII
         std::cout << "File is not a valid BMP!" << std::endl;
         inputFile.close();
-        return std::vector<uint8_t>(); // 返回空向量表示出错
+        exit(0);
     }
 
     inputFile.read(reinterpret_cast<char*>(&bmpInfo), sizeof(BMPInfo));
@@ -93,7 +93,7 @@ bool WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& image
     outputFile.seekp(bmp.dataOffset);
     outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageData.size());
     outputFile.close();
-    std::cout<<"success"<<std::endl;
+    std::cout<<"success write ,file called "<<fileName<<std::endl;
     return true;
 }
 
