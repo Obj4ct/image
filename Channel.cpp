@@ -75,7 +75,7 @@ void Saturation(std::vector<uint8_t> &saturationImageData, int32_t width, int32_
 }
 
 int main() {
-    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
 
     std::vector<uint8_t> brightnessImageData(imageData.size());
     brightnessImageData = imageData;
@@ -109,7 +109,7 @@ int main() {
                 if (result == 1) {
                     goto inputBrightness;
                 } else {
-                    myFunction.WriteBMPFile("outColorBrightness.bmp", brightnessImageData);
+                    MYFunction::WriteBMPFile("outColorBrightness.bmp", brightnessImageData);
                 }
                 isLoop = true;
                 break;
@@ -125,7 +125,7 @@ int main() {
                 if (result == 1) {
                     goto inputContrastValue;
                 } else {
-                    myFunction.WriteBMPFile("outColorContrastValue.bmp", contrastImageData);
+                    MYFunction::WriteBMPFile("outColorContrastValue.bmp", contrastImageData);
 
                 }
                 isLoop = true;
@@ -138,7 +138,7 @@ int main() {
                 //Saturation function
 
                 Saturation(saturationImageData, bmpInfo.width, bmpInfo.height, saturationValue);
-                myFunction.WriteBMPFile("outColorSaturation.bmp", saturationImageData);
+                MYFunction::WriteBMPFile("outColorSaturation.bmp", saturationImageData);
                 isLoop = true;
                 break;
             }

@@ -55,10 +55,10 @@ struct BMPInfo {
 }bmpInfo;
 #pragma pack(pop)
 struct MYFunction{
-    std::vector<uint8_t> ReadBMPFile(const std::string& fileName);
-    bool WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData);
-    void SetBMPHeaderValues(BMP& bmp, BMPInfo& bmpInfo, int width, int height, uint16_t bitsPerPixel);
-}myFunction;
+    static std::vector<uint8_t> ReadBMPFile(const std::string& fileName);
+    static void WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData);
+    static void SetBMPHeaderValues(BMP& bmp, BMPInfo& bmpInfo, int width, int height, uint16_t bitsPerPixel);
+};
 
 
 #endif //CLION_BMPFILE_H

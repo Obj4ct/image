@@ -40,7 +40,7 @@ void RotateImage(std::vector<uint8_t> &imageData, int32_t width, int32_t height,
 
 int main()
 {
-    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
 
     // RotateImage Function
     double_t angle;
@@ -49,7 +49,7 @@ int main()
     //normal
     RotateImage(imageData, bmpInfo.width, bmpInfo.height, angle);
 
-    myFunction.WriteBMPFile("outputRotate.bmp", imageData);
+    MYFunction::WriteBMPFile("outputRotate.bmp", imageData);
 
 
 }

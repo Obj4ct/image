@@ -51,9 +51,9 @@ void AutoContrast(std::vector<uint8_t> &imageData) {
 }
 
 int main() {
-    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
 
     AutoContrast(imageData);
-    myFunction.WriteBMPFile("outputAutoContrast.bmp", imageData);
+    MYFunction::WriteBMPFile("outputAutoContrast.bmp", imageData);
     return 0;
 }

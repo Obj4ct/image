@@ -92,7 +92,7 @@ int AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height,
 
 int main() {
 
-    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
 
     bool isLoop = true;
     while (isLoop) {
@@ -113,7 +113,7 @@ int main() {
                 //OutputToFile(imageData,"beforeBrightness");
                 FullMosaic(imageData, bmpInfo.width, bmpInfo.height, degree);
                 //OutputToFile(imageData,"afterBrightness");
-                myFunction.WriteBMPFile("outputFullMosaic.bmp", imageData);
+                MYFunction::WriteBMPFile("outputFullMosaic.bmp", imageData);
 
                 isLoop = true;
                 break;
@@ -147,7 +147,7 @@ int main() {
                 }
                 else{
 
-                    myFunction.WriteBMPFile("outputAreaMosaic.bmp", imageData);
+                    MYFunction::WriteBMPFile("outputAreaMosaic.bmp", imageData);
                 }
 
 

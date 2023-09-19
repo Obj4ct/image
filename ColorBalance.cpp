@@ -61,7 +61,7 @@ void ColorBalance(std::vector<uint8_t> &imageData, int32_t width, int32_t height
 
 
 int main() {
-    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
 
     // fuction
     ColorBalance(imageData,bmpInfo.width,bmpInfo.height);
@@ -69,7 +69,7 @@ int main() {
 
     //ImgInfo();
     // create file
-    myFunction.WriteBMPFile("outColorBalance.bmp", imageData);
+    MYFunction::WriteBMPFile("outColorBalance.bmp", imageData);
 
 
     return 0;

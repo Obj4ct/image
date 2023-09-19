@@ -28,11 +28,11 @@ std::vector<uint8_t> MYFunction::ReadBMPFile(const std::string &fileName) {
 }
 
 
-bool MYFunction::WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData) {
+void MYFunction::WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData) {
     std::ofstream outputFile(fileName, std::ios::binary);
     if (!outputFile.is_open()) {
         std::cout << "Unable to create output file!" << std::endl;
-        return false;
+
     }
 
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
@@ -41,7 +41,7 @@ bool MYFunction::WriteBMPFile(const std::string& fileName, const std::vector<uin
     outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageData.size());
     outputFile.close();
     std::cout<<"success write ,file called "<<fileName<<std::endl;
-    return true;
+
 }
 
 void MYFunction::SetBMPHeaderValues(BMP& bmp, BMPInfo& bmpInfo, int width, int height, uint16_t bitsPerPixel) {

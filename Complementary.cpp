@@ -21,13 +21,13 @@ void Complementary(std::vector<uint8_t>& imageData) {
 }
 int main() {
 
-    std::vector<uint8_t> imageData =myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
 
     // function
     Complementary(imageData);
 
     // create file
-    myFunction.WriteBMPFile("outColorComplementary.bmp", imageData);
+    MYFunction::WriteBMPFile("outColorComplementary.bmp", imageData);
 
 }
 

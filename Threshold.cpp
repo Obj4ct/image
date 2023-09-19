@@ -22,7 +22,7 @@ void ApplyThreshold(std::vector<uint8_t>& imageData, uint32_t threshold) {
 }
 
 int main() {
-    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
 
     uint32_t threshold = 0;
     std::cout<<"input threshold:"<<std::endl;
@@ -30,7 +30,7 @@ int main() {
 
     ApplyThreshold(imageData, threshold);
 
-    myFunction.WriteBMPFile("outputThreshold.bmp", imageData);
+    MYFunction::WriteBMPFile("outputThreshold.bmp", imageData);
 
     return 0;
 }

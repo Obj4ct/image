@@ -80,7 +80,7 @@ void ColorLevelChanel_RGB(std::vector<uint8_t> &rgbImageData, int32_t width, int
 }
 
 int main() {
-    std::vector<uint8_t> imageData = myFunction.ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
     //CreateNewBmp();
     std::vector<uint8_t> rImageData(imageData.size());
     rImageData = imageData;
@@ -112,7 +112,7 @@ int main() {
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
                 ColorLevelChanel_R(rImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                myFunction.WriteBMPFile("changeColorLever_R.bmp", rImageData);
+                MYFunction::WriteBMPFile("changeColorLever_R.bmp", rImageData);
 
                 isLoop = true;
                 break;
@@ -124,7 +124,7 @@ int main() {
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
                 ColorLevelChanel_G(gImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                myFunction.WriteBMPFile("changeColorLever_G.bmp", gImageData);
+                MYFunction::WriteBMPFile("changeColorLever_G.bmp", gImageData);
                 isLoop = true;
                 break;
             }
@@ -135,7 +135,7 @@ int main() {
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
                 ColorLevelChanel_B(bImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                myFunction.WriteBMPFile("changeColorLever_B.bmp", bImageData);
+                MYFunction::WriteBMPFile("changeColorLever_B.bmp", bImageData);
 
                 isLoop = true;
                 break;
@@ -149,7 +149,7 @@ int main() {
                 // RGB function
                 ColorLevelChanel_RGB(rgbImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
                 std::ofstream outputFile("changeColorLever_RGB.bmp", std::ios::binary);
-                myFunction.WriteBMPFile("changeColorLever_RGB.bmp", rgbImageData);
+                MYFunction::WriteBMPFile("changeColorLever_RGB.bmp", rgbImageData);
                 isLoop = true;
                 break;
             }
