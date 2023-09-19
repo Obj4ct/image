@@ -22,8 +22,7 @@ void ConvertToGray(std::vector<uint8_t>& imageData) {
 }
 
 int main() {
-
-    std::vector<uint8_t> imageData = ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData =myFunction.ReadBMPFile(FILENAME);
 
     ConvertToGray(imageData);
     //create file

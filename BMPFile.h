@@ -54,32 +54,12 @@ struct BMPInfo {
     uint32_t colorsImportant;
 }bmpInfo;
 #pragma pack(pop)
+struct MYFunction{
+    std::vector<uint8_t> ReadBMPFile(const std::string& fileName);
+}myFunction;
 
 
-std::vector<uint8_t> ReadBMPFile(const std::string& fileName) {
-    std::ifstream inputFile(fileName, std::ios::binary);
-    if (!inputFile.is_open()) {
-        std::cout << "Unable to open input file!" << std::endl;
-        exit(0);
 
-    }
-
-    inputFile.read(reinterpret_cast<char*>(&bmp), sizeof(BMP));
-    if (bmp.fileType != 0x4D42) { // BM ASCII
-        std::cout << "File is not a valid BMP!" << std::endl;
-        inputFile.close();
-        exit(0);
-    }
-
-    inputFile.read(reinterpret_cast<char*>(&bmpInfo), sizeof(BMPInfo));
-    uint32_t imageDataOffset = bmp.dataOffset;
-    uint32_t imageDataSize = bmpInfo.imageSize;
-    std::vector<uint8_t> imageData(imageDataSize);
-    inputFile.seekg(imageDataOffset);
-    inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
-    inputFile.close();
-    return imageData;
-}
 
 bool WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData, const BMP& bmp, const BMPInfo& bmpInfo) {
     std::ofstream outputFile(fileName, std::ios::binary);
@@ -118,7 +98,4 @@ void SetBMPHeaderValues(BMP& bmp, BMPInfo& bmpInfo, int width, int height, uint1
     bmpInfo.colorsUsed = 0; // 使用的颜色数，通常不使用调色板
     bmpInfo.colorsImportant = 0; // 重要颜色数，通常不指定
 }
-
-
-
 #endif //CLION_BMPFILE_H

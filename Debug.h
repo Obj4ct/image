@@ -40,14 +40,14 @@ int  ReadBinTxt(const std::string& inName,const std::string& outName)
     std::ifstream inputFile(inName, std::ios::binary);
 
     if (!inputFile.is_open()) {
-        std::cerr << "无法打开输入文件!" << std::endl;;
+        std::cerr << "unable to open this file" << std::endl;;
         inputFile.close();
         return 1;
     }
     std::ofstream outputFile(outName);
 
     if (!outputFile.is_open()) {
-        std::cerr << "无法创建输出文件!" << std::endl;
+        std::cerr << "unable to create output file!" << std::endl;
         outputFile.close();
         return 1;
     }
@@ -60,7 +60,7 @@ int  ReadBinTxt(const std::string& inName,const std::string& outName)
     inputFile.close();
     outputFile.close();
 
-    std::cout << "转换完成!" << std::endl;
+    std::cout << "read binary ok" << std::endl;
     return 0;
 
 }
@@ -70,13 +70,14 @@ int outputBinToFile(std::vector<uint8_t>& imageData,const std::string& name)
     // open output file
     std::ofstream outputFile(name,std::ios::binary);
     if (!outputFile.is_open()) {
-        std::cerr << "无法打开文件!" << std::endl;
+        std::cerr << "unable to open this file!" << std::endl;
         return 1;
     }
     outputFile.write(reinterpret_cast<const char*>(imageData.data()), static_cast<std::streamsize>(imageData.size()));
     outputFile.close();
     std::cout << "-----------" << std::endl;
-    std::cout << "二进制生成！!" << std::endl;
+    std::cout << "binary generate！!" << std::endl;
+    std::cout<<"file called "<<name<<std::endl;
     std::cout << "-----------" << std::endl;
 
     return 0;
@@ -90,7 +91,7 @@ int OutputPixToFile(std::vector<uint8_t>& imageData,const std::string& name) {
 
 
     if (!outputFile.is_open()) {
-        std::cerr << "无法打开文件!" << std::endl;
+        std::cerr << "unable to open this file !" << std::endl;
         return 1;
     }
 
@@ -100,7 +101,8 @@ int OutputPixToFile(std::vector<uint8_t>& imageData,const std::string& name) {
     }
     outputFile.close();
     std::cout << "-----------" << std::endl;
-    std::cout << "像素信息生成！" << std::endl;
+    std::cout << "pix generate！" << std::endl;
+    std::cout << "file called " <<name<< std::endl;
     std::cout << "-----------" << std::endl;
     return 0;
 
@@ -127,10 +129,9 @@ void TempImage(std::vector<uint8_t>& imageData,const std::string& name,BMP& bmp,
 
     // close file
     outputFile.close();
-
+    std::cout << "-----------" << std::endl;
     std::cout << "temp image already generated!" << std::endl;
-    std::cout << "-----------" << std::endl;
-    std::cout << "-----------" << std::endl;
+    std::cout << "file called "<<name << std::endl;
     std::cout << "-----------" << std::endl;
 
 }
@@ -160,8 +161,10 @@ void WriteBMPHexToFile(const std::string& inputFileName, const std::string& outp
     // 关闭文件
     inputFile.close();
     outputFile.close();
-
-    std::cout << "Hex data from BMP file saved to " << outputFileName << std::endl;
+    std::cout << "-----------" << std::endl;
+    std::cout << "hex generated" << std::endl;
+    std::cout << "file called " << outputFileName << std::endl;
+    std::cout << "-----------" << std::endl;
 }
 
 

@@ -5,6 +5,7 @@
 
 // 色阶调整分输入色阶调整和输出色阶调整，其中输入色阶调整有3个调整点，即通常所说的黑场、白场及灰场调整
 #include "BMPFile.h"
+#include "Debug.h"
 //windows
 //#include <windows.h>
 //unix
@@ -12,15 +13,19 @@
 
 
 int RGB2YUV(std::vector<uint8_t> &YUVImageData,std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
+
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             int index = (i * width + j) * 3;
             uint8_t r = imageData[index];
             uint8_t g = imageData[index + 1];
             uint8_t b = imageData[index + 2];
-            double_t y = (0.257 * r) + (0.504 * g) + (0.098 * b) + 16;
-            double_t u = (0.439 * r) - (0.368 * g) - (0.071 * b) + 128;
-            double_t v = -(0.148 * r) - (0.291 * g) + (0.439 * b) + 128;
+//            double_t y = (0.257 * r) + (0.504 * g) + (0.098 * b) + 16;
+//            double_t u = (0.439 * r) - (0.368 * g) - (0.071 * b) + 128;
+//            double_t v = -(0.148 * r) - (0.291 * g) + (0.439 * b) + 128;
+            double_t y = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+            double_t u = (-0.09991 * r) - (0.33609 * g) +(0.436 * b) ;
+            double_t v = (0.615 * r) - (0.55861 * g) - (0.05639 * b) ;
             YUVImageData[index] = static_cast<uint8_t>(y);
             YUVImageData[index + 1] = static_cast<uint8_t>(u);
             YUVImageData[index + 2] = static_cast<uint8_t>(v);
@@ -176,6 +181,7 @@ int main() {
                 RGB2YUV(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
                // outputBinToFile(YUVImageData,"YUVBin")
                 WriteBMPFile("RGB_TO_YUV.bmp",YUVImageData,bmp,bmpInfo);
+                outputBinToFile(YUVImageData,"YUVImage.txt");
 
                 isLoop = true;
                 break;
@@ -184,6 +190,8 @@ int main() {
 
                 RGB2YIQ(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
                 WriteBMPFile("RGB_TO_YIQ.bmp",YIQImageData,bmp,bmpInfo);
+                outputBinToFile(YIQImageData,"YIQImageData.txt");
+
                 isLoop = true;
                 break;
             }
@@ -191,6 +199,8 @@ int main() {
 
                 RGB2LAB(LABImageData, imageData,bmpInfo.width, bmpInfo.height);
                 WriteBMPFile("RGB_TO_LAB.bmp",LABImageData,bmp,bmpInfo);
+                outputBinToFile(LABImageData,"LABImageData.txt");
+
                 isLoop = true;
                 break;
             }
@@ -198,6 +208,8 @@ int main() {
 
                 YUV2RGB(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
                 WriteBMPFile("YUV_TO_RGB.bmp",imageData,bmp,bmpInfo);
+                outputBinToFile(imageData,"YUV_TO_RGB.txt");
+
 
                 isLoop = true;
                 break;
@@ -206,6 +218,8 @@ int main() {
 
                 YIQ2RGB(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
                 WriteBMPFile("YIQ_TO_RGB.bmp",imageData,bmp,bmpInfo);
+                outputBinToFile(imageData,"YIQ_TO_RGB.txt");
+
 
                 isLoop = true;
                 break;
@@ -214,6 +228,8 @@ int main() {
 
                 LAB2RGB(LABImageData,imageData, bmpInfo.width, bmpInfo.height);
                 WriteBMPFile("LAB_TO_RGB.bmp",imageData,bmp,bmpInfo);
+                outputBinToFile(YUVImageData,"YUVImage.bmp");
+
 
                 isLoop = true;
                 break;
