@@ -1,8 +1,7 @@
 //
 // Created by ZThenG on 2023/9/19/0019.
 //
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
 void ApplyThreshold(std::vector<uint8_t>& imageData, uint32_t threshold) {
     for (size_t i = 0; i < imageData.size(); i += 3) {
         uint8_t r = imageData[i];

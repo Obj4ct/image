@@ -2,8 +2,8 @@
 // Created by ztheng on 2023/9/5.
 // done
 
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
+
 #include "Debug.h"
 void ConvertToGray(std::vector<uint8_t>& imageData) {
     //OutputToFile(imageData, "GrayBefore");

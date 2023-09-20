@@ -2,8 +2,8 @@
 // Created by ZThenG on 2023/9/16/0016.
 //
 
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
+
 uint32_t CalSquareSum(std::vector<uint8_t> imageData) {
     uint32_t sum = 0;
 

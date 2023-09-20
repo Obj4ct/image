@@ -6,7 +6,7 @@
 #define IMAGE_DEBUG_H
 
 #include <iomanip>
-#include "BMPFile.h"
+#include "MyLib/BMPFile.h"
 
 void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
 {

@@ -3,8 +3,8 @@
 //done
 
 // 色阶调整分输入色阶调整和输出色阶调整，其中输入色阶调整有3个调整点，即通常所说的黑场、白场及灰场调整
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
+
 void ColorLevelChanel_R(std::vector<uint8_t> &rImageData, int32_t width, int32_t height, double_t brightness,
                         double_t contrast) {
 

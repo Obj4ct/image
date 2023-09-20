@@ -2,10 +2,9 @@
 // Created by ztheng on 2023/9/5.
 // done
 
-#include "BMPFile.h"
+#include "MyLib/BMPFile.h"
 #include "Debug.h"
 
-#include "BMPFile.cpp"
 int Brightness(std::vector<uint8_t> &brightnessImageData, double_t brightnessValue) {
     if (brightnessValue >= -150 && brightnessValue <= 150) {
         for (unsigned char &i: brightnessImageData) {

@@ -1,8 +1,8 @@
 //
 // Created by ZThenG on 2023/9/19/0019.
 //
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
+
 
 //均值代表了图像的亮度平均值
 double CalAver(const std::vector<uint8_t> &imageData) {

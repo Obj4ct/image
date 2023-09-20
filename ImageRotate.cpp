@@ -1,8 +1,8 @@
 ////
 //// Created by ztheng on 2023/9/5.
 ////
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
+
 //done
 
 // RotateImage

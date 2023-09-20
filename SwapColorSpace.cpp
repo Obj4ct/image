@@ -4,13 +4,13 @@
 
 
 // 色阶调整分输入色阶调整和输出色阶调整，其中输入色阶调整有3个调整点，即通常所说的黑场、白场及灰场调整
-#include "BMPFile.h"
+#include "MyLib/BMPFile.h"
 #include "Debug.h"
 //windows
 //#include <windows.h>
 //unix
 #include <unistd.h>
-#include "BMPFile.cpp"
+
 
 
 //int RGB2YUV(std::vector<uint8_t> &YUVImageData,std::vector<uint8_t>&imageData, int32_t width, int32_t height) {

@@ -1,10 +1,8 @@
 //
 // Created by ztheng on 2023/9/5.
 
-#include "BMPFile.h"
+#include "MyLib/BMPFile.h"
 #include "Debug.h"
-
-#include "BMPFile.cpp"
 void FullMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height, uint32_t degree) {
     // foreach pix 加上步长应该是移动像素方便处理下一个像素
     for (uint32_t y = 0; y < height; y += degree) {

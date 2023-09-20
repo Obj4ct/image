@@ -2,8 +2,8 @@
 // Created by ztheng on 2023/9/5.
 // done
 
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
+
 //done
 void ColorBalance(std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     // count

@@ -1,0 +1,2 @@
+SET(BMPLib BMPFile.cpp)
+

@@ -2,9 +2,9 @@
 // Created by ztheng on 2023/9/5.
 // done
 
-#include "BMPFile.h"
+#include "MyLib/BMPFile.h"
 #include "Debug.h"
-#include "BMPFile.cpp"
+
 
 
 void AverageBlur(std::vector<uint8_t>& imageData, uint32_t width, uint32_t height) {

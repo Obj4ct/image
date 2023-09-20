@@ -2,8 +2,8 @@
 // Created by ztheng on 2023/9/5.
 //done
 
-#include "BMPFile.h"
-#include "BMPFile.cpp"
+#include "MyLib/BMPFile.h"
+
 void Complementary(std::vector<uint8_t>& imageData) {
 //    OutputToFile(newImageData,"C111om");
     for (size_t i = 0; i < imageData.size(); i += 3) {

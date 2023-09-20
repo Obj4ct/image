@@ -2,12 +2,14 @@ cmake_minimum_required(VERSION 3.12)
 project(image)
 set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_STANDARD 17)
-add_library(BMPFile STATIC BMPFile.cpp)
-add_library(BMP_Shared SHARED BMPFile.cpp)
+
+
+add_library(BMPLib_Shared SHARED MyLib/BMPFile.cpp)
+#target_include_directories(BMP PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 file(GLOB files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
-foreach (file ${files})
+foreach(file ${files})
     string(REGEX REPLACE "(.+).cpp$" "\\1" exe ${file})
     add_executable(${exe} ${file})
-    # 将可执行程序链接到 BMP_Shared 共享库
-    target_link_libraries(${exe} BMP_Shared)
-endforeach ()
+    target_link_libraries(${exe} BMPLib_Shared)
+endforeach()

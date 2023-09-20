@@ -1,6 +1,6 @@
-#include "BMPFile.h"
+#include "MyLib/BMPFile.h"
 #include "Debug.h"
-#include "BMPFile.cpp"
+
 //something have done.
 //图像信息
 void WriteToBMPInfo(std::vector<uint8_t> &imageData, int32_t cropHeight, int32_t cropWidth, BMPInfo &newBmpInfo){
