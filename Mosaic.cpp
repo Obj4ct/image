@@ -89,8 +89,10 @@ int AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height,
 
 
 int main() {
-
-    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
 
     bool isLoop = true;
     while (isLoop) {
@@ -109,17 +111,17 @@ int main() {
                 uint32_t degree;
                 std::cin >> degree;
                 //OutputToFile(imageData,"beforeBrightness");
-                FullMosaic(imageData, bmpInfo.width, bmpInfo.height, degree);
+                FullMosaic(imageData, width, height, degree);
                 //OutputToFile(imageData,"afterBrightness");
-                MYFunction::WriteBMPFile("outputFullMosaic.bmp", imageData);
+                MYFunction::WriteBMPFile("outputFullMosaic.bmp", imageData,myValue.bmp,myValue.bmpInfo);
 
                 isLoop = true;
                 break;
             }
             case 2: {
                 retry:
-                uint32_t beginX = bmpInfo.width/4;
-                uint32_t beginY = bmpInfo.height/4;
+                uint32_t beginX = width/4;
+                uint32_t beginY = height/4;
                 uint32_t blockWidth = 100;
                 uint32_t blockHeight = 100;
 
@@ -138,14 +140,14 @@ int main() {
                 std::cin >> degree;
 
 
-                int result=AreaMosaic(imageData, bmpInfo.width, bmpInfo.height, beginX, beginY, blockWidth, blockHeight,degree);
+                int result=AreaMosaic(imageData, width, height, beginX, beginY, blockWidth, blockHeight,degree);
                 if(result==1)
                 {
                     goto retry;
                 }
                 else{
 
-                    MYFunction::WriteBMPFile("outputAreaMosaic.bmp", imageData);
+                    MYFunction::WriteBMPFile("outputAreaMosaic.bmp", imageData,myValue.bmp,myValue.bmpInfo);
                 }
 
 

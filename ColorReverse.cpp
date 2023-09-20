@@ -14,8 +14,10 @@ void InvertColors(std::vector<uint8_t>& imageData) {
 }
 
 int main() {
-
-    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
 
     // fuction
     InvertColors(imageData);
@@ -24,7 +26,7 @@ int main() {
     //ImgInfo();
     // create file
 
-    MYFunction::WriteBMPFile("outColorReverse.bmp", imageData);
+    MYFunction::WriteBMPFile("outColorReverse.bmp", imageData,myValue.bmp,myValue.bmpInfo);
 
 
 }

@@ -73,7 +73,10 @@ void Save(const std::vector<int> &histogram, const std::string &filename) {
 }
 
 int main() {
-    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     bool isLoop = true;
     while (isLoop) {
         int choice = 1;

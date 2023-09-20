@@ -3,9 +3,11 @@
 //
 #include "BMPFile.h"
 
-std::vector<uint8_t> MYFunction::ReadBMPFile(const std::string &fileName) {
+MyValue MYFunction::ReadBMPFile(const std::string &fileName) {
     BMP bmp;
     BMPInfo bmpInfo;
+    MyValue myValue;
+
     std::ifstream inputFile(fileName, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "Unable to open input file!" << std::endl;
@@ -24,17 +26,17 @@ std::vector<uint8_t> MYFunction::ReadBMPFile(const std::string &fileName) {
     std::vector<uint8_t> imageData(imageDataSize);
     inputFile.seekg(imageDataOffset);
     inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
-
+    myValue.imageData=imageData;
+    myValue.bmp=bmp;
+    myValue.bmpInfo=bmpInfo;
     inputFile.close();
-    return imageData;
+    return myValue;
 }
 
 
-void MYFunction::WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData) {
-    BMP bmp;
-    BMPInfo bmpInfo;
+void MYFunction::WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData,BMP& bmp,BMPInfo& bmpInfo) {
 
-    std::ofstream outputFile("../outImage/"+fileName, std::ios::binary);
+    std::ofstream outputFile(fileName, std::ios::binary);
     if (!outputFile.is_open()) {
         std::cout << "Unable to create output file!" << std::endl;
 

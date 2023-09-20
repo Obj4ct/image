@@ -2,8 +2,6 @@
 // Created by ZThenG on 2023/9/19/0019.
 //
 #include "MyLib/BMPFile.h"
-
-
 //均值代表了图像的亮度平均值
 double CalAver(const std::vector<uint8_t> &imageData) {
     double sum = 0.0;
@@ -51,9 +49,11 @@ void AutoContrast(std::vector<uint8_t> &imageData) {
 }
 
 int main() {
-    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
-
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     AutoContrast(imageData);
-    MYFunction::WriteBMPFile("outputAutoContrast.bmp", imageData);
+    MYFunction::WriteBMPFile("outputAutoContrast.bmp", imageData,myValue.bmp,myValue.bmpInfo);
     return 0;
 }

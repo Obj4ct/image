@@ -30,8 +30,10 @@ void HighLight(std::vector<uint8_t> &imageData,std::vector<uint8_t> &highLightIm
 
 }
 int main() {
-
-    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     std::vector<uint8_t>  shadowImageData(imageData.size());
     shadowImageData=imageData;
     std::vector<uint8_t> highLightImageData(imageData.size());
@@ -52,7 +54,7 @@ int main() {
                 std::cout<<"input shadow:"<<std::endl;
                 std::cin>>shadow;
                 MakeShadow(imageData,shadowImageData,shadow);
-                MYFunction::WriteBMPFile("outputShadow.bmp",shadowImageData);
+                MYFunction::WriteBMPFile("outputShadow.bmp",shadowImageData,myValue.bmp,myValue.bmpInfo);
                 isLoop = true;
                 break;
             }
@@ -61,7 +63,7 @@ int main() {
                 std::cout<<"输入像素值，在此像素值之上的像素将被降低值："<<std::endl;
                 std::cin>>pixel;
                 HighLight(imageData,highLightImageData,pixel);
-                MYFunction::WriteBMPFile("outputHighLight.bmp",highLightImageData);
+                MYFunction::WriteBMPFile("outputHighLight.bmp",highLightImageData,myValue.bmp,myValue.bmpInfo);
                 isLoop = true;
                 break;
             }

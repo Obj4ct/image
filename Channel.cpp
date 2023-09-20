@@ -4,7 +4,7 @@
 
 #include "MyLib/BMPFile.h"
 #include "Debug.h"
-
+#include "MyLib/BMPFile.cpp"
 int Brightness(std::vector<uint8_t> &brightnessImageData, double_t brightnessValue) {
     if (brightnessValue >= -150 && brightnessValue <= 150) {
         for (unsigned char &i: brightnessImageData) {
@@ -74,8 +74,10 @@ void Saturation(std::vector<uint8_t> &saturationImageData, int32_t width, int32_
 }
 
 int main() {
-    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
-
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     std::vector<uint8_t> brightnessImageData(imageData.size());
     brightnessImageData = imageData;
     std::vector<uint8_t> contrastImageData(imageData.size());
@@ -108,7 +110,7 @@ int main() {
                 if (result == 1) {
                     goto inputBrightness;
                 } else {
-                    MYFunction::WriteBMPFile("outColorBrightness.bmp", brightnessImageData);
+                    MYFunction::WriteBMPFile("outColorBrightness.bmp", brightnessImageData,myValue.bmp,myValue.bmpInfo);
                 }
                 isLoop = true;
                 break;
@@ -124,7 +126,7 @@ int main() {
                 if (result == 1) {
                     goto inputContrastValue;
                 } else {
-                    MYFunction::WriteBMPFile("outColorContrastValue.bmp", contrastImageData);
+                    MYFunction::WriteBMPFile("outColorContrastValue.bmp", contrastImageData,myValue.bmp,myValue.bmpInfo);
 
                 }
                 isLoop = true;
@@ -136,8 +138,8 @@ int main() {
                 std::cin >> saturationValue;
                 //Saturation function
 
-                Saturation(saturationImageData, bmpInfo.width, bmpInfo.height, saturationValue);
-                MYFunction::WriteBMPFile("outColorSaturation.bmp", saturationImageData);
+                Saturation(saturationImageData, width, height, saturationValue);
+                MYFunction::WriteBMPFile("outColorSaturation.bmp", saturationImageData,myValue.bmp,myValue.bmpInfo);
                 isLoop = true;
                 break;
             }

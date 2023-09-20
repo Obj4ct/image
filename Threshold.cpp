@@ -2,6 +2,7 @@
 // Created by ZThenG on 2023/9/19/0019.
 //
 #include "MyLib/BMPFile.h"
+
 void ApplyThreshold(std::vector<uint8_t>& imageData, uint32_t threshold) {
     for (size_t i = 0; i < imageData.size(); i += 3) {
         uint8_t r = imageData[i];
@@ -21,15 +22,17 @@ void ApplyThreshold(std::vector<uint8_t>& imageData, uint32_t threshold) {
 }
 
 int main() {
-    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
-
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     uint32_t threshold = 0;
     std::cout<<"input threshold:"<<std::endl;
     std::cin>>threshold;
 
     ApplyThreshold(imageData, threshold);
 
-    MYFunction::WriteBMPFile("outputThreshold.bmp", imageData);
+    MYFunction::WriteBMPFile("outputThreshold.bmp", imageData,myValue.bmp,myValue.bmpInfo);
 
     return 0;
 }

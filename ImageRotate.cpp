@@ -40,16 +40,18 @@ void RotateImage(std::vector<uint8_t> &imageData, int32_t width, int32_t height,
 
 int main()
 {
-    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
-
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     // RotateImage Function
     double_t angle;
     std::cout<<"input rotate angle:"<<std::endl;
     std::cin>>angle;
     //normal
-    RotateImage(imageData, bmpInfo.width, bmpInfo.height, angle);
+    RotateImage(imageData, width, height, angle);
 
-    MYFunction::WriteBMPFile("outputRotate.bmp", imageData);
+    MYFunction::WriteBMPFile("outputRotate.bmp", imageData,myValue.bmp,myValue.bmpInfo);
 
 
 }

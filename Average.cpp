@@ -5,8 +5,6 @@
 #include "MyLib/BMPFile.h"
 #include "Debug.h"
 
-
-
 void AverageBlur(std::vector<uint8_t>& imageData, uint32_t width, uint32_t height) {
     std::vector<uint8_t> blurImage(imageData);
 
@@ -29,9 +27,12 @@ void AverageBlur(std::vector<uint8_t>& imageData, uint32_t width, uint32_t heigh
 }
 
 int main() {
-    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
-    AverageBlur(imageData, bmpInfo.width, bmpInfo.height);
-    MYFunction::WriteBMPFile("outputAverBlur.bmp", imageData);
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
+    AverageBlur(imageData, width, height);
+    MYFunction::WriteBMPFile("outputAverBlur.bmp", imageData,myValue.bmp,myValue.bmpInfo);
 
     return 0;
 }

@@ -20,14 +20,15 @@ void Complementary(std::vector<uint8_t>& imageData) {
 //    OutputToFile(newImageData,"Com");
 }
 int main() {
-
-    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
-
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     // function
     Complementary(imageData);
 
     // create file
-    MYFunction::WriteBMPFile("outColorComplementary.bmp", imageData);
+    MYFunction::WriteBMPFile("outColorComplementary.bmp", imageData,myValue.bmp,myValue.bmpInfo);
 
 }
 

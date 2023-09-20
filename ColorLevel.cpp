@@ -80,7 +80,10 @@ void ColorLevelChanel_RGB(std::vector<uint8_t> &rgbImageData, int32_t width, int
 }
 
 int main() {
-    std::vector<uint8_t> imageData =MYFunction::ReadBMPFile(FILENAME);
+    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
+    int32_t  height=myValue.bmpInfo.height;
+    int32_t  width=myValue.bmpInfo.width;
+    std::vector<uint8_t>imageData=myValue.imageData;
     //CreateNewBmp();
     std::vector<uint8_t> rImageData(imageData.size());
     rImageData = imageData;
@@ -111,8 +114,8 @@ int main() {
                 std::cin >> brightness;
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
-                ColorLevelChanel_R(rImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                MYFunction::WriteBMPFile("changeColorLever_R.bmp", rImageData);
+                ColorLevelChanel_R(rImageData, width, height, brightness, contrast);
+                MYFunction::WriteBMPFile("changeColorLever_R.bmp", rImageData,myValue.bmp,myValue.bmpInfo);
 
                 isLoop = true;
                 break;
@@ -123,8 +126,8 @@ int main() {
                 std::cin >> brightness;
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
-                ColorLevelChanel_G(gImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                MYFunction::WriteBMPFile("changeColorLever_G.bmp", gImageData);
+                ColorLevelChanel_G(gImageData, width, height, brightness, contrast);
+                MYFunction::WriteBMPFile("changeColorLever_G.bmp", gImageData,myValue.bmp,myValue.bmpInfo);
                 isLoop = true;
                 break;
             }
@@ -134,8 +137,8 @@ int main() {
                 std::cin >> brightness;
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
-                ColorLevelChanel_B(bImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
-                MYFunction::WriteBMPFile("changeColorLever_B.bmp", bImageData);
+                ColorLevelChanel_B(bImageData, width, height, brightness, contrast);
+                MYFunction::WriteBMPFile("changeColorLever_B.bmp", bImageData,myValue.bmp,myValue.bmpInfo);
 
                 isLoop = true;
                 break;
@@ -147,9 +150,9 @@ int main() {
                 std::cout << "please input contrast:" << std::endl;
                 std::cin >> contrast;
                 // RGB function
-                ColorLevelChanel_RGB(rgbImageData, bmpInfo.width, bmpInfo.height, brightness, contrast);
+                ColorLevelChanel_RGB(rgbImageData, width, height, brightness, contrast);
                 std::ofstream outputFile("changeColorLever_RGB.bmp", std::ios::binary);
-                MYFunction::WriteBMPFile("changeColorLever_RGB.bmp", rgbImageData);
+                MYFunction::WriteBMPFile("changeColorLever_RGB.bmp", rgbImageData,myValue.bmp,myValue.bmpInfo);
                 isLoop = true;
                 break;
             }
