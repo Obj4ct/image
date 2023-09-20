@@ -23,7 +23,7 @@ double_t KernelSum()
     return sum;
 }
 std::vector<uint8_t> GaussianBlur(const std::vector<uint8_t> &imageData, int width, int height) {
-    std::vector<uint8_t> blurredImage(imageData.size());
+    std::vector<uint8_t> blurImageData(imageData.size());
     double_t kernelSum=KernelSum();
     std::cout<<kernelSum;
     for (int y = 2; y < height-2; y++) {
@@ -42,13 +42,13 @@ std::vector<uint8_t> GaussianBlur(const std::vector<uint8_t> &imageData, int wid
                 }
             }
             int index = (y * width + x) * 3;
-            blurredImage[index] = static_cast<uint8_t>(r / kernelSum);
-            blurredImage[index + 1] = static_cast<uint8_t>(g / kernelSum);
-            blurredImage[index + 2] = static_cast<uint8_t>(b / kernelSum);
+            blurImageData[index] = static_cast<uint8_t>(r / kernelSum);
+            blurImageData[index + 1] = static_cast<uint8_t>(g / kernelSum);
+            blurImageData[index + 2] = static_cast<uint8_t>(b / kernelSum);
         }
     }
 
-    return blurredImage;
+    return blurImageData;
 }
 
 int main() {
@@ -56,8 +56,8 @@ int main() {
     int32_t height = myValue.bmpInfo.height;
     int32_t width = myValue.bmpInfo.width;
     std::vector<uint8_t> imageData = myValue.imageData;
-    std::vector<uint8_t> blurredImage = GaussianBlur(imageData, width, height);
-    MYFunction::WriteBMPFile("outputGauss.bmp", blurredImage, myValue.bmp, myValue.bmpInfo);
+    std::vector<uint8_t> blurImageData = GaussianBlur(imageData, width, height);
+    MYFunction::WriteBMPFile("outputGauss.bmp", blurImageData, myValue.bmp, myValue.bmpInfo);
 
     return 0;
 }
