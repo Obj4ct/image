@@ -38,13 +38,12 @@ void ImgInfo(const BMP& inBmp,const BMPInfo& inBmpInfo)
 int  ReadBinTxt(const std::string& inName,const std::string& outName)
 {
     std::ifstream inputFile(inName, std::ios::binary);
-
     if (!inputFile.is_open()) {
         std::cerr << "unable to open this file" << std::endl;;
         inputFile.close();
         return 1;
     }
-    std::ofstream outputFile(outName);
+    std::ofstream outputFile("../debug/"+outName);
 
     if (!outputFile.is_open()) {
         std::cerr << "unable to create output file!" << std::endl;
@@ -68,7 +67,7 @@ int  ReadBinTxt(const std::string& inName,const std::string& outName)
 int outputBinToFile(std::vector<uint8_t>& imageData,const std::string& name)
 {
     // open output file
-    std::ofstream outputFile(name,std::ios::binary);
+    std::ofstream outputFile("../debug/"+name,std::ios::binary);
     if (!outputFile.is_open()) {
         std::cerr << "unable to open this file!" << std::endl;
         return 1;
@@ -87,7 +86,7 @@ int outputBinToFile(std::vector<uint8_t>& imageData,const std::string& name)
 int OutputPixToFile(std::vector<uint8_t>& imageData,const std::string& name) {
 
     // open output file
-    std::ofstream outputFile(name);
+    std::ofstream outputFile("../debug/"+name);
 
 
     if (!outputFile.is_open()) {
@@ -112,7 +111,7 @@ int OutputPixToFile(std::vector<uint8_t>& imageData,const std::string& name) {
 void TempImage(std::vector<uint8_t>& imageData,const std::string& name,BMP& bmp,BMPInfo& bmpInfo)
 {
     // open output file
-    std::ofstream outputFile(name);
+    std::ofstream outputFile("../debug/"+name);
 
 
     if (!outputFile.is_open()) {
@@ -145,7 +144,7 @@ void WriteBMPHexToFile(const std::string& inputFileName, const std::string& outp
     }
 
 
-    std::ofstream outputFile(outputFileName);
+    std::ofstream outputFile("../debug/"+outputFileName);
     if (!outputFile.is_open()) {
         std::cout << "Unable to create output file: " << outputFileName << std::endl;
         return;

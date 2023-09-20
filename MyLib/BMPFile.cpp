@@ -2,12 +2,14 @@
 // Created by Obj4ct on 2023/9/19.
 //
 #include "BMPFile.h"
+
 std::vector<uint8_t> MYFunction::ReadBMPFile(const std::string &fileName) {
+    BMP bmp;
+    BMPInfo bmpInfo;
     std::ifstream inputFile(fileName, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cout << "Unable to open input file!" << std::endl;
         exit(0);
-
     }
 
     inputFile.read(reinterpret_cast<char*>(&bmp), sizeof(BMP));
@@ -16,25 +18,27 @@ std::vector<uint8_t> MYFunction::ReadBMPFile(const std::string &fileName) {
         inputFile.close();
         exit(0);
     }
-
     inputFile.read(reinterpret_cast<char*>(&bmpInfo), sizeof(BMPInfo));
     uint32_t imageDataOffset = bmp.dataOffset;
     uint32_t imageDataSize = bmpInfo.imageSize;
     std::vector<uint8_t> imageData(imageDataSize);
     inputFile.seekg(imageDataOffset);
     inputFile.read(reinterpret_cast<char*>(imageData.data()), imageDataSize);
+
     inputFile.close();
     return imageData;
 }
 
 
 void MYFunction::WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData) {
-    std::ofstream outputFile(fileName, std::ios::binary);
+    BMP bmp;
+    BMPInfo bmpInfo;
+
+    std::ofstream outputFile("../outImage/"+fileName, std::ios::binary);
     if (!outputFile.is_open()) {
         std::cout << "Unable to create output file!" << std::endl;
 
     }
-
     outputFile.write(reinterpret_cast<const char*>(&bmp), sizeof(BMP));
     outputFile.write(reinterpret_cast<const char*>(&bmpInfo), sizeof(BMPInfo));
     outputFile.seekp(bmp.dataOffset);

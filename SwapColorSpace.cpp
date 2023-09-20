@@ -11,52 +11,29 @@
 //unix
 #include <unistd.h>
 
-
-
-//int RGB2YUV(std::vector<uint8_t> &YUVImageData,std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
-//
-//    for (int i = 0; i < height; ++i) {
-//        for (int j = 0; j < width; ++j) {
-//            int index = (i * width + j) * 3;
-//            uint8_t r = imageData[index];
-//            uint8_t g = imageData[index + 1];
-//            uint8_t b = imageData[index + 2];
-////            double_t y = (0.257 * r) + (0.504 * g) + (0.098 * b) + 16;
-////            double_t u = (0.439 * r) - (0.368 * g) - (0.071 * b) + 128;
-////            double_t v = -(0.148 * r) - (0.291 * g) + (0.439 * b) + 128;
-//            double_t y = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
-//            double_t u = (-0.09991 * r) - (0.33609 * g) +(0.436 * b) ;
-//            double_t v = (0.615 * r) - (0.55861 * g) - (0.05639 * b) ;
-//            YUVImageData[index] = static_cast<uint8_t>(y);
-//            YUVImageData[index + 1] = static_cast<uint8_t>(u);
-//            YUVImageData[index + 2] = static_cast<uint8_t>(v);
-//        }
-//    }
-//    return 0;
-//}
-
-void RGB2YUV(const std::vector<uint8_t>& rgbImage, std::vector<uint8_t>& yuvImage, int width, int height) {
+void RGB2YUV(const std::vector<uint8_t> &imageData, std::vector<uint8_t> &YUVImageData, int width, int height) {
     for (int i = 0; i < width * height; ++i) {
-        int r = rgbImage[i * 3];
-        int g = rgbImage[i * 3 + 1];
-        int b = rgbImage[i * 3 + 2];
+        int r = imageData[i * 3];
+        int g = imageData[i * 3 + 1];
+        int b = imageData[i * 3 + 2];
 
         // Convert RGB to YUV
         int y = static_cast<int>(0.299 * r + 0.587 * g + 0.114 * b);
-        int u = static_cast<int>((b - y) * 0.565 + 128);
-        int v = static_cast<int>((r - y) * 0.713 + 128);
+        int u = static_cast<int>(-0.147 * r - 0.289 * g + 0.436 * b);
+        int v = static_cast<int>(0.615 * r - 0.515 * g - 0.100 * b);
 
         y = std::min(std::max(y, 0), 255);
         u = std::min(std::max(u, 0), 255);
         v = std::min(std::max(v, 0), 255);
 
         // Store YUV values in the output image
-        yuvImage[i * 3] = static_cast<uint8_t>(y);
-        yuvImage[i * 3 + 1] = static_cast<uint8_t>(u);
-        yuvImage[i * 3 + 2] = static_cast<uint8_t>(v);
+        YUVImageData[i * 3] = static_cast<uint8_t>(y);
+        YUVImageData[i * 3 + 1] = static_cast<uint8_t>(u);
+        YUVImageData[i * 3 + 2] = static_cast<uint8_t>(v);
     }
 }
-int RGB2YIQ(std::vector<uint8_t> &YIQImageData,std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
+
+int RGB2YIQ(std::vector<uint8_t> &YIQImageData, std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
@@ -74,7 +51,7 @@ int RGB2YIQ(std::vector<uint8_t> &YIQImageData,std::vector<uint8_t>&imageData, i
     return 0;
 }
 
-int RGB2LAB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t>&imageData, int32_t width, int32_t height) {
+int RGB2LAB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
@@ -100,7 +77,7 @@ int RGB2LAB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t>&imageData, 
     return 0;
 }
 
-int YUV2RGB(std::vector<uint8_t> &YUVImageData, std::vector<uint8_t>&imageData,int32_t width, int32_t height) {
+int YUV2RGB(std::vector<uint8_t> &YUVImageData, std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
@@ -120,7 +97,8 @@ int YUV2RGB(std::vector<uint8_t> &YUVImageData, std::vector<uint8_t>&imageData,i
     }
     return 0;
 }
-int YIQ2RGB(std::vector<uint8_t> &YIQImageData, std::vector<uint8_t>&imageData,int32_t width, int32_t height) {
+
+int YIQ2RGB(std::vector<uint8_t> &YIQImageData, std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
@@ -141,7 +119,7 @@ int YIQ2RGB(std::vector<uint8_t> &YIQImageData, std::vector<uint8_t>&imageData,i
     return 0;
 }
 
-int LAB2RGB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t>&imageData,int32_t width, int32_t height) {
+int LAB2RGB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t> &imageData, int32_t width, int32_t height) {
     for (int j = 0; j < height; ++j) {
         for (int k = 0; k < width; ++k) {
             int index = (j * width + k) * 3;
@@ -168,7 +146,8 @@ int LAB2RGB(std::vector<uint8_t> &LABImageData, std::vector<uint8_t>&imageData,i
 }
 
 int main() {
-    std::vector<uint8_t> imageData=MYFunction::ReadBMPFile(FILENAME);
+    std::vector<uint8_t> imageData = MYFunction::ReadBMPFile(FILENAME);
+    outputBinToFile(imageData, "imageData.txt");
     std::vector<uint8_t> YUVImageData(imageData.size());
     YUVImageData = imageData;
     std::vector<uint8_t> YIQImageData(imageData.size());
@@ -197,41 +176,36 @@ int main() {
 
         switch (choice) {
             case 1: {
-
-                //outputBinToFile(imageData,"RGBBin");
-
-//                RGB2YUV(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
-               // outputBinToFile(YUVImageData,"YUVBin")
-                RGB2YUV(imageData,YUVImageData,bmpInfo.width,bmpInfo.height);
-                MYFunction::WriteBMPFile("RGB_TO_YUV.bmp",YUVImageData);
-                outputBinToFile(YUVImageData,"YUVImage.txt");
+                RGB2YUV(imageData, YUVImageData, bmpInfo.width, bmpInfo.height);
+                MYFunction::WriteBMPFile("RGB_TO_YUV.bmp", YUVImageData);
+                outputBinToFile(YUVImageData, "YUVImage.txt");
 
                 isLoop = true;
                 break;
             }
             case 2: {
 
-                RGB2YIQ(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
-                MYFunction::WriteBMPFile("RGB_TO_YIQ.bmp",YIQImageData);
-                outputBinToFile(YIQImageData,"YIQImageData.txt");
+                RGB2YIQ(YIQImageData, imageData, bmpInfo.width, bmpInfo.height);
+                MYFunction::WriteBMPFile("RGB_TO_YIQ.bmp", YIQImageData);
+                outputBinToFile(YIQImageData, "YIQImageData.txt");
 
                 isLoop = true;
                 break;
             }
             case 3: {
 
-                RGB2LAB(LABImageData, imageData,bmpInfo.width, bmpInfo.height);
-                MYFunction::WriteBMPFile("RGB_TO_LAB.bmp",LABImageData);
-                outputBinToFile(LABImageData,"LABImageData.txt");
+                RGB2LAB(LABImageData, imageData, bmpInfo.width, bmpInfo.height);
+                MYFunction::WriteBMPFile("RGB_TO_LAB.bmp", LABImageData);
+                outputBinToFile(LABImageData, "LABImageData.txt");
 
                 isLoop = true;
                 break;
             }
             case 4: {
 
-                YUV2RGB(YUVImageData,imageData, bmpInfo.width, bmpInfo.height);
-                MYFunction::WriteBMPFile("YUV_TO_RGB.bmp",imageData);
-                outputBinToFile(imageData,"YUV_TO_RGB.txt");
+                YUV2RGB(YUVImageData, imageData, bmpInfo.width, bmpInfo.height);
+                MYFunction::WriteBMPFile("YUV_TO_RGB.bmp", imageData);
+                outputBinToFile(imageData, "YUV_TO_RGB.txt");
 
 
                 isLoop = true;
@@ -239,21 +213,18 @@ int main() {
             }
             case 5: {
 
-                YIQ2RGB(YIQImageData, imageData,bmpInfo.width, bmpInfo.height);
-                MYFunction::WriteBMPFile("YIQ_TO_RGB.bmp",imageData);
-                outputBinToFile(imageData,"YIQ_TO_RGB.txt");
+                YIQ2RGB(YIQImageData, imageData, bmpInfo.width, bmpInfo.height);
+                MYFunction::WriteBMPFile("YIQ_TO_RGB.bmp", imageData);
+                outputBinToFile(imageData, "YIQ_TO_RGB.txt");
 
 
                 isLoop = true;
                 break;
             }
             case 6: {
-
-                LAB2RGB(LABImageData,imageData, bmpInfo.width, bmpInfo.height);
-                MYFunction::WriteBMPFile("LAB_TO_RGB.bmp",imageData);
-                outputBinToFile(imageData,"LABImage.txt");
-
-
+                LAB2RGB(LABImageData, imageData, bmpInfo.width, bmpInfo.height);
+                MYFunction::WriteBMPFile("LAB_TO_RGB.bmp", imageData);
+                outputBinToFile(imageData, "LABImage.txt");
                 isLoop = true;
                 break;
             }
@@ -264,6 +235,4 @@ int main() {
             }
         }
     }
-
-
 }
