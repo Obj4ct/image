@@ -1,5 +1,6 @@
 #include "MyLib/BMPFile.h"
 
+// 锐化
 // 高斯核，用于模糊像素值的权重矩阵
 double_t kernel[5][5] = {
         {1, 4,  6,  4,  1},
