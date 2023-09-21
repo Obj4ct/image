@@ -1,18 +1,12 @@
-//
-// Created by Obj4ct on 2023/9/21.
-//
-//高反差保留
-//高反差保留 = 原图 - 高斯模糊图
-// 高斯核，用于模糊像素值的权重矩阵
 #include "MyLib/BMPFile.h"
 
+// 高斯核，用于模糊像素值的权重矩阵
 double_t kernel[5][5] = {
         {1, 4,  6,  4,  1},
         {4, 16, 24, 16, 4},
         {6, 24, 36, 24, 6},
         {4, 16, 24, 16, 4},
         {1, 4,  6,  4,  1}
-
 };
 
 double_t KernelSum() {
@@ -59,22 +53,35 @@ std::vector<uint8_t> Gauss(const std::vector<uint8_t> &imageData, int width, int
 
 std::vector<uint8_t> HighContrast(const std::vector<uint8_t> &imageData, const std::vector<uint8_t> &blurImageData) {
     std::vector<uint8_t> highContrastImageData(imageData.size());
+
     for (size_t i = 0; i < imageData.size(); i++) {
         int between = static_cast<int>(imageData[i]) - static_cast<int>(blurImageData[i]);
-        highContrastImageData[i] = static_cast<uint8_t>(between + 128); // 调整到 0-255 范围
+        highContrastImageData[i] = static_cast<uint8_t>(between + 128); //0-255
     }
 
     return highContrastImageData;
 }
+
+std::vector<uint8_t> Sharpen(const std::vector<uint8_t> &imageData, const std::vector<uint8_t> &highContrastImageData) {
+    std::vector<uint8_t> sharpenImageData(imageData.size());
+
+    for (size_t i = 0; i < imageData.size(); i++) {
+        int addValue = static_cast<int>(imageData[i]) + static_cast<int>(highContrastImageData[i]);
+        sharpenImageData[i] = std::min(static_cast<int>(addValue - 128), 255);//0-255
+    }
+
+    return sharpenImageData;
+}
+
 int main() {
+    //锐化=原图+高反差
     MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
     int32_t height = myValue.bmpInfo.height;
     int32_t width = myValue.bmpInfo.width;
     std::vector<uint8_t> imageData = myValue.imageData;
     std::vector<uint8_t> blurImageData = Gauss(imageData, width, height);
     std::vector<uint8_t> highContrast = HighContrast(imageData, blurImageData);
-    MYFunction::WriteBMPFile("outputHighContrast.bmp", highContrast, myValue.bmp, myValue.bmpInfo);
-
+    std::vector<uint8_t> sharpenImageData = Sharpen(imageData, highContrast);
+    MYFunction::WriteBMPFile("outputSharpen.bmp", sharpenImageData, myValue.bmp, myValue.bmpInfo);
     return 0;
 }
-

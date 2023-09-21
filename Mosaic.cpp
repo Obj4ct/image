@@ -86,6 +86,7 @@ int AreaMosaic(std::vector<uint8_t> &imageData, uint32_t width, uint32_t height,
             }
         }
     }
+    return  0;
 }
 
 
