@@ -1,6 +1,7 @@
 //
 // Created by ztheng on 2023/9/5.
 //done
+//补色
 
 #include "MyLib/BMPFile.h"
 

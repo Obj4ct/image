@@ -1,6 +1,6 @@
 //
 // Created by ZThenG on 2023/9/19/0019.
-//
+//阈值
 #include "MyLib/BMPFile.h"
 
 void ApplyThreshold(std::vector<uint8_t>& imageData, uint32_t threshold) {

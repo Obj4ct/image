@@ -4,7 +4,7 @@
 #include "Debug.h"
 //just a simple shadow
 #include "MyLib/BMPFile.h"
-
+//阴影和高光
 void MakeShadow(std::vector<uint8_t>& imageData,std::vector<uint8_t> &shadowImageData,uint32_t shadowValue)
 {
     for (size_t i=0; i < imageData.size(); i += 3) {

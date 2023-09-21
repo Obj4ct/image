@@ -1,6 +1,6 @@
 //
 // Created by ZThenG on 2023/9/20/0020.
-//
+//图像的最大和最小
 #include "MyLib/BMPFile.h"
 
 #include "Debug.h"

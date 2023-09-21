@@ -1,7 +1,7 @@
 //
 // Created by ztheng on 2023/9/5.
 // done
-
+//色彩平衡
 #include "MyLib/BMPFile.h"
 
 //done

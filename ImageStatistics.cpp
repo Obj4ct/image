@@ -1,7 +1,7 @@
 //
 // Created by ZThenG on 2023/9/16/0016.
 //
-
+//图像数据统计
 #include "MyLib/BMPFile.h"
 
 uint32_t CalSquareSum(std::vector<uint8_t> imageData) {

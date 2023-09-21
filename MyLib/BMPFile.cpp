@@ -1,6 +1,6 @@
 //
 // Created by Obj4ct on 2023/9/19.
-//
+//done
 #include "BMPFile.h"
 
 MyValue MYFunction::ReadBMPFile(const std::string &fileName) {
@@ -36,7 +36,7 @@ MyValue MYFunction::ReadBMPFile(const std::string &fileName) {
 
 void MYFunction::WriteBMPFile(const std::string& fileName, const std::vector<uint8_t>& imageData,BMP& bmp,BMPInfo& bmpInfo) {
 
-    std::ofstream outputFile(fileName, std::ios::binary);
+    std::ofstream outputFile("../outImage/"+fileName, std::ios::binary);
     if (!outputFile.is_open()) {
         std::cout << "Unable to create output file!" << std::endl;
 

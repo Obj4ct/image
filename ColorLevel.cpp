@@ -1,7 +1,7 @@
 //
 // Created by ztheng on 2023/9/5.
 //done
-
+//色阶
 // 色阶调整分输入色阶调整和输出色阶调整，其中输入色阶调整有3个调整点，即通常所说的黑场、白场及灰场调整
 #include "MyLib/BMPFile.h"
 

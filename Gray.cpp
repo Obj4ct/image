@@ -1,7 +1,7 @@
 //
 // Created by ztheng on 2023/9/5.
 // done
-
+//灰度图
 #include "MyLib/BMPFile.h"
 
 #include "Debug.h"
