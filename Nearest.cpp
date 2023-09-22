@@ -1,7 +1,7 @@
 //
 // Created by ZThenG on 2023/9/21/0021.
 //最近邻插值
-//选取最近的像素进行插值
+//选取最近的像素进行插值 最简单一个
 //done
 
 #include "MyLib/BMPFile.h"

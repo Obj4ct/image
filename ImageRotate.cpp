@@ -37,22 +37,54 @@ void RotateImage(std::vector<uint8_t> &imageData, int32_t width, int32_t height,
 
     imageData = rotatedImageData;
 }
-
-int main()
-{
+void RotateReverse(std::vector<uint8_t> &imageData, int32_t width, int32_t height, double_t angle) {
+    double_t clockwiseAngle = 360.0 - angle;
+    RotateImage(imageData, width, height, clockwiseAngle);
+}
+int main() {
     MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
-    int32_t  height=myValue.bmpInfo.height;
-    int32_t  width=myValue.bmpInfo.width;
-    std::vector<uint8_t>imageData=myValue.imageData;
+    int32_t height = myValue.bmpInfo.height;
+    int32_t width = myValue.bmpInfo.width;
+    std::vector<uint8_t> imageData = myValue.imageData;
     // RotateImage Function
     double_t angle;
-    std::cout<<"input rotate angle:"<<std::endl;
-    std::cin>>angle;
-    //normal
-    RotateImage(imageData, width, height, angle);
-
-    MYFunction::WriteBMPFile("outputRotate.bmp", imageData,myValue.bmp,myValue.bmpInfo);
 
 
+    MYFunction::WriteBMPFile("outputRotate11.bmp", imageData, myValue.bmp, myValue.bmpInfo);
+    bool isLoop = true;
+    while (isLoop) {
+        int choice = 1;
+        std::cout << "选择旋转方向:" << std::endl
+                  << "1.顺时针" << std::endl
+                  << "2.逆时针" << std::endl
+                  << "3.exit" << std::endl
+                  << "input:";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                std::cout << "input rotate angle:" << std::endl;
+                std::cin >> angle;
+                RotateImage(imageData, width, height, angle);
+
+                MYFunction::WriteBMPFile("outputRotate.bmp", imageData, myValue.bmp, myValue.bmpInfo);
+                isLoop = true;
+                break;
+            }
+            case 2: {
+                std::cout << "input rotate angle:" << std::endl;
+                std::cin >> angle;
+                //normal
+                RotateReverse(imageData, width, height, angle);
+                MYFunction::WriteBMPFile("outputRotateReverse.bmp", imageData, myValue.bmp, myValue.bmpInfo);
+                isLoop = true;
+                break;
+                case 3:
+                    exit(0);
+                default: {
+                    std::cout << "input error! try again!" << std::endl;
+                }
+            }
+        }
+    }
 }
-

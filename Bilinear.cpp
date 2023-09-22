@@ -2,8 +2,6 @@
 // Created by ZThenG on 2023/9/21/0021.
 // 双线性插值法 效果要好于最近邻插值，只是计算量稍大一些，算法复杂些
 #include "MyLib/BMPFile.h"
-#include "MyLib/BMPFile.cpp"
-
 std::vector<uint8_t>
 SmallImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height, int32_t newWidth,
            int32_t newHeight) {
@@ -18,9 +16,9 @@ SmallImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
             double srcY = y * scaleY;
             // 计算最近的像素点坐标
             auto x1 = static_cast<int32_t>(srcX);
-            auto x2=static_cast<int32_t>(x1+1);
+            auto x2 = static_cast<int32_t>(x1 + 1);
             auto y1 = static_cast<int32_t>(srcY);
-            auto y2=static_cast<int32_t>(y1+1);
+            auto y2 = static_cast<int32_t>(y1 + 1);
             // 权重?
             double tx = srcX - x1;
             double ty = srcY - y1;
@@ -62,9 +60,9 @@ LargeImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
             double srcY = y / scaleY;
             // 计算最近的像素点坐标
             auto x1 = static_cast<int32_t>(srcX);
-            auto x2=static_cast<int32_t>(x1+1);
+            auto x2 = static_cast<int32_t>(x1 + 1);
             auto y1 = static_cast<int32_t>(srcY);
-            auto y2=static_cast<int32_t>(y1+1);
+            auto y2 = static_cast<int32_t>(y1 + 1);
             // 权重?
             double tx = srcX - x1;
             double ty = srcY - y1;
@@ -88,7 +86,6 @@ LargeImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
             }
         }
     }
-
     return resizedImage;
 }
 
