@@ -1,4 +1,5 @@
 #include "MyLib/BMPFile.h"
+#include "MyLib/BMPFile.cpp"
 #include "Debug.h"
 
 double Gaussian(double sigma, int x, int y);

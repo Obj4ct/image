@@ -12,20 +12,20 @@ SmallImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
     for (int32_t y = 0; y < newHeight; y++) {
         for (int32_t x = 0; x < newWidth; x++) {
             // 原图坐标
-            double srcX = x * scaleX;
-            double srcY = y * scaleY;
+            auto srcX = x * scaleX;
+            auto srcY = y * scaleY;
             // 计算最近的像素点坐标
             auto x1 = static_cast<int32_t>(srcX);
             auto x2 = static_cast<int32_t>(x1 + 1);
             auto y1 = static_cast<int32_t>(srcY);
             auto y2 = static_cast<int32_t>(y1 + 1);
             // 权重?
-            double tx = srcX - x1;
-            double ty = srcY - y1;
-            double w1 = (1.0 - tx) * (1.0 - ty);
-            double w2 = tx * (1.0 - ty);
-            double w3 = (1.0 - tx) * ty;
-            double w4 = tx * ty;
+            auto tx = srcX - x1;
+            auto ty = srcY - y1;
+            auto w1 = (1.0 - tx) * (1.0 - ty);
+            auto w2 = tx * (1.0 - ty);
+            auto w3 = (1.0 - tx) * ty;
+            auto w4 = tx * ty;
             // 新像素值?
             int32_t destIndex = (y * newWidth + x) * 3;
             int32_t srcIndex1 = (y1 * width + x1) * 3;
@@ -56,20 +56,20 @@ LargeImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
     for (int32_t y = 0; y < newHeight; y++) {
         for (int32_t x = 0; x < newWidth; x++) {
             // 原图坐标
-            double srcX = x / scaleX;
-            double srcY = y / scaleY;
+            auto srcX = x / scaleX;
+            auto srcY = y / scaleY;
             // 计算最近的像素点坐标
             auto x1 = static_cast<int32_t>(srcX);
             auto x2 = static_cast<int32_t>(x1 + 1);
             auto y1 = static_cast<int32_t>(srcY);
             auto y2 = static_cast<int32_t>(y1 + 1);
             // 权重?
-            double tx = srcX - x1;
-            double ty = srcY - y1;
-            double w1 = (1.0 - tx) * (1.0 - ty);
-            double w2 = tx * (1.0 - ty);
-            double w3 = (1.0 - tx) * ty;
-            double w4 = tx * ty;
+            auto tx = srcX - x1;
+            auto ty = srcY - y1;
+            auto w1 = (1.0 - tx) * (1.0 - ty);
+            auto w2 = tx * (1.0 - ty);
+            auto w3 = (1.0 - tx) * ty;
+            auto w4 = tx * ty;
             // 新像素值
             int32_t destIndex = (y * newWidth + x) * 3;
             int32_t srcIndex1 = (y1 * width + x1) * 3;

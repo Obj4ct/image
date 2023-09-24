@@ -15,7 +15,7 @@
 //windows
 #include <cstdint>
 //unix
-#define FILENAME "../Lenna.bmp"
+#define FILENAME "Lenna.bmp"
 ////Windows
 //#define FILENAME "Dinosaur.bmp"
 

@@ -33,7 +33,7 @@ SmallImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
 
 std::vector<uint8_t>
 LargeImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height, int32_t newWidth, int32_t newHeight) {
-    std::vector<uint8_t> enlargedImage(newHeight * newWidth * 3);
+    std::vector<uint8_t> resizedImage(newHeight * newWidth * 3);
 
     // 放大因子
     double scaleX = static_cast<double>(newWidth) / width;
@@ -47,13 +47,13 @@ LargeImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
             int32_t srcIndex = (srcY * width + srcX) * 3;
             int32_t destIndex = (y * newWidth + x) * 3;
             // 复制到目标
-            enlargedImage[destIndex] = imageData[srcIndex];
-            enlargedImage[destIndex + 1] = imageData[srcIndex + 1];
-            enlargedImage[destIndex + 2] = imageData[srcIndex + 2];
+            resizedImage[destIndex] = imageData[srcIndex];
+            resizedImage[destIndex + 1] = imageData[srcIndex + 1];
+            resizedImage[destIndex + 2] = imageData[srcIndex + 2];
         }
     }
 
-    return enlargedImage;
+    return resizedImage;
 }
 
 int main() {
