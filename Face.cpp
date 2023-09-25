@@ -1,43 +1,51 @@
 //
 // Created by ZThenG on 2023/9/23/0023.
-//
+//液化 简而言之就是改变原图像素点的位置
 #include "MyLib/BMPFile.h"
+void Face(std::vector<uint8_t> &imageData, int32_t width, int32_t height,
+              int32_t centerX, int32_t centerY, int32_t radius, double intensity) {
+    // 遍历图像像素
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int pixelIndex = (y * width + x) * 3;
 
-void ThinFace(std::vector<uint8_t>& imageData, int32_t width, int32_t height, int centerX, int centerY, int radius) {
-    // 遍历图像像素，仅处理位于指定半径内的像素
-    for (int y = centerY - radius; y < centerY + radius; y++) {
-        for (int x = centerX - radius; x < centerX + radius; x++) {
-            // 确保像素坐标在图像范围内
-            if (x >= 0 && x < width && y >= 0 && y < height) {
-                // 计算当前像素到中心点的距离
-                double distance = std::sqrt(static_cast<double>((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY)));
+            // 计算像素到中心点的距离
+            double distance = std::sqrt(static_cast<double>((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY)));
 
-                // 根据距离来调整像素值，这里使用一个简单的线性插值
-                if (distance < radius) {
-                    int pixelIndex = (y * width + x) * 3;
-                    int diff = static_cast<int>((radius - distance) * 10);
-                    imageData[pixelIndex] = static_cast<uint8_t>(std::max(imageData[pixelIndex] - diff, 0));
-                    imageData[pixelIndex + 1] = static_cast<uint8_t>(std::max(imageData[pixelIndex + 1] - diff, 0));
-                    imageData[pixelIndex + 2] = static_cast<uint8_t>(std::max(imageData[pixelIndex + 2] - diff, 0));
-                }
+            if (distance < radius) {
+
+                double warpAmount = intensity * std::sin(distance / radius * 3.14159265);
+
+
+                int newX = static_cast<int>(x + warpAmount);
+                int newY = static_cast<int>(y + warpAmount);
+
+                newX = std::max(0, std::min(width - 1, newX));
+                newY = std::max(0, std::min(height - 1, newY));
+
+                int targetPixelIndex = (newY * width + newX) * 3;
+
+                imageData[pixelIndex] = imageData[targetPixelIndex];
+                imageData[pixelIndex + 1] = imageData[targetPixelIndex + 1];
+                imageData[pixelIndex + 2] = imageData[targetPixelIndex + 2];
             }
         }
     }
 }
 
 int main() {
-    MyValue myValue = MYFunction::ReadBMPFile(FILENAME);
-    int32_t height = myValue.bmpInfo.height;
+    MyValue myValue = MYFunction::ReadBMPFile("../Lenna.bmp");
     int32_t width = myValue.bmpInfo.width;
+    int32_t height = myValue.bmpInfo.height;
     std::vector<uint8_t> imageData = myValue.imageData;
+    int32_t faceCenterX = 300;
+    int32_t faceCenterY = 206;
+    int32_t faceRadius = 100;
+    double warpIntensity = 10;
 
+    Face(imageData, width, height, faceCenterX, faceCenterY, faceRadius, warpIntensity);
 
-    int centerX = width / 2;
-    int centerY = height / 2;
-    int radius = 100;
-   ThinFace(imageData, width, height, centerX, centerY, radius);
-
-    MYFunction::WriteBMPFile("outputThinFace.bmp", imageData, myValue.bmp, myValue.bmpInfo);
+    MYFunction::WriteBMPFile("outputResizeFace.bmp", imageData, myValue.bmp, myValue.bmpInfo);
 
     return 0;
 }
