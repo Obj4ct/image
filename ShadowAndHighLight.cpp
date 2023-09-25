@@ -11,22 +11,25 @@ void MakeShadow(std::vector<uint8_t>& imageData,std::vector<uint8_t> &shadowImag
         uint8_t r = imageData[i];
         uint8_t g = imageData[i + 1];
         uint8_t b = imageData[i + 2];
-        shadowImageData[i] = r-shadowValue;
-        shadowImageData[i + 1] = g-shadowValue;
-        shadowImageData[i + 2] = b-shadowValue;
+        shadowImageData[i] = (r >= shadowValue) ? r - shadowValue : 0;
+        shadowImageData[i + 1] = (g >= shadowValue) ? g - shadowValue : 0;
+        shadowImageData[i + 2] = (b >= shadowValue) ? b - shadowValue : 0;
     }
 
 }
 //亮的地方变暗
 void HighLight(std::vector<uint8_t> &imageData,std::vector<uint8_t> &highLightImageData,uint32_t pixel)
 {
-    for (size_t i = 0; i < imageData.size(); ++i)
-    {
-        if(imageData[i]>pixel)
+
+        for (size_t i = 0; i < imageData.size(); ++i)
         {
-            highLightImageData[i]-=100;
+            if(imageData[i]>pixel){
+            // 在指定像素值之上的像素降低值，确保颜色值不会小于0
+            int newValue = imageData[i] - 100;
+            highLightImageData[i] = (newValue >= 0) ? static_cast<uint8_t>(newValue) : 0;
         }
     }
+
 
 }
 int main() {

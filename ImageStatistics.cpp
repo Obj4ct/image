@@ -59,7 +59,7 @@ std::vector<int> CalHistogram(const std::vector<uint8_t> &imageData) {
 }
 
 void Save(const std::vector<int> &histogram, const std::string &filename) {
-    std::ofstream outputFile(filename);
+    std::ofstream outputFile("../outImage/"+filename);
     if (!outputFile.is_open()) {
         std::cout << "Unable to create histogram file" << std::endl;
         return;

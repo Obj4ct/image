@@ -46,7 +46,66 @@ int Contrast(std::vector<uint8_t> &contrastImageData, double_t contrastValue) {
     }
 }
 
-//饱和度
+//饱和度  饱和度函数是在RGB颜色空间下工作的，但这种颜色空间不太适合修改饱和度。通常，会将图像转换为HSV（色相、饱和度、明度）颜色空间，然后在饱和度通道上进行修改，最后再将图像转换回RGB。
+
+// 函数用于将RGB颜色转换为HSV颜色
+void RGBtoHSV(uint8_t r, uint8_t g, uint8_t b, double &h, double &s, double &v) {
+    double minVal = std::min({r, g, b});
+    double maxVal = std::max({r, g, b});
+    double delta = maxVal - minVal;
+
+    v = maxVal;
+
+    if (maxVal == 0.0) {
+        s = 0;
+    } else {
+        s = (delta / maxVal);
+    }
+
+    if (delta == 0.0) {
+        h = 0;
+    } else {
+        if (r == maxVal) {
+            h = (g - b) / delta;
+        } else if (g == maxVal) {
+            h = 2 + (b - r) / delta;
+        } else {
+            h = 4 + (r - g) / delta;
+        }
+        h *= 60;
+        if (h < 0) {
+            h += 360;
+        }
+    }
+}
+
+// 函数用于将HSV颜色转换回RGB颜色
+void HSVtoRGB(double h, double s, double v, uint8_t &r, uint8_t &g, uint8_t &b) {
+    if (s == 0.0) {
+        r = g = b = static_cast<uint8_t>(v);
+    } else {
+        h /= 60;
+        int i = static_cast<int>(h);
+        double f = h - i;
+        double p = v * (1 - s);
+        double q = v * (1 - s * f);
+        double t = v * (1 - s * (1 - f));
+
+        switch (i) {
+            case 0: r = static_cast<uint8_t>(v); g = static_cast<uint8_t>(t); b = static_cast<uint8_t>(p); break;
+            case 1: r = static_cast<uint8_t>(q); g = static_cast<uint8_t>(v); b = static_cast<uint8_t>(p); break;
+            case 2: r = static_cast<uint8_t>(p); g = static_cast<uint8_t>(v); b = static_cast<uint8_t>(t); break;
+            case 3: r = static_cast<uint8_t>(p); g = static_cast<uint8_t>(q); b = static_cast<uint8_t>(v); break;
+            case 4: r = static_cast<uint8_t>(t); g = static_cast<uint8_t>(p); b = static_cast<uint8_t>(v); break;
+            default: r = static_cast<uint8_t>(v); g = static_cast<uint8_t>(p); b = static_cast<uint8_t>(q); break;
+        }
+    }
+}
+//HSV 表达彩色图像的方式由三个部分组成：
+//
+//Hue（色调、色相）
+//Saturation（饱和度、色彩纯净度）
+//Value（明度）
 void Saturation(std::vector<uint8_t> &saturationImageData, int32_t width, int32_t height, double_t saturationValue) {
 
     for (int i = 0; i < height; ++i) {
@@ -56,15 +115,17 @@ void Saturation(std::vector<uint8_t> &saturationImageData, int32_t width, int32_
             uint8_t g = saturationImageData[index + 1];
             uint8_t b = saturationImageData[index + 2];
 
-            // calc gray
-            uint8_t gray = static_cast<uint8_t>(0.299 * r + 0.587 * g + 0.114 * b);
+            double h, s, v;
+            RGBtoHSV(r, g, b, h, s, v);
 
-            // calc color
-            r = static_cast<uint8_t>((1 - saturationValue) * gray + saturationValue * r);
-            g = static_cast<uint8_t>((1 - saturationValue) * gray + saturationValue * g);
-            b = static_cast<uint8_t>((1 - saturationValue) * gray + saturationValue * b);
+            // 调整饱和度
+            s *= saturationValue;
 
-            // update
+            // 确保饱和度在0到1之间
+            s = std::max(0.0, std::min(1.0, s));
+
+            HSVtoRGB(h, s, v, r, g, b);
+
             saturationImageData[index] = r;
             saturationImageData[index + 1] = g;
             saturationImageData[index + 2] = b;

@@ -49,8 +49,6 @@ int main() {
     // RotateImage Function
     double_t angle;
 
-
-    MYFunction::WriteBMPFile("outputRotate11.bmp", imageData, myValue.bmp, myValue.bmpInfo);
     bool isLoop = true;
     while (isLoop) {
         int choice = 1;
