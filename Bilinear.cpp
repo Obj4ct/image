@@ -14,12 +14,12 @@ SmallImage(const std::vector<uint8_t> &imageData, int32_t width, int32_t height,
             // 原图坐标
             auto srcX = x * scaleX;
             auto srcY = y * scaleY;
-            // 计算最近的像素点坐标
+            // 计算最近的像素点坐标?
             auto x1 = static_cast<int32_t>(srcX);
             auto x2 = static_cast<int32_t>(x1 + 1);
             auto y1 = static_cast<int32_t>(srcY);
             auto y2 = static_cast<int32_t>(y1 + 1);
-            // 权重?
+            // 权重? 计算目标像素的权重 w1、w2、w3 和 w4，这些权重表示了目标像素与最近的四个原始像素之间的关系。
             auto tx = srcX - x1;
             auto ty = srcY - y1;
             auto w1 = (1.0 - tx) * (1.0 - ty);
