@@ -67,7 +67,7 @@ int  ReadBinTxt(const std::string& inName,const std::string& outName)
 int outputBinToFile(std::vector<uint8_t>& imageData,const std::string& name)
 {
     // open output file
-    std::ofstream outputFile(name,std::ios::binary);//"../debug/"+
+    std::ofstream outputFile("../debug/"+name,std::ios::binary);//
     if (!outputFile.is_open()) {
         std::cerr << "unable to open this file!" << std::endl;
         return 1;

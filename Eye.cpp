@@ -1,5 +1,5 @@
 #include "MyLib/BMPFile.h"
-#include "MyLib/BMPFile.cpp"
+
 
 
 // 应用鱼眼效果以放大指定区域

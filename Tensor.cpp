@@ -2,7 +2,7 @@
 // Created by Obj4ct on 2023/9/23.
 //结构张量实现边缘检测
 #include "MyLib/BMPFile.h"
-#include "MyLib//BMPFile.cpp"
+
 
 // 定义结构体表示像素
 //先定义一个结构体来表示图像中的像素，包括红、绿和蓝三个通道的值
@@ -11,7 +11,7 @@ struct Pixel {
     uint8_t green;
     uint8_t blue;
 };
-
+//边缘检测算子 copy
 int sobelX[3][3] = {
         {-1, 0, 1},
         {-2, 0, 2},
@@ -84,8 +84,9 @@ int main() {
                                  reinterpret_cast<Pixel *>(myValue.imageData.data() + myValue.imageData.size()));
     //计算边缘先
     std::vector<Pixel> edgeImageData = SobelEdge(imageData, width, height);
-
+    //指定大小 3个通道
     std::vector<uint8_t> edgeImageDataVector(edgeImageData.size() * sizeof(Pixel));
+//    edgeImageDataVector=reinterpret_cast<uint8_t >(imageData);
     std::memcpy(edgeImageDataVector.data(), edgeImageData.data(), edgeImageDataVector.size());
 
     MYFunction::WriteBMPFile("outputTensorEdge.bmp", edgeImageDataVector, myValue.bmp, myValue.bmpInfo);

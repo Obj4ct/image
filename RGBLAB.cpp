@@ -7,7 +7,7 @@
 //- b*代表从蓝色到黄色的分量，取值-128~127
 
 #include "MyLib/BMPFile.h"
-#include "MyLib/BMPFile.cpp"
+
 
 void RGB2LAB(std::vector<uint8_t> &imageData, int width, int height) {
     for (int i = 0; i < width * height; i++) {

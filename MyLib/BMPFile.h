@@ -15,7 +15,8 @@
 //windows
 #include <cstdint>
 //unix
-#define FILENAME "Lenna.bmp"
+#define FILENAME "../Lenna.bmp"
+#define BACKFILE "../back.bmp"
 ////Windows
 //#define FILENAME "Dinosaur.bmp"
 
