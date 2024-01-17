@@ -12,9 +12,5 @@ foreach(file ${files})
     string(REGEX REPLACE "(.+).cpp$" "\\1" exe ${file})
     add_executable(${exe} ${file})
     target_link_libraries(${exe} BMPLib_Shared)
-    install(TARGETS ${exe}
-    RUNTIME
-    DESTINATION "out"
-    BUNDLE DESTINATION "out"
-    )
+
 endforeach()
